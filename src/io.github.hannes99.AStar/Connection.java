@@ -13,11 +13,10 @@ public class Connection {
     }
 
     public Node getConnectedTo(Node n){
-        Node
+        Node ret = a;
         if(n==a)
-            return b;
-        if(n==b)
-            return a;
+            ret = b;
+        return ret;
     }
 
     public Node getB(){

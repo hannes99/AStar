@@ -11,27 +11,28 @@ public class AStar {
     private Node now;
     private Node target, start;
 
-    public AStar(ArrayList<Position> points, ArrayList<ArrayList<Position>> connections){
-        for(Position p:points){
-            nodeList.add(new Node(p));
-        }
-        for(Node n:nodeList){
-            for(Node c:nodeList){
-                if(c!=n);
+    public AStar(ArrayList<Node> nodes, Node start, Node target){
+        nodeList = nodes;
+        setStart(start);
+        setTarget(target);
+    }
 
-            }
-        }
-        target = nodeList.get(5);
-        nodeList.get(0).setStart();
-        now=nodeList.get(0);
-        start = now;
+    public void setTarget(Node end){
+        target = end;
+    }
+
+    public void setStart(Node start){
+        this.start = start;
     }
 
     public Node getNext(){
-        Node bestF = null;
+        Connection best = null;
         for(Connection n:now.getConnections()){
-
+            if(best==null)
+                best=n;
+            else if(n.getCost()<best.getCost())
+                best=n;
         }
-        return bestF;
+        return best.getConnectedTo(now);
     }
 }
