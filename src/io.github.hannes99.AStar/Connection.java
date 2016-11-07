@@ -12,10 +12,12 @@ public class Connection {
         return a;
     }
 
-    public Node getConnectedTo(Node n){
-        Node ret = a;
+    public Node getOtherNode(Node n){
+        Node ret = null;
         if(n==a)
             ret = b;
+        else if (n==b)
+            ret = a;
         return ret;
     }
 
@@ -35,7 +37,9 @@ public class Connection {
             b.addConnection(this);
     }
 
-
+    public boolean contains(Node n) {
+        return a == n || b == n;
+    }
 
 
 }

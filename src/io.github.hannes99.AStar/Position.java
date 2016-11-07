@@ -1,8 +1,6 @@
 package io.github.hannes99.AStar;
 
 
-import java.util.Vector;
-
 public class Position {
     private double x,y;
 
@@ -12,8 +10,8 @@ public class Position {
     }
 
     public double getDistTo(Position to){
-        double dX = Math.abs(x - to.getX());
-        double dY = Math.abs(y - to.getY());
+        double dX = x - to.getX();
+        double dY = y - to.getY();
         return Math.sqrt(dX*dX+dY*dY);
     }
 
