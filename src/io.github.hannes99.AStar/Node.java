@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class Node {
     private Position pos; //TODO vll a klasse Point odr Position?
-    private ArrayList<Node> connected = new ArrayList<Node>();
+    private ArrayList<Connection> connected = new ArrayList<Connection>();
     private Node prev;
     private boolean start = false;
     private double g;
@@ -38,12 +38,16 @@ public class Node {
         return pos;
     }
 
-    public ArrayList<Node> getConnections(){
+    public ArrayList<Connection> getConnections(){
         return connected;
     }
 
-    public void addConnectioTo(Node to){
-        connected.add(to);
+    public void addConnectionTo(Node to){
+        connected.add(new Connection(this, to));
+    }
+
+    public void addConnection(Connection c){
+        connected.add(c);
     }
 
     public double getF(){
@@ -61,5 +65,16 @@ public class Node {
 
     public double getH(){
         return pos.getDistTo(target.getPosition());
+    }
+
+    public boolean isConnectedTo(Node a){
+        for(Connection c:connected){
+            boolean ret = false;
+            if(c.getA()==this&&c.getB()==a)
+                ret = true;
+            if(c.getB()==this&&c.getA()==a)
+                ret = true;
+            return ret;
+        }
     }
 }

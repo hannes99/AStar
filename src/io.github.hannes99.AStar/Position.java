@@ -1,10 +1,10 @@
 package io.github.hannes99.AStar;
 
 
+import java.util.Vector;
 
 public class Position {
     private double x,y;
-
 
     public Position(double x, double y){
         this.x = x;

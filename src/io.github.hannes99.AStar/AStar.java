@@ -11,14 +11,14 @@ public class AStar {
     private Node now;
     private Node target, start;
 
-    public AStar(ArrayList<Position> points){
+    public AStar(ArrayList<Position> points, ArrayList<ArrayList<Position>> connections){
         for(Position p:points){
             nodeList.add(new Node(p));
         }
         for(Node n:nodeList){
             for(Node c:nodeList){
-                if(c!=n)
-                    n.addConnectioTo(c);
+                if(c!=n);
+
             }
         }
         target = nodeList.get(5);
@@ -29,14 +29,8 @@ public class AStar {
 
     public Node getNext(){
         Node bestF = null;
-        for(Node n:now.getConnections()){
-            n.setPrevious(now);
-            if(bestF==null) {
-                bestF = n;
-                bestF.setPrevious(now);
-            }
-            else if(bestF.getF()<n.getF())
-                bestF=n;
+        for(Connection n:now.getConnections()){
+
         }
         return bestF;
     }
