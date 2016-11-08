@@ -6,17 +6,24 @@ import java.util.HashSet;
 import java.util.PriorityQueue;
 
 /**
- * Created by robert on 11/8/16.
+ * Imlementation of the A* Algorithm
  */
 public class AStar {
+
+    /**
+     * This class should not be instantiated
+     */
+    private AStar() {
+    }
+
     /**
      * Calculates the path
      *
      * @param start Start node
      * @param end   End node
-     * @return The path or null
+     * @return If the path was found
      */
-    public static ArrayList<Node> findPath(Node start, Node end) {
+    public static boolean findPath(Node start, Node end) {
         // Validate input
         if (start == null || end == null)
             throw new IllegalArgumentException("null");
@@ -33,7 +40,6 @@ public class AStar {
                 return ret;
             }
         });
-        start.setF(0);
         openlist.add(start);
 
         // Path known
@@ -42,23 +48,25 @@ public class AStar {
         // Loop until
         // - solution found
         // - no possible solution
+        boolean pathFound = false;
         do {
             // Node with the lowes f
             Node currentNode = openlist.poll();
 
             // Path found
-            if (currentNode == end)
-                return asddf;
+            pathFound = currentNode == end;
 
-            // This node shouldn't be checked again to prevent loops
-            closedList.add(currentNode);
+            if (!pathFound) {
+                // This node shouldn't be checked again to prevent loops
+                closedList.add(currentNode);
 
-            // Add connected nodes
-            expandNode(currentNode, openlist, closedList);
-        } while (!openlist.isEmpty());
+                // Add connected nodes
+                expandNode(currentNode, openlist, closedList);
+            }
+        } while (!openlist.isEmpty() && !pathFound);
 
-        // Path not found
-        return null;
+        // Return if the path was found
+        return pathFound;
     }
 
     /**
@@ -71,15 +79,45 @@ public class AStar {
      * @param closedlist  Closedlist
      */
     private static void expandNode(Node currendNode, PriorityQueue<Node> openlist, HashSet<Node> closedlist) {
-        currendNode.getConnections().forEach(c -> {
-            // Not in closed list
-            if (!closedlist.contains(c.getNode())) {
+        currendNode.getConnections().forEach(successor -> {
+            // Check closed list
+            if (!closedlist.contains(successor.getNode())) {
                 // Tentative cost
-                double tentativeG = currendNode.getG() + c.getValue();
-
-                // TODO
+                double tentativeG = currendNode.getG() + successor.getValue();
+                // If the successor is already in the openlist, but the new way is worse than
+                // the old one there is nothing to do.
+                // Otherwise:
+                if (!(openlist.contains(successor.getNode()) && tentativeG >= successor.getValue())) {
+                    // Set previous node
+                    successor.getNode().setPredecessor(currendNode);
+                    // Set or update g
+                    successor.getNode().setG(tentativeG);
+                    // Add node to openlist
+                    if (!openlist.contains(successor.getNode())) {
+                        openlist.add(successor.getNode());
+                    }
+                }
             }
         });
+    }
+
+    /**
+     * Fills an ArrayList with the Nodes from end to start (the first element will be end).
+     * This method can only work after findPath was called.
+     *
+     * @param start Starting node of the path
+     * @param end   Last node
+     * @return All the nodes sorted from end to start
+     */
+    public static ArrayList<Node> backtrackPath(Node start, Node end) {
+        ArrayList<Node> ret = new ArrayList<Node>();
+        Node node = end;
+        ret.add(node);
+        while (node != start) {
+            node = node.getPredecessor();
+            ret.add(node);
+        }
+        return ret;
     }
 
 
