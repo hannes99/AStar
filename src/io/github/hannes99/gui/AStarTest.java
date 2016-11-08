@@ -1,6 +1,6 @@
 package io.github.hannes99.gui;
 
-import io.github.hannes99.AStar.AStar;
+import io.github.hannes99.a_star.AStarWorld;
 import io.github.hannes99.gui.debug_renderer.DebugRenderer;
 
 import javax.swing.*;
@@ -11,7 +11,7 @@ import java.awt.*;
  */
 public class AStarTest extends JFrame {
     // AStar
-    private AStar aStar;
+    private AStarWorld aStarWorld;
     private DebugRenderer debugRenderer;
     // Buttons
     private Button bSelect;
@@ -31,22 +31,24 @@ public class AStarTest extends JFrame {
         setTitle("AStarTest");
 
         // Setup A*
-        aStar = new AStar();
-        debugRenderer = new DebugRenderer(aStar);
+        aStarWorld = new AStarWorld();
+        debugRenderer = new DebugRenderer(aStarWorld);
 
         // Buttons
         bSelect = new Button("Select");
         bSelect.addActionListener(e->{
-            debugRenderer.setAction();
+            debugRenderer.setInputMode(DebugRenderer.Input.Select);
         });
 
+        // Panels
+        // TODO move buttons to edit and control container
 
         // ContentPane
         Container c = getContentPane();
         c.setLayout(null);
         c.add(debugRenderer);
-        c.add();
-
+        c.add(bSelect);
+        c.add(panels);
 
         // Show
         setVisible(true);

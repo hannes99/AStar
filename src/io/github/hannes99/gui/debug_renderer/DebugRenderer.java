@@ -1,8 +1,8 @@
 package io.github.hannes99.gui.debug_renderer;
 
-import io.github.hannes99.AStar.AStar;
-import io.github.hannes99.AStar.Node;
 import io.github.hannes99.AStar.Position;
+import io.github.hannes99.a_star.AStarWorld;
+import io.github.hannes99.a_star.Node;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputListener;
@@ -16,19 +16,15 @@ import java.awt.event.MouseWheelListener;
  */
 public class DebugRenderer extends JComponent implements MouseInputListener, MouseWheelListener{
 
-    private AStar aStar;
+    private AStarWorld aStarWorld;
     private Input mode;
 
-    private double scale = 1;
+    // private double scale = 1; // without scaling and scrolling for now
 
     private Node selected;
 
-    enum Input {
-        Select, AddNode, AddBox, AddCircle,
-    }
-
-    public DebugRenderer(AStar a) {
-        setAStar(a);
+    public DebugRenderer(AStarWorld aStarWorld) {
+        setWorld(aStarWorld);
         addMouseListener(this);
         addMouseMotionListener(this);
         addMouseWheelListener(this);
@@ -39,8 +35,8 @@ public class DebugRenderer extends JComponent implements MouseInputListener, Mou
         super.paint(g);
     }
 
-    public void setAStar(AStar a) {
-        aStar = a;
+    public void setWorld(AStarWorld aStarWorld) {
+        this.aStarWorld = aStarWorld;
     }
 
     public void setInputMode(Input im) {
@@ -48,8 +44,8 @@ public class DebugRenderer extends JComponent implements MouseInputListener, Mou
     }
 
     public Node getClickedNode(double x, double y) {
-        Node ret = aStar.getClosestNode(x, y);
-        if (ret.getPosition().getDistTo(new Position(x, y) < ))
+        Node ret = aStarWorld.getNearestNode(x, y);
+        if (ret.getPosition().getDistTo(new Position(x, y) < radiusFaAnNode))
         return ret;
     }
 
@@ -96,6 +92,10 @@ public class DebugRenderer extends JComponent implements MouseInputListener, Mou
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
 
+    }
+
+    public enum Input {
+        Select, AddNode, AddBox, AddCircle,
     }
 
 

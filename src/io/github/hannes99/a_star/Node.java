@@ -9,7 +9,7 @@ public class Node {
     // Extra
     Object extra; // Can be used to store data
     // Position
-    private double x, y;
+    private double x, y; // TODO move to a vector class
     // AStar
     private double g, h; // G and H function values
     private Node predecessor; // To store the shortest (known) way to start
@@ -21,7 +21,7 @@ public class Node {
      * @param x The X coordinate
      * @param y The Y coordinate
      */
-    public Node(int x, int y) {
+    public Node(double x, double y) {
         setPosition(x, y);
     }
 
@@ -46,7 +46,7 @@ public class Node {
      * @param x The X coordinate
      * @param y The Y coordinate
      */
-    public void setPosition(int x, int y) {
+    public void setPosition(double x, double y) {
         this.x = x;
         this.y = y;
     }
@@ -67,22 +67,20 @@ public class Node {
     }
 
     /**
-     * Sets the distance to the target node as H
-     *
-     * @param target The target node
-     */
-    public void setH(Node target) {
-        double deltaX = getX() - target.getX();
-        double deltaY = getY() - target.getY();
-        setH(Math.sqrt(deltaX * deltaX + deltaY * deltaY));
-    }
-
-    /**
      *
      * @param value New value vor H
      */
     public void setH(double value) {
         h = value;
+    }
+
+    /**
+     * Sets the distance to the target node as H
+     *
+     * @param target The target node
+     */
+    public void setH(Node target) {
+        // TODO
     }
 
     /**
@@ -141,4 +139,47 @@ public class Node {
     public ArrayList<Connection> getConnections() {
         return connections;
     }
+
+    /**
+     * Adds a connection to the node
+     *
+     * @param target The target node
+     * @param value  Value of this connection
+     */
+    public Connection connectTo(Node target, double value) {
+        Connection connection = null;
+        if (target != null && target != this) {
+            connection = new Connection(target, value);
+            connections.add(connection);
+        }
+        return connection;
+    }
+
+    /**
+     * Connects to a node and sets the distance as value
+     *
+     * @param target The target node
+     */
+    public Connection connectTo(Node target) {
+        return connectTo(target, distanceTo(target));
+    }
+
+    /**
+     * @param node The node
+     * @return The distance to a node
+     */
+    public double distanceTo(Node node) {
+        return Math.sqrt(distanceTo2(node));
+    }
+
+    /**
+     * @param node The node
+     * @return The squared distance to a node
+     */
+    public double distanceTo2(Node node) {
+        double deltaX = getX() - node.getX();
+        double deltaY = getY() - node.getY();
+        return deltaX * deltaX + deltaY * deltaY;
+    }
+
 }
