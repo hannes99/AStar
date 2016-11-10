@@ -7,10 +7,10 @@ import java.util.ArrayList;
  * Manages all the nodes in a world.
  */
 public class AStarWorld {
-    private ArrayList<Node> allNodes = new ArrayList<Node>();
+    private final ArrayList<Node> allNodes = new ArrayList<Node>();
+    private final ArrayList<Node> lastPath = new ArrayList<Node>();
     private Node start, target;
     private boolean autoConnectToAll;
-    private ArrayList<Node> lastPath; // TODO make final to prevent null pointer exception, also edit AStar.backtrace put results into a referenced list
     private boolean autoUpdatePathList = true;
 
     public AStarWorld() {
@@ -227,7 +227,7 @@ public class AStarWorld {
     }
 
     public void updatePathList() {
-        lastPath = AStar.backtrackPath(start, target);
+        AStar.backtrackPath(lastPath, start, target);
     }
 
     public Node getTarget() {

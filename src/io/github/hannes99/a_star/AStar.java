@@ -1,7 +1,6 @@
 package io.github.hannes99.a_star;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.PriorityQueue;
 
@@ -9,6 +8,19 @@ import java.util.PriorityQueue;
  * Imlementation of the A* Algorithm
  */
 public class AStar {
+    // Nodes with possible next nodes
+    public static final PriorityQueue<Node> openlist = new PriorityQueue<Node>((o1, o2) -> {
+        int ret = 0;
+        if (o1.getF() < o2.getF())
+            ret = -1;
+        else if (o1.getF() > o2.getF())
+            ret = 1;
+        return ret;
+    });
+
+    // Path known
+    public static final HashSet<Node> closedList = new HashSet<Node>();
+
 
     /**
      * This class should not be instantiated
@@ -28,22 +40,10 @@ public class AStar {
         if (start == null || end == null)
             throw new IllegalArgumentException("null");
 
-        // Nodes with possible next nodes
-        PriorityQueue<Node> openlist = new PriorityQueue<Node>(new Comparator<Node>() {
-            @Override
-            public int compare(Node o1, Node o2) {
-                int ret = 0;
-                if (o1.getF() < o2.getF())
-                    ret = -1;
-                else if (o1.getF() > o2.getF())
-                    ret = 1;
-                return ret;
-            }
-        });
+        // Prepare Lists
+        openlist.clear();
         openlist.add(start);
-
-        // Path known
-        HashSet<Node> closedList = new HashSet<Node>();
+        closedList.clear();
 
         // Loop until
         // - solution found
@@ -105,12 +105,13 @@ public class AStar {
      * Fills an ArrayList with the Nodes from end to start (the first element will be end).
      * This method can only work after findPath was called.
      *
+     * @param ret The list to fill
      * @param start Starting node of the path
      * @param end   Last node
-     * @return All the nodes sorted from end to start
+     * @return The list for chaining
      */
-    public static ArrayList<Node> backtrackPath(Node start, Node end) {
-        ArrayList<Node> ret = new ArrayList<Node>();
+    public static ArrayList<Node> backtrackPath(ArrayList<Node> ret, Node start, Node end) {
+        ret.clear();
         Node node = end;
         ret.add(node);
         while (node != start) {
@@ -119,6 +120,5 @@ public class AStar {
         }
         return ret;
     }
-
 
 }
