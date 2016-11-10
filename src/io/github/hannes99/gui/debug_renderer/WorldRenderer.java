@@ -42,10 +42,11 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
         aStarWorld.getAllNodes().forEach(n -> {
             Point3d p1 = n.getPosition();
             g.setColor(Color.YELLOW);
+            /*
             n.getConnections().forEach(c -> {
                 Point3d p2 = c.getNode().getPosition();
                 g.drawLine((int) p1.x, (int) p1.y, (int) p2.x, (int) p2.y);
-            });
+            }); */
             if (n.getPredecessor() == null)
                 g.setColor(Color.RED);
             else
@@ -87,8 +88,8 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
     public Node getClickedNode(double x, double y) {
         Point3d p = new Point3d(x, y, 0);
         Node ret = aStarWorld.getNearestNode(p);
-        if (ret.getPosition().distance(p) <= nodeRadius)
-            ret = null;
+        if (ret.getPosition().distanceSquared(p) > nodeRadius * nodeRadius)
+            ret = null; // squared
         return ret;
     }
 
@@ -101,6 +102,10 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
             }
             case AddNode: {
                 aStarWorld.createNode(e.getX(), e.getY(), 0);
+                break;
+            }
+            case RemoveRadius: {
+                aStarWorld.destroyRadius(new Point3d(e.getX(), e.getY(), 0), 50);
                 break;
             }
         }
@@ -142,7 +147,7 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
     }
 
     public enum Input {
-        Select, AddNode, AddBox, AddCircle,
+        Select, AddNode, AddBox, AddCircle, RemoveRadius
     }
 
 

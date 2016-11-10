@@ -14,14 +14,14 @@ public class AStarWorld {
     private boolean autoUpdatePathList = true;
 
     public AStarWorld() {
-        start = new Node(100, 100, 0);
-        target = new Node(600, 600, 0);
+        start = new Node(10, 10, 0);
+        target = new Node(1014, 758, 0);
         allNodes.add(start);
         allNodes.add(target);
 
 
-        for (int i = 0; i < 1024; i += 2) {
-            for (int j = 0; j < 768; j += 2) {
+        for (int i = 0; i < 1024; i += 5) {
+            for (int j = 0; j < 768; j += 5) {
                 connectToAll(createNode(i, j, 0));
             }
         }
@@ -33,12 +33,25 @@ public class AStarWorld {
     public void destroyNode(Node node) {
         allNodes.remove(node);
         allNodes.forEach(n -> {
-            n.getConnections().forEach(c -> {
+            for (int i = 0; i < n.getConnections().size(); ++i) {
+                Connection c = n.getConnections().get(i);
                 if (c.getNode() == node) {
-                    n.getConnections().remove(c); // TODO alksddfölasjlödf
+                    n.getConnections().remove(c);
+                    --i;
                 }
-            });
+            }
         });
+    }
+
+    public void destroyRadius(Point3d p, double radius) {
+        radius = radius * radius;
+        for (int i = 0; i < allNodes.size(); ++i) {
+            Node node = allNodes.get(i);
+            if (node.getPosition().distanceSquared(p) <= radius) {
+                destroyNode(node);
+                --i;
+            }
+        }
     }
 
     public Node createNode(double x, double y, double z) {
@@ -53,7 +66,7 @@ public class AStarWorld {
     public void connectToAll(Node node) {
         allNodes.forEach(n -> {
             double distance = node.getPosition().distance(n.getPosition());
-            if (distance < 3) { // TODO remove if
+            if (distance < 7.1d) { // TODO remove if
                 node.connectTo(n);
                 n.connectTo(node);
             }
@@ -101,6 +114,8 @@ public class AStarWorld {
         boolean ok = AStar.findPath(start, target);
         if (ok && autoUpdatePathList)
             updatePathList();
+        else
+            lastPath.clear();
 
         System.out.println("findPath: " + (System.currentTimeMillis() - t)); // TODO remove
     }
