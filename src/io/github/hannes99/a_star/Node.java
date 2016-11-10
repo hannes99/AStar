@@ -1,6 +1,8 @@
 package io.github.hannes99.a_star;
 
+import javax.vecmath.Vector3d;
 import java.util.ArrayList;
+
 
 /**
  * A node with connections to other nodes.
@@ -9,7 +11,8 @@ public class Node {
     // Extra
     Object extra; // Can be used to store data
     // Position
-    private double x, y; // TODO move to a vector class
+    Vector3d position;
+
     // AStar
     private double g, h; // G and H function values
     private Node predecessor; // To store the shortest (known) way to start
@@ -67,20 +70,20 @@ public class Node {
     }
 
     /**
-     *
-     * @param value New value vor H
-     */
-    public void setH(double value) {
-        h = value;
-    }
-
-    /**
      * Sets the distance to the target node as H
      *
      * @param target The target node
      */
     public void setH(Node target) {
         // TODO
+    }
+
+    /**
+     *
+     * @param value New value vor H
+     */
+    public void setH(double value) {
+        h = value;
     }
 
     /**
