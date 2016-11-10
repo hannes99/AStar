@@ -1,7 +1,4 @@
-package io.github.hannes99.gui.debug_renderer;
-
-import io.github.hannes99.a_star.AStarWorld;
-import io.github.hannes99.a_star.Node;
+package io.github.hannes99.world;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputListener;
@@ -19,7 +16,7 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
     private Input mode;
     private double nodeRadius;
 
-    private Node selected;
+    private Node3d selected;
 
     public WorldRenderer(AStarWorld aStarWorld, double nodeRadius) {
         setWorld(aStarWorld);
@@ -58,7 +55,7 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
         g.setColor(Color.GREEN);
         if (aStarWorld.getLastPath() != null) {
             aStarWorld.getLastPath().forEach(node -> {
-                Point3d p1 = node.getPosition();
+                Point3d p1 = ((Node3d) node).getPosition();
                 g.fillOval((int) (p1.x - nodeRadius), (int) (p1.y - nodeRadius), (int) (nodeRadius * 2), (int) (nodeRadius * 2));
             });
         }
@@ -85,9 +82,9 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
      * @param y Y position
      * @return The clicked node or null
      */
-    public Node getClickedNode(double x, double y) {
+    public Node3d getClickedNode(double x, double y) {
         Point3d p = new Point3d(x, y, 0);
-        Node ret = aStarWorld.getNearestNode(p);
+        Node3d ret = aStarWorld.getNearestNode(p);
         if (ret.getPosition().distanceSquared(p) > nodeRadius * nodeRadius)
             ret = null; // squared
         return ret;

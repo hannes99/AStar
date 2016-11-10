@@ -1,4 +1,8 @@
-package io.github.hannes99.a_star;
+package io.github.hannes99.world;
+
+import io.github.hannes99.a_star.AStar;
+import io.github.hannes99.a_star.Connection;
+import io.github.hannes99.a_star.Node;
 
 import javax.vecmath.Point3d;
 import java.util.ArrayList;
@@ -7,22 +11,22 @@ import java.util.ArrayList;
  * Manages all the nodes in a world.
  */
 public class AStarWorld {
-    private final ArrayList<Node> allNodes = new ArrayList<Node>();
+    private final ArrayList<Node3d> allNodes = new ArrayList<Node3d>();
     private final ArrayList<Node> lastPath = new ArrayList<Node>();
-    private Node start, target;
+    private Node3d start, target;
     private boolean autoConnectToAll;
     private boolean autoUpdatePathList = true;
 
     public AStarWorld() {
-        start = new Node(10, 10, 0);
-        target = new Node(600, 600, 0);
+        start = new Node3d(10, 10, 0);
+        target = new Node3d(600, 600, 0);
         allNodes.add(start);
         allNodes.add(target);
         generate2DGrid(100, 50, 50, 50, 10);
         // TODO auto add 2 nodes
     }
 
-    public void destroyNode(Node node) {
+    public void destroyNode(Node3d node) {
         allNodes.remove(node);
         Connection toDelete;
         for(Connection c:node.getConnections()){
@@ -55,7 +59,7 @@ public class AStarWorld {
     public void destroyRadius(Point3d p, double radius) {
         //radius = radius;
         for (int i = 0; i < allNodes.size(); ++i) {
-            Node node = allNodes.get(i);
+            Node3d node = allNodes.get(i);
             if (node.getPosition().distance(p) <= radius) {
                 destroyNode(node);
                 --i;
@@ -63,8 +67,8 @@ public class AStarWorld {
         }
     }
 
-    public Node createNode(double x, double y, double z) {
-        Node node = new Node(x, y, z);
+    public Node3d createNode(double x, double y, double z) {
+        Node3d node = new Node3d(x, y, z);
         allNodes.add(node);
         if (autoConnectToAll)
             connectToAll(node);
@@ -72,7 +76,7 @@ public class AStarWorld {
         return node;
     }
 
-    public void connectToAll(Node node) {
+    public void connectToAll(Node3d node) {
         allNodes.forEach(n -> {
             double distance = node.getPosition().distance(n.getPosition());
             if (distance < 3) { // TODO remove if
@@ -99,10 +103,10 @@ public class AStarWorld {
      * @param p A position
      * @return The closest node to p
      */
-    public Node getNearestNode(Point3d p) {
-        Node nearest = allNodes.get(0);
+    public Node3d getNearestNode(Point3d p) {
+        Node3d nearest = allNodes.get(0);
         double dist2 = nearest.getPosition().distanceSquared(p);
-        for (Node node : allNodes) {
+        for (Node3d node : allNodes) {
             double d = node.getPosition().distanceSquared(p);
             if (d < dist2) {
                 dist2 = d;
@@ -118,15 +122,15 @@ public class AStarWorld {
 
     // TODO return array so user knows all generated points?
     public void generate2DGrid(int bX, int bY, int offsetX, int offsetY, int space){
-        Node[][] array = new Node[bX][bY];
+        Node3d[][] array = new Node3d[bX][bY];
 
         for(int y = 0;y<bY;y++){
             for(int x = 0;x<bX;x++){
-                array[x][y] = new Node(offsetX+x*space,offsetY+y*space,0);
+                array[x][y] = new Node3d(offsetX + x * space, offsetY + y * space, 0);
                 allNodes.add(array[x][y]);
             }
         }
-        Node n;
+        Node3d n;
         start = array[0][0]; //TODO remove
         target = array[bX-1][bY-1];
         for(int y = 0;y<bY;y++){
@@ -230,19 +234,19 @@ public class AStarWorld {
         AStar.backtrackPath(lastPath, start, target);
     }
 
-    public Node getTarget() {
+    public Node3d getTarget() {
         return target;
     }
 
-    public ArrayList<Node> getAllNodes() {
+    public ArrayList<Node3d> getAllNodes() {
         return allNodes;
     }
 
-    public Node getStart() {
+    public Node3d getStart() {
         return start;
     }
 
-    public void setStart(Node start) {
+    public void setStart(Node3d start) {
         this.start = start;
     }
 

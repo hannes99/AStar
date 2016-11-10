@@ -1,7 +1,7 @@
 package io.github.hannes99.gui;
 
-import io.github.hannes99.a_star.AStarWorld;
-import io.github.hannes99.gui.debug_renderer.WorldRenderer;
+import io.github.hannes99.world.AStarWorld;
+import io.github.hannes99.world.WorldRenderer;
 
 import javax.swing.*;
 import java.awt.*;
