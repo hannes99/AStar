@@ -95,7 +95,10 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
 
     @Override
     public void mouseClicked(MouseEvent e) {
+    }
 
+    @Override
+    public void mousePressed(MouseEvent e) {
         //aStarWorld.createNode(e.getX(), e.getY(), 0);
         switch (mode) {
             case Select: {
@@ -107,17 +110,11 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
                 break;
             }
             case RemoveRadius: {
-                aStarWorld.destroyRadius(new Point3d(e.getX(), e.getY(), 0), 50);
+                aStarWorld.destroyRadius(new Point3d(e.getX(), e.getY(), 0), 15);
                 break;
             }
         }
-        System.out.println("Doen!");
         repaint();
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-
     }
 
     @Override

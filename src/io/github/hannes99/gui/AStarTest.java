@@ -32,7 +32,7 @@ public class AStarTest extends JFrame {
 
         // Setup A*
         aStarWorld = new AStarWorld();
-        worldRenderer = new WorldRenderer(aStarWorld, 1); // 25
+        worldRenderer = new WorldRenderer(aStarWorld, 4); // 25
         worldRenderer.setInputMode(WorldRenderer.Input.RemoveRadius);
         aStarWorld.setAutoConnectToAll(true);
 

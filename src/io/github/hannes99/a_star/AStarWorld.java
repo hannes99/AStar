@@ -18,7 +18,7 @@ public class AStarWorld {
         target = new Node(600, 600, 0);
         allNodes.add(start);
         allNodes.add(target);
-        generate2DGrid(400,400,50,50,1);
+        generate2DGrid(100,100,50,50,10);
         // TODO auto add 2 nodes
     }
 
