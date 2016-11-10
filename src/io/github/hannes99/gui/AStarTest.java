@@ -32,13 +32,19 @@ public class AStarTest extends JFrame {
 
         // Setup A*
         aStarWorld = new AStarWorld();
-        worldRenderer = new WorldRenderer(aStarWorld, 25);
+        worldRenderer = new WorldRenderer(aStarWorld, 1); // 25
         worldRenderer.setInputMode(WorldRenderer.Input.AddNode);
+        aStarWorld.setAutoConnectToAll(true);
 
         // Buttons
         bSelect = new Button("Select");
-        bSelect.addActionListener(e->{
+        bSelect.addActionListener(e -> {
             worldRenderer.setInputMode(WorldRenderer.Input.Select);
+        });
+        bFindPath = new Button("Find Path");
+        bFindPath.addActionListener(e -> {
+            aStarWorld.findPath();
+            repaint();
         });
 
         // Panels
@@ -49,6 +55,10 @@ public class AStarTest extends JFrame {
         c.setLayout(null);
         c.add(worldRenderer);
         c.add(bSelect);
+        c.add(bFindPath);
+
+        worldRenderer.setBounds(50, 0, getWidth(), getHeight());
+        bFindPath.setBounds(0, 0, 50, 50);
 
         // Show
         setVisible(true);

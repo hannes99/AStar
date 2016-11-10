@@ -17,7 +17,7 @@ public class AStar {
     }
 
     /**
-     * Calculates the path
+     * Calculates the path. All precedessors need to be null
      *
      * @param start Start node
      * @param end   End node

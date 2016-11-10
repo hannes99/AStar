@@ -39,11 +39,36 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, getWidth(), getHeight());
 
-        g.setColor(Color.RED);
         aStarWorld.getAllNodes().forEach(n -> {
-            g.fillOval((int) (n.getPosition().getX() - nodeRadius), (int) (n.getPosition().getY() - nodeRadius), (int) (nodeRadius * 2), (int) (nodeRadius * 2));
+            Point3d p1 = n.getPosition();
+            g.setColor(Color.YELLOW);
+            n.getConnections().forEach(c -> {
+                Point3d p2 = c.getNode().getPosition();
+                g.drawLine((int) p1.x, (int) p1.y, (int) p2.x, (int) p2.y);
+            });
+            if (n.getPredecessor() == null)
+                g.setColor(Color.RED);
+            else
+                g.setColor(Color.BLUE);
+            g.fillOval((int) (p1.x - nodeRadius), (int) (p1.y - nodeRadius), (int) (nodeRadius * 2), (int) (nodeRadius * 2));
         });
-        repaint();
+
+
+        g.setColor(Color.GREEN);
+        if (aStarWorld.getLastPath() != null) {
+            aStarWorld.getLastPath().forEach(node -> {
+                Point3d p1 = node.getPosition();
+                g.fillOval((int) (p1.x - nodeRadius), (int) (p1.y - nodeRadius), (int) (nodeRadius * 2), (int) (nodeRadius * 2));
+            });
+        }
+
+
+        g.setColor(Color.CYAN);
+        Point3d p1 = aStarWorld.getStart().getPosition();
+        g.fillOval((int) (p1.x - nodeRadius), (int) (p1.y - nodeRadius), (int) (nodeRadius * 2), (int) (nodeRadius * 2));
+        p1 = aStarWorld.getTarget().getPosition();
+        g.fillOval((int) (p1.x - nodeRadius), (int) (p1.y - nodeRadius), (int) (nodeRadius * 2), (int) (nodeRadius * 2));
+
     }
 
     public void setWorld(AStarWorld aStarWorld) {
@@ -79,6 +104,7 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
                 break;
             }
         }
+        repaint();
     }
 
     @Override
@@ -103,7 +129,6 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
 
     @Override
     public void mouseDragged(MouseEvent e) {
-
     }
 
     @Override
