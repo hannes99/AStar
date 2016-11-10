@@ -42,11 +42,10 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
         aStarWorld.getAllNodes().forEach(n -> {
             Point3d p1 = n.getPosition();
             g.setColor(Color.YELLOW);
-            /*
             n.getConnections().forEach(c -> {
                 Point3d p2 = c.getNode().getPosition();
                 g.drawLine((int) p1.x, (int) p1.y, (int) p2.x, (int) p2.y);
-            }); */
+            });
             if (n.getPredecessor() == null)
                 g.setColor(Color.RED);
             else

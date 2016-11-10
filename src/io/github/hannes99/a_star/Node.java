@@ -128,7 +128,11 @@ public class Node {
      */
     public Connection connectTo(Node target, double value) {
         Connection connection = null;
-        if (target != null && target != this) {
+        boolean exists = false;
+        for(Connection c:connections)
+            if(c.getNode()==target)
+                exists = true;
+        if (!exists && target != null && target != this) {
             connection = new Connection(target, value);
             connections.add(connection);
         }
