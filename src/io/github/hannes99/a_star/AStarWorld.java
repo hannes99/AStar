@@ -10,7 +10,7 @@ public class AStarWorld {
     private ArrayList<Node> allNodes = new ArrayList<Node>();
     private Node start, target;
     private boolean autoConnectToAll;
-    private ArrayList<Node> lastPath;
+    private ArrayList<Node> lastPath; // TODO make final to prevent null pointer exception, also edit AStar.backtrace put results into a referenced list
     private boolean autoUpdatePathList = true;
 
     public AStarWorld() {
@@ -18,7 +18,7 @@ public class AStarWorld {
         target = new Node(600, 600, 0);
         allNodes.add(start);
         allNodes.add(target);
-        generate2DGrid(100,100,50,50,10);
+        generate2DGrid(100, 50, 50, 50, 10);
         // TODO auto add 2 nodes
     }
 
@@ -38,6 +38,8 @@ public class AStarWorld {
 
         }
 
+
+        // TODO move to another function
         /*
         allNodes.forEach(n -> {
             for (int i = 0; i < n.getConnections().size(); ++i) {
@@ -114,6 +116,7 @@ public class AStarWorld {
         // TODO update all h values and set target
     }
 
+    // TODO return array so user knows all generated points?
     public void generate2DGrid(int bX, int bY, int offsetX, int offsetY, int space){
         Node[][] array = new Node[bX][bY];
 
