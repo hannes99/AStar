@@ -15,24 +15,11 @@ public class AStarWorld {
 
     public AStarWorld() {
         start = new Node(10, 10, 0);
-        target = new Node(1014, 758, 0);
+        target = new Node(600, 600, 0);
         allNodes.add(start);
         allNodes.add(target);
-
-
-
-
-        /*-for (int i = 0; i < 400; i += 1) {
-            for (int j = 0; j < 400; j += 1) {
-                connectToAll(createNode(i, j, 0));
-            }
-            System.out.println(i);
-
-        }*/
-        generate2DGrid(800,600,100,100);
-
+        generate2DGrid(60,60,100,100,10);
         // TODO auto add 2 nodes
-
     }
 
     public void destroyNode(Node node) {
@@ -112,15 +99,14 @@ public class AStarWorld {
         // TODO update all h values and set target
     }
 
-    public void generate2DGrid(int bX, int bY, int offsetX, int offsetY){
+    public void generate2DGrid(int bX, int bY, int offsetX, int offsetY, int space){
         Node[][] array = new Node[bX][bY];
 
         for(int y = 0;y<bY;y++){
             for(int x = 0;x<bX;x++){
-                array[x][y] = new Node(x,y,0);
+                array[x][y] = new Node(offsetX+x*space,offsetY+y*space,0);
                 allNodes.add(array[x][y]);
             }
-
         }
         Node n;
         start = array[0][0]; //TODO remove
@@ -202,8 +188,8 @@ public class AStarWorld {
                     n.connectTo(array[x][y+1]);
                     n.connectTo(array[x+1][y+1]);
                 }
-                array[x][y].getPosition().set(offsetX+x,offsetY+y,0);
                 array[x][y].setH(array[bX-1][bY-1]);
+                System.out.println();
             }
         }
 

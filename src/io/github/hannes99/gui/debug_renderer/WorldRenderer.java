@@ -41,11 +41,12 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
 
         aStarWorld.getAllNodes().forEach(n -> {
             Point3d p1 = n.getPosition();
+            /*
             g.setColor(Color.YELLOW);
             n.getConnections().forEach(c -> {
                 Point3d p2 = c.getNode().getPosition();
                 g.drawLine((int) p1.x, (int) p1.y, (int) p2.x, (int) p2.y);
-            });
+            });*/
             if (n.getPredecessor() == null)
                 g.setColor(Color.RED);
             else
@@ -94,12 +95,16 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        System.out.println("Add fghj!");
+
+        aStarWorld.createNode(e.getX(), e.getY(), 0);
         switch (mode) {
             case Select: {
                 selected = getClickedNode(e.getX(), e.getY());
                 break;
             }
             case AddNode: {
+                System.out.println("Add Nodew!");
                 aStarWorld.createNode(e.getX(), e.getY(), 0);
                 break;
             }

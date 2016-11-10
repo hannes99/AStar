@@ -32,14 +32,14 @@ public class AStarTest extends JFrame {
 
         // Setup A*
         aStarWorld = new AStarWorld();
-        worldRenderer = new WorldRenderer(aStarWorld, 1); // 25
+        worldRenderer = new WorldRenderer(aStarWorld, 3); // 25
         worldRenderer.setInputMode(WorldRenderer.Input.RemoveRadius);
         aStarWorld.setAutoConnectToAll(true);
 
         // Buttons
         bSelect = new Button("Select");
         bSelect.addActionListener(e -> {
-            worldRenderer.setInputMode(WorldRenderer.Input.Select);
+            worldRenderer.setInputMode(WorldRenderer.Input.AddNode);
         });
         bFindPath = new Button("Find Path");
         bFindPath.addActionListener(e -> {
