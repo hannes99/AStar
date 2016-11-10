@@ -95,16 +95,14 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println("Add fghj!");
 
-        aStarWorld.createNode(e.getX(), e.getY(), 0);
+        //aStarWorld.createNode(e.getX(), e.getY(), 0);
         switch (mode) {
             case Select: {
                 selected = getClickedNode(e.getX(), e.getY());
                 break;
             }
             case AddNode: {
-                System.out.println("Add Nodew!");
                 aStarWorld.createNode(e.getX(), e.getY(), 0);
                 break;
             }
@@ -113,6 +111,7 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
                 break;
             }
         }
+        System.out.println("Doen!");
         repaint();
     }
 

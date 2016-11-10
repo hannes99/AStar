@@ -18,12 +18,27 @@ public class AStarWorld {
         target = new Node(600, 600, 0);
         allNodes.add(start);
         allNodes.add(target);
-        generate2DGrid(60,60,100,100,10);
+        generate2DGrid(400,400,50,50,1);
         // TODO auto add 2 nodes
     }
 
     public void destroyNode(Node node) {
         allNodes.remove(node);
+        Connection toDelete;
+        for(Connection c:node.getConnections()){
+            toDelete=null;
+            for(Connection cBack:c.getNode().getConnections()){
+                if(cBack.getNode()==node){
+                    toDelete=cBack;
+                    continue;
+                }
+            }
+            if(toDelete!=null)
+                c.getNode().getConnections().remove(toDelete);
+
+        }
+
+        /*
         allNodes.forEach(n -> {
             for (int i = 0; i < n.getConnections().size(); ++i) {
                 Connection c = n.getConnections().get(i);
@@ -32,14 +47,14 @@ public class AStarWorld {
                     --i;
                 }
             }
-        });
+        });*/
     }
 
     public void destroyRadius(Point3d p, double radius) {
-        radius = radius * radius;
+        //radius = radius;
         for (int i = 0; i < allNodes.size(); ++i) {
             Node node = allNodes.get(i);
-            if (node.getPosition().distanceSquared(p) <= radius) {
+            if (node.getPosition().distance(p) <= radius) {
                 destroyNode(node);
                 --i;
             }
@@ -189,7 +204,6 @@ public class AStarWorld {
                     n.connectTo(array[x+1][y+1]);
                 }
                 array[x][y].setH(array[bX-1][bY-1]);
-                System.out.println();
             }
         }
 

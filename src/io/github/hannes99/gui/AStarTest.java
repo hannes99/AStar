@@ -25,14 +25,14 @@ public class AStarTest extends JFrame {
 
     public AStarTest() {
         // Frame
-        setSize(1024, 768);
-        setResizable(false);
+        setSize(1300, 1300);
+        setResizable(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("AStarTest");
 
         // Setup A*
         aStarWorld = new AStarWorld();
-        worldRenderer = new WorldRenderer(aStarWorld, 3); // 25
+        worldRenderer = new WorldRenderer(aStarWorld, 1); // 25
         worldRenderer.setInputMode(WorldRenderer.Input.RemoveRadius);
         aStarWorld.setAutoConnectToAll(true);
 
