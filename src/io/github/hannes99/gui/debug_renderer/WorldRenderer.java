@@ -1,11 +1,11 @@
 package io.github.hannes99.gui.debug_renderer;
 
-import io.github.hannes99.AStar.Position;
 import io.github.hannes99.a_star.AStarWorld;
 import io.github.hannes99.a_star.Node;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputListener;
+import javax.vecmath.Point3d;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
@@ -14,25 +14,36 @@ import java.awt.event.MouseWheelListener;
 /**
  * Draws the state of the AStar Algorithm.
  */
-public class DebugRenderer extends JComponent implements MouseInputListener, MouseWheelListener{
-
+public class WorldRenderer extends JComponent implements MouseInputListener, MouseWheelListener {
     private AStarWorld aStarWorld;
     private Input mode;
-
-    // private double scale = 1; // without scaling and scrolling for now
+    private double nodeRadius;
 
     private Node selected;
 
-    public DebugRenderer(AStarWorld aStarWorld) {
+    public WorldRenderer(AStarWorld aStarWorld, double nodeRadius) {
         setWorld(aStarWorld);
         addMouseListener(this);
         addMouseMotionListener(this);
         addMouseWheelListener(this);
+
+        setNodeRadius(nodeRadius);
+    }
+
+    public void setNodeRadius(double nodeRadius) {
+        this.nodeRadius = nodeRadius;
     }
 
     @Override
     public void paint(Graphics g) {
-        super.paint(g);
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, getWidth(), getHeight());
+
+        g.setColor(Color.RED);
+        aStarWorld.getAllNodes().forEach(n -> {
+            g.fillOval((int) (n.getPosition().getX() - nodeRadius), (int) (n.getPosition().getY() - nodeRadius), (int) (nodeRadius * 2), (int) (nodeRadius * 2));
+        });
+        repaint();
     }
 
     public void setWorld(AStarWorld aStarWorld) {
@@ -43,9 +54,16 @@ public class DebugRenderer extends JComponent implements MouseInputListener, Mou
         mode = im;
     }
 
+    /**
+     * @param x X position
+     * @param y Y position
+     * @return The clicked node or null
+     */
     public Node getClickedNode(double x, double y) {
-        Node ret = aStarWorld.getNearestNode(x, y);
-        if (ret.getPosition().getDistTo(new Position(x, y) < radiusFaAnNode))
+        Point3d p = new Point3d(x, y, 0);
+        Node ret = aStarWorld.getNearestNode(p);
+        if (ret.getPosition().distance(p) <= nodeRadius)
+            ret = null;
         return ret;
     }
 
@@ -54,6 +72,10 @@ public class DebugRenderer extends JComponent implements MouseInputListener, Mou
         switch (mode) {
             case Select: {
                 selected = getClickedNode(e.getX(), e.getY());
+                break;
+            }
+            case AddNode: {
+                aStarWorld.createNode(e.getX(), e.getY(), 0);
                 break;
             }
         }

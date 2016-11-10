@@ -1,5 +1,6 @@
 package io.github.hannes99.a_star;
 
+import javax.vecmath.Point3d;
 import java.util.ArrayList;
 
 /**
@@ -12,10 +13,11 @@ public class AStarWorld {
 
     public AStarWorld() {
         // TODO auto add 2 nodes
+
     }
 
-    public Node createNode(double x, double y) {
-        Node node = new Node(x, y);
+    public Node createNode(double x, double y, double z) {
+        Node node = new Node(x, y, z);
         allNodes.add(node);
         if (autoConnectToAll)
             connectToAll(node);
@@ -26,8 +28,21 @@ public class AStarWorld {
         allNodes.forEach(n -> node.connectTo(n));
     }
 
-    public Node getNearestNode(double x, double y) {
-        // TODO after positions moved to vector class
+    /**
+     * @param p A position
+     * @return The closest node to p
+     */
+    public Node getNearestNode(Point3d p) {
+        Node nearest = allNodes.get(0);
+        double dist2 = nearest.getPosition().distanceSquared(p);
+        for (Node node : allNodes) {
+            double d = node.getPosition().distanceSquared(p);
+            if (d < dist2) {
+                dist2 = d;
+                nearest = node;
+            }
+        }
+        return nearest;
     }
 
     public void setTarget() {

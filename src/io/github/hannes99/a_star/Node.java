@@ -1,6 +1,6 @@
 package io.github.hannes99.a_star;
 
-import javax.vecmath.Vector3d;
+import javax.vecmath.Point3d;
 import java.util.ArrayList;
 
 
@@ -8,11 +8,10 @@ import java.util.ArrayList;
  * A node with connections to other nodes.
  */
 public class Node {
+    // Position
+    final Point3d position = new Point3d();
     // Extra
     Object extra; // Can be used to store data
-    // Position
-    Vector3d position;
-
     // AStar
     private double g, h; // G and H function values
     private Node predecessor; // To store the shortest (known) way to start
@@ -23,9 +22,10 @@ public class Node {
      *
      * @param x The X coordinate
      * @param y The Y coordinate
+     * @param z The Z coordinate
      */
-    public Node(double x, double y) {
-        setPosition(x, y);
+    public Node(double x, double y, double z) {
+        position.set(x, y, z);
     }
 
     /**
@@ -36,22 +36,19 @@ public class Node {
     }
 
     /**
-     *
      * @param g New value for G
      */
     public void setG(double g) {
         this.g = g;
     }
 
+
     /**
-     * Sets the Position
      *
-     * @param x The X coordinate
-     * @param y The Y coordinate
+     * @return The position
      */
-    public void setPosition(double x, double y) {
-        this.x = x;
-        this.y = y;
+    public Point3d getPosition() {
+        return position;
     }
 
     /**
@@ -62,11 +59,17 @@ public class Node {
     }
 
     /**
-     *
      * @return H
      */
     public double getH() {
         return h;
+    }
+
+    /**
+     * @param value New value vor H
+     */
+    public void setH(double value) {
+        h = value;
     }
 
     /**
@@ -75,31 +78,7 @@ public class Node {
      * @param target The target node
      */
     public void setH(Node target) {
-        // TODO
-    }
-
-    /**
-     *
-     * @param value New value vor H
-     */
-    public void setH(double value) {
-        h = value;
-    }
-
-    /**
-     *
-     * @return X coordinate
-     */
-    public double getX() {
-        return x;
-    }
-
-    /**
-     *
-     * @return Y coordinate
-     */
-    public double getY() {
-        return y;
+        setH(target.getPosition().distance(position));
     }
 
     /**
@@ -128,7 +107,6 @@ public class Node {
     }
 
     /**
-     *
      * @param previousNode Better way to start
      */
     public void setPredecessor(Node previousNode) {
@@ -136,7 +114,6 @@ public class Node {
     }
 
     /**
-     *
      * @return All connections from this node
      */
     public ArrayList<Connection> getConnections() {
@@ -164,25 +141,7 @@ public class Node {
      * @param target The target node
      */
     public Connection connectTo(Node target) {
-        return connectTo(target, distanceTo(target));
-    }
-
-    /**
-     * @param node The node
-     * @return The distance to a node
-     */
-    public double distanceTo(Node node) {
-        return Math.sqrt(distanceTo2(node));
-    }
-
-    /**
-     * @param node The node
-     * @return The squared distance to a node
-     */
-    public double distanceTo2(Node node) {
-        double deltaX = getX() - node.getX();
-        double deltaY = getY() - node.getY();
-        return deltaX * deltaX + deltaY * deltaY;
+        return connectTo(target, target.getPosition().distance(position));
     }
 
 }

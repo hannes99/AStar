@@ -1,7 +1,7 @@
 package io.github.hannes99.gui;
 
 import io.github.hannes99.a_star.AStarWorld;
-import io.github.hannes99.gui.debug_renderer.DebugRenderer;
+import io.github.hannes99.gui.debug_renderer.WorldRenderer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +12,7 @@ import java.awt.*;
 public class AStarTest extends JFrame {
     // AStar
     private AStarWorld aStarWorld;
-    private DebugRenderer debugRenderer;
+    private WorldRenderer worldRenderer;
     // Buttons
     private Button bSelect;
     private Button bAddNode;
@@ -32,12 +32,13 @@ public class AStarTest extends JFrame {
 
         // Setup A*
         aStarWorld = new AStarWorld();
-        debugRenderer = new DebugRenderer(aStarWorld);
+        worldRenderer = new WorldRenderer(aStarWorld, 25);
+        worldRenderer.setInputMode(WorldRenderer.Input.AddNode);
 
         // Buttons
         bSelect = new Button("Select");
         bSelect.addActionListener(e->{
-            debugRenderer.setInputMode(DebugRenderer.Input.Select);
+            worldRenderer.setInputMode(WorldRenderer.Input.Select);
         });
 
         // Panels
@@ -46,9 +47,8 @@ public class AStarTest extends JFrame {
         // ContentPane
         Container c = getContentPane();
         c.setLayout(null);
-        c.add(debugRenderer);
+        c.add(worldRenderer);
         c.add(bSelect);
-        c.add(panels);
 
         // Show
         setVisible(true);
