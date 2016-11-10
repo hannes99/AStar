@@ -87,7 +87,7 @@ public class AStar {
                 // If the successor is already in the openlist, but the new way is worse than
                 // the old one there is nothing to do.
                 // Otherwise:
-                if (!(openlist.contains(successor.getNode()) && tentativeG >= successor.getValue())) {
+                if (!(openlist.contains(successor.getNode()) && tentativeG >= successor.getNode().getG())) {
                     // Set previous node
                     successor.getNode().setPredecessor(currendNode);
                     // Set or update g
