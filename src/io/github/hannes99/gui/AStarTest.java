@@ -31,14 +31,14 @@ public class AStarTest extends JFrame implements ComponentListener {
     public AStarTest() {
         // Frame
         setSize(1365, 768);
-        setResizable(false);
+        setResizable(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("AStarTest");
         setLocationRelativeTo(null);
 
         // Setup A*
         aStarWorld = new AStarWorld();
-        worldRenderer = new WorldRenderer(aStarWorld, 4); // 25
+        worldRenderer = new WorldRenderer(aStarWorld, 15); // 25
         worldRenderer.setInputMode(WorldRenderer.Input.RemoveRadius);
         aStarWorld.setAutoConnectToAll(true);
 
@@ -106,14 +106,38 @@ public class AStarTest extends JFrame implements ComponentListener {
 
 
     public class ToolPanel extends Panel {
-        private io.github.hannes99.gui.Button bSelect;
+        private io.github.hannes99.gui.Button bAddNode;
         private io.github.hannes99.gui.Button bRemoveRadius;
+        private io.github.hannes99.gui.Button bSelect;
+        private io.github.hannes99.gui.Button bConnect;
+        private io.github.hannes99.gui.Button bConnectAll;
 
         public ToolPanel(WorldRenderer worldRenderer, AStarWorld aStarWorld) {
+            // Add Node
+            bAddNode = new io.github.hannes99.gui.Button("Add Node");
+            bAddNode.addActionListener(e -> {
+                worldRenderer.setInputMode(WorldRenderer.Input.AddNode);
+            });
+            add(bAddNode);
+
+            // Connect
+            bConnect = new io.github.hannes99.gui.Button("Connect");
+            bConnect.addActionListener(e -> {
+                worldRenderer.setInputMode(WorldRenderer.Input.Connect);
+            });
+            add(bConnect);
+
+            // Connect all
+            bConnectAll = new io.github.hannes99.gui.Button("ConnectAll");
+            bConnectAll.addActionListener(e -> {
+                worldRenderer.setInputMode(WorldRenderer.Input.ConnectAll);
+            });
+            add(bConnectAll);
+
             // Select
             bSelect = new io.github.hannes99.gui.Button("Select");
             bSelect.addActionListener(e -> {
-                worldRenderer.setInputMode(WorldRenderer.Input.AddNode);
+                worldRenderer.setInputMode(WorldRenderer.Input.Select);
             });
             add(bSelect);
 

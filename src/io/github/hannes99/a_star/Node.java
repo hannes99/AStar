@@ -10,6 +10,8 @@ public abstract class Node {
     private Node predecessor; // To store the shortest (known) way to start
     private ArrayList<Connection> connections = new ArrayList<Connection>();
 
+
+
     /**
      * @return G
      */

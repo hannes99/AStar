@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.ArrayList;
 
 /**
  * Draws the state of the AStar Algorithm.
@@ -15,6 +16,7 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
     private AStarWorld aStarWorld;
     private Input mode;
     private double nodeRadius;
+    private ArrayList<Node3d> selectedList = new ArrayList<Node3d>();
 
     private Node3d selected;
 
@@ -38,12 +40,11 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
 
         aStarWorld.getAllNodes().forEach(n -> {
             Point3d p1 = n.getPosition();
-            /*
             g.setColor(Color.YELLOW);
             n.getConnections().forEach(c -> {
-                Point3d p2 = c.getNode().getPosition();
+                Point3d p2 = ((Node3d)c.getNode()).getPosition();
                 g.drawLine((int) p1.x, (int) p1.y, (int) p2.x, (int) p2.y);
-            });*/
+            });
             if (n.getPredecessor() == null)
                 g.setColor(Color.RED);
             else
@@ -60,6 +61,11 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
             });
         }
 
+        g.setColor(Color.BLACK);
+        for(Node3d n:selectedList){
+            Point3d p1 = n.getPosition();
+            g.fillOval((int) (p1.x - nodeRadius/2), (int) (p1.y - nodeRadius/2), (int) (nodeRadius), (int) (nodeRadius));
+        }
 
         g.setColor(Color.CYAN);
         Point3d p1 = aStarWorld.getStart().getPosition();
@@ -73,8 +79,8 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
         this.aStarWorld = aStarWorld;
     }
 
-    public void setInputMode(Input im) {
-        mode = im;
+    public void setInputMode(Input in) {
+        mode = in;
     }
 
     /**
@@ -98,15 +104,42 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
     public void mousePressed(MouseEvent e) {
         //aStarWorld.createNode(e.getX(), e.getY(), 0);
         switch (mode) {
+            case Connect:{
+                System.out.println("connect");
+                for(int i = 0;i<selectedList.size();i++){
+                    if(i+1<selectedList.size())
+                        selectedList.get(i).connectTo(selectedList.get(i+1));
+                    selectedList.get(i+1).connectTo(selectedList.get(i));
+                }
+                selectedList.clear();
+                break;
+            }
+
+            case ConnectAll:{
+                System.out.println("connect all");
+                for(Node3d n:selectedList){
+                    for(Node3d n1:selectedList)
+                        if(n!=n1)
+                            n.connectTo(n1);
+                }
+                selectedList.clear();
+                break;
+            }
+
             case Select: {
-                selected = getClickedNode(e.getX(), e.getY());
+                System.out.println("select");
+                Node3d clicked = getClickedNode(e.getX(), e.getY());
+                if(selectedList.contains(clicked));
+                    selectedList.add(clicked);
                 break;
             }
             case AddNode: {
+                System.out.println("add");
                 aStarWorld.createNode(e.getX(), e.getY(), 0);
                 break;
             }
             case RemoveRadius: {
+                System.out.println("remove");
                 aStarWorld.destroyRadius(new Point3d(e.getX(), e.getY(), 0), 15);
                 break;
             }
@@ -144,7 +177,7 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
     }
 
     public enum Input {
-        Select, AddNode, AddBox, AddCircle, RemoveRadius
+        Select, AddNode, AddBox, AddCircle, RemoveRadius, Connect, ConnectAll
     }
 
 

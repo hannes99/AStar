@@ -19,10 +19,10 @@ public class AStarWorld {
 
     public AStarWorld() {
         start = new Node3d(10, 10, 0);
-        target = new Node3d(600, 600, 0);
+        target = new Node3d(1000, 900, 0);
         allNodes.add(start);
         allNodes.add(target);
-        generate2DGrid(100, 50, 50, 50, 10);
+        //generate2DGrid(500, 450, 50, 50, 2);
         // TODO auto add 2 nodes
     }
 

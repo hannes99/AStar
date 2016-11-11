@@ -23,6 +23,7 @@ public class Node3d extends Node {
      */
     public Node3d(double x, double y, double z) {
         position.set(x, y, z);
+
     }
 
     /**
