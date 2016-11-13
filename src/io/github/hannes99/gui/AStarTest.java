@@ -39,7 +39,7 @@ public class AStarTest extends JFrame implements ComponentListener {
         // Setup A*
         aStarWorld = new AStarWorld();
         worldRenderer = new WorldRenderer(aStarWorld, 15); // 25
-        worldRenderer.setInputMode(WorldRenderer.Input.RemoveRadius);
+        worldRenderer.setInputMode(WorldRenderer.Input.SelectSingle);
         aStarWorld.setAutoConnectToAll(true);
 
         // Panels
@@ -112,7 +112,32 @@ public class AStarTest extends JFrame implements ComponentListener {
         private io.github.hannes99.gui.Button bConnect;
         private io.github.hannes99.gui.Button bConnectAll;
 
+        // TODO move into popup
+        private Button bSelectSingle, bSelectRectangle, bSelectCircle;
+
         public ToolPanel(WorldRenderer worldRenderer, AStarWorld aStarWorld) {
+            // Select single
+            bSelectSingle = new Button("Single");
+            bSelectSingle.addActionListener(e -> {
+                worldRenderer.setInputMode(WorldRenderer.Input.SelectSingle);
+            });
+            add(bSelectSingle);
+
+            // Select square
+            bSelectRectangle = new Button("Rectangle");
+            bSelectRectangle.addActionListener(e -> {
+                worldRenderer.setInputMode(WorldRenderer.Input.SelectRectangle);
+            });
+            add(bSelectRectangle);
+
+            // Select circle
+            bSelectCircle = new Button("Circle");
+            bSelectCircle.addActionListener(e -> {
+                worldRenderer.setInputMode(WorldRenderer.Input.SelectCircle);
+            });
+            add(bSelectCircle);
+
+            /*
             // Add Node
             bAddNode = new io.github.hannes99.gui.Button("Add Node");
             bAddNode.addActionListener(e -> {
@@ -147,6 +172,7 @@ public class AStarTest extends JFrame implements ComponentListener {
                 worldRenderer.setInputMode(WorldRenderer.Input.RemoveRadius);
             });
             add(bRemoveRadius);
+            */
         }
 
 
@@ -154,8 +180,15 @@ public class AStarTest extends JFrame implements ComponentListener {
         public void setBounds(int x, int y, int width, int height) {
             super.setBounds(x, y, width, height);
             int a = getWidth();
+
+            bSelectSingle.setBounds(0, 0 * a, a, a);
+            bSelectRectangle.setBounds(0, 1 * a, a, a);
+            bSelectCircle.setBounds(0, 2 * a, a, a);
+
+            /*
             bSelect.setBounds(0, a * 0, a, a);
             bRemoveRadius.setBounds(0, a * 1, a, a);
+            */
         }
     }
 
