@@ -1,5 +1,6 @@
 package io.github.hannes99.gui;
 
+import io.github.hannes99.gui.tool_popup.SelectionOptions;
 import io.github.hannes99.world.AStarWorld;
 import io.github.hannes99.world.WorldRenderer;
 
@@ -106,38 +107,10 @@ public class AStarTest extends JFrame implements ComponentListener {
 
 
     public class ToolPanel extends Panel {
-        private io.github.hannes99.gui.Button bAddNode;
-        private io.github.hannes99.gui.Button bRemoveRadius;
-        private io.github.hannes99.gui.Button bSelect;
-        private io.github.hannes99.gui.Button bConnect;
-        private io.github.hannes99.gui.Button bConnectAll;
-
-        // TODO move into popup
-        private Button bSelectSingle, bSelectRectangle, bSelectCircle;
+        private Button bAddNode, bRemoveRadius, bSelect, bConnect, bConnectAll;
 
         public ToolPanel(WorldRenderer worldRenderer, AStarWorld aStarWorld) {
-            // Select single
-            bSelectSingle = new Button("Single");
-            bSelectSingle.addActionListener(e -> {
-                worldRenderer.setInputMode(WorldRenderer.Input.SelectSingle);
-            });
-            add(bSelectSingle);
 
-            // Select square
-            bSelectRectangle = new Button("Rectangle");
-            bSelectRectangle.addActionListener(e -> {
-                worldRenderer.setInputMode(WorldRenderer.Input.SelectRectangle);
-            });
-            add(bSelectRectangle);
-
-            // Select circle
-            bSelectCircle = new Button("Circle");
-            bSelectCircle.addActionListener(e -> {
-                worldRenderer.setInputMode(WorldRenderer.Input.SelectCircle);
-            });
-            add(bSelectCircle);
-
-            /*
             // Add Node
             bAddNode = new io.github.hannes99.gui.Button("Add Node");
             bAddNode.addActionListener(e -> {
@@ -162,7 +135,9 @@ public class AStarTest extends JFrame implements ComponentListener {
             // Select
             bSelect = new io.github.hannes99.gui.Button("Select");
             bSelect.addActionListener(e -> {
-                worldRenderer.setInputMode(WorldRenderer.Input.Select);
+                SelectionOptions selectionOptions = new SelectionOptions(worldRenderer);
+                worldRenderer.add(selectionOptions);
+                selectionOptions.setBounds(50, 50, 100, 300);
             });
             add(bSelect);
 
@@ -172,7 +147,6 @@ public class AStarTest extends JFrame implements ComponentListener {
                 worldRenderer.setInputMode(WorldRenderer.Input.RemoveRadius);
             });
             add(bRemoveRadius);
-            */
         }
 
 
@@ -181,14 +155,11 @@ public class AStarTest extends JFrame implements ComponentListener {
             super.setBounds(x, y, width, height);
             int a = getWidth();
 
-            bSelectSingle.setBounds(0, 0 * a, a, a);
-            bSelectRectangle.setBounds(0, 1 * a, a, a);
-            bSelectCircle.setBounds(0, 2 * a, a, a);
-
-            /*
-            bSelect.setBounds(0, a * 0, a, a);
+            bAddNode.setBounds(0, a * 0, a, a);
             bRemoveRadius.setBounds(0, a * 1, a, a);
-            */
+            bSelect.setBounds(0, a * 2, a, a);
+            bConnect.setBounds(0, a * 3, a, a);
+            bConnectAll.setBounds(0, a * 4, a, a);
         }
     }
 
