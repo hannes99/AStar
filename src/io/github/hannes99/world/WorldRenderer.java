@@ -26,6 +26,7 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
 
     public WorldRenderer(AStarWorld aStarWorld, double nodeRadius) {
         setWorld(aStarWorld);
+        //Mouselisteners setzen
         addMouseListener(this);
         addMouseMotionListener(this);
         addMouseWheelListener(this);

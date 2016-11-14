@@ -1,8 +1,7 @@
 package io.github.hannes99.gui;
 
-import io.github.hannes99.gui.tool_popup.SelectionOptions;
+import io.github.hannes99.gui.tool_options.*;
 import io.github.hannes99.world.AStarWorld;
-import io.github.hannes99.world.Node3d;
 import io.github.hannes99.world.WorldRenderer;
 
 import javax.swing.*;
@@ -14,21 +13,11 @@ import java.awt.event.ComponentListener;
  * Program to show the A* Algorithm
  */
 public class AStarTest extends JFrame implements ComponentListener {
-    // AStar
     private AStarWorld aStarWorld;
     private WorldRenderer worldRenderer;
-    // Buttons
-    private Button bSelect;
-    private Button bAddNode;
-    private Button bAddBox;
-    private Button bAddCircle;
-    private Button bClear;
-    private Button bUndo;
-    private Button bStep;
-    private Button bFindPath;
-
     private ToolPanel toolPanel;
     private ControlPanel controlPanel;
+    private ToolOptions toolOptions;
 
     public AStarTest() {
         // Frame
@@ -47,6 +36,7 @@ public class AStarTest extends JFrame implements ComponentListener {
         // Panels
         toolPanel = new ToolPanel(worldRenderer, aStarWorld);
         controlPanel = new ControlPanel(worldRenderer, aStarWorld);
+        toolOptions = new SelectionOptions(worldRenderer);
 
         // ContentPane
         Container c = getContentPane();
@@ -54,6 +44,7 @@ public class AStarTest extends JFrame implements ComponentListener {
         c.add(worldRenderer);
         c.add(toolPanel);
         c.add(controlPanel);
+        c.add(toolOptions);
 
         // Register component listener for resize events
         addComponentListener(this);
@@ -64,10 +55,12 @@ public class AStarTest extends JFrame implements ComponentListener {
 
     @Override
     public void componentResized(ComponentEvent e) {
-        int panelWidth = getWidth() / 16;
-        toolPanel.setBounds(0, 0, panelWidth, getHeight());
-        worldRenderer.setBounds(panelWidth, 0, getWidth() - 2 * panelWidth, getHeight());
-        controlPanel.setBounds(getWidth() - panelWidth, 0, panelWidth, getHeight());
+        int w = getWidth() / 5;
+        int h = getHeight() / 9;
+        toolPanel.setBounds(0, 0, w, h);
+        toolOptions.setBounds(0, h, w, getHeight() - h);
+        worldRenderer.setBounds(w, 0, getWidth() - w - h, getHeight());
+        controlPanel.setBounds(getWidth() - h, 0, h, getHeight());
     }
 
     @Override
@@ -83,6 +76,13 @@ public class AStarTest extends JFrame implements ComponentListener {
     @Override
     public void componentHidden(ComponentEvent e) {
 
+    }
+
+    public void setToolOptions(ToolOptions t) {
+        t.setBounds(toolOptions.getX(), toolOptions.getY(), toolOptions.getWidth(), toolOptions.getHeight());
+        remove(toolOptions);
+        toolOptions = t;
+        add(toolOptions);
     }
 
     public static class ControlPanel extends Panel {
@@ -108,66 +108,41 @@ public class AStarTest extends JFrame implements ComponentListener {
 
 
     public class ToolPanel extends Panel {
-        private Button bAddNode, bRemoveRadius, bSelect, bConnect, bConnectAll;
+        private Button bAddNode, bSelect, bAddArray, bAddShape;
 
         public ToolPanel(WorldRenderer worldRenderer, AStarWorld aStarWorld) {
-
-            // Add Node
-            bAddNode = new io.github.hannes99.gui.Button("Add Node");
-            bAddNode.addActionListener(e -> {
-                worldRenderer.setInputMode(WorldRenderer.Input.AddNode);
-            });
-            add(bAddNode);
-
-            // Connect
-            bConnect = new io.github.hannes99.gui.Button("Connect");
-            bConnect.addActionListener(e -> {
-                worldRenderer.setInputMode(WorldRenderer.Input.Connect);
-            });
-            add(bConnect);
-
-            // Connect all
-            bConnectAll = new io.github.hannes99.gui.Button("ConnectAll");
-            bConnectAll.addActionListener(e -> {
-                if(worldRenderer.getSelection()!=null){
-                    for(Node3d n:worldRenderer.getSelection().getSelectedNodes()){
-
-                    }
-                }
-            });
-            add(bConnectAll);
-
             // Select
-            bSelect = new io.github.hannes99.gui.Button("Select");
+            bSelect = new Button("Select");
             bSelect.addActionListener(e -> {
                 SelectionOptions selectionOptions = new SelectionOptions(worldRenderer);
-                worldRenderer.add(selectionOptions);
-                selectionOptions.setBounds(50, 50, 100, 300);
+                setToolOptions(selectionOptions);
             });
             add(bSelect);
 
-            // Remove
-            bRemoveRadius = new io.github.hannes99.gui.Button("Remove Radius");
-            bRemoveRadius.addActionListener(e -> {
-                if(worldRenderer.getSelection()!=null) {
-                    worldRenderer.getSelection().removeSelectedNodes();
-                    worldRenderer.repaint();
-                }
-            });
-            add(bRemoveRadius);
-        }
+            // Add Node
+            bAddNode = new Button("Add Node");
+            bAddNode.addActionListener(e -> setToolOptions(new AddOptions(worldRenderer)));
+            add(bAddNode);
 
+            // Add Array
+            bAddArray = new Button("Add Array");
+            bAddArray.addActionListener(e -> setToolOptions(new AddArrayOptions(worldRenderer)));
+            add(bAddArray);
+
+            // Add Shape
+            bAddShape = new Button("Add Shape");
+            bAddShape.addActionListener(e -> setToolOptions(new AddShapeOptions(worldRenderer)));
+            add(bAddShape);
+        }
 
         @Override
         public void setBounds(int x, int y, int width, int height) {
             super.setBounds(x, y, width, height);
-            int a = getWidth();
-
-            bAddNode.setBounds(0, a * 0, a, a);
-            bRemoveRadius.setBounds(0, a * 1, a, a);
-            bSelect.setBounds(0, a * 2, a, a);
-            bConnect.setBounds(0, a * 3, a, a);
-            bConnectAll.setBounds(0, a * 4, a, a);
+            int a = width / 4;
+            bSelect.setBounds(a * 0, 0, a, a);
+            bAddNode.setBounds(a * 1, 0, a, a);
+            bAddArray.setBounds(a * 2, 0, a, a);
+            bAddShape.setBounds(a * 3, 0, a, a);
         }
     }
 

@@ -22,12 +22,13 @@ public class AStarWorld {
         target = new Node3d(1000, 900, 0);
         allNodes.add(start);
         allNodes.add(target);
-        generate2DGrid(400, 400, 50, 50, 2);
+        generate2DGrid(400, 300, 50, 50, 2);
         // TODO auto add 2 nodes
     }
 
     public void destroyNode(Node3d node) {
         allNodes.remove(node);
+
         Connection toDelete;
         for(Connection c:node.getConnections()){
             toDelete=null;
@@ -42,9 +43,8 @@ public class AStarWorld {
 
         }
 
-
-        // TODO move to another function
         /*
+        // TODO move to another function
         allNodes.forEach(n -> {
             for (int i = 0; i < n.getConnections().size(); ++i) {
                 Connection c = n.getConnections().get(i);
@@ -53,7 +53,7 @@ public class AStarWorld {
                     --i;
                 }
             }
-        });*/
+        }); */
     }
 
     public void destroyRadius(Point3d p, double radius) {
