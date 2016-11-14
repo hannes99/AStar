@@ -144,7 +144,7 @@ public class AStarTest extends JFrame implements ComponentListener {
             // Remove Radius
             bRemoveRadius = new io.github.hannes99.gui.Button("Remove Radius");
             bRemoveRadius.addActionListener(e -> {
-                worldRenderer.setInputMode(WorldRenderer.Input.RemoveRadius);
+                worldRenderer.setInputMode(WorldRenderer.Input.Remove);
             });
             add(bRemoveRadius);
         }

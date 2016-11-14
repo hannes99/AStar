@@ -21,7 +21,6 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
     private AStarWorld aStarWorld;
     private Input mode;
     private double nodeRadius;
-    private ArrayList<Node3d> selectedList = new ArrayList<Node3d>();
 
     private Selection selection = new SingleSelection(aStarWorld, nodeRadius);
 
@@ -71,11 +70,6 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
             });
         }
 
-        g.setColor(Color.BLACK);
-        for (Node3d n : selectedList) {
-            Point3d p1 = n.getPosition();
-            g.fillOval((int) (p1.x - nodeRadius / 2), (int) (p1.y - nodeRadius / 2), (int) (nodeRadius), (int) (nodeRadius));
-        }
 
         g.setColor(Color.CYAN);
         Point3d p1 = aStarWorld.getStart().getPosition();
@@ -142,44 +136,45 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
 
     @Override
     public void mousePressed(MouseEvent e) {
-
-        switch (mode) {
-            case SelectSingle: {
-                repaint();
-                break;
-            }
-
-            case Connect: {
-                System.out.println("connect");
-                for (int i = 0; i < selectedList.size(); i++) {
-                    if (i + 1 < selectedList.size())
-                        selectedList.get(i).connectTo(selectedList.get(i + 1));
-                    selectedList.get(i + 1).connectTo(selectedList.get(i));
+        ArrayList<Node3d> selectedList = null;
+        if(selection!=null) {
+            selectedList = selection.getSelectedNodes();
+            switch (mode) {
+                case SelectSingle: {
+                    repaint();
+                    break;
                 }
-                selectedList.clear();
-                break;
-            }
 
-            case ConnectAll: {
-                System.out.println("connect all");
-                for (Node3d n : selectedList) {
-                    for (Node3d n1 : selectedList)
-                        if (n != n1)
-                            n.connectTo(n1);
+                case Connect: {
+                    System.out.println("connect");
+                    for (int i = 0; i < selectedList.size(); i++) {
+                        if (i + 1 < selectedList.size())
+                            selectedList.get(i).connectTo(selectedList.get(i + 1));
+                        selectedList.get(i + 1).connectTo(selectedList.get(i));
+                    }
+                    selectedList.clear();
+                    break;
                 }
-                selectedList.clear();
-                break;
-            }
 
-            case AddNode: {
-                System.out.println("add");
-                aStarWorld.createNode(e.getX(), e.getY(), 0);
-                break;
-            }
-            case RemoveRadius: {
-                System.out.println("remove");
-                aStarWorld.destroyRadius(new Point3d(e.getX(), e.getY(), 0), 15);
-                break;
+                case ConnectAll: {
+                    System.out.println("connect all");
+                    for (Node3d n : selectedList) {
+                        for (Node3d n1 : selectedList)
+                            if (n != n1)
+                                n.connectTo(n1);
+                    }
+                    selectedList.clear();
+                    break;
+                }
+
+                case AddNode: {
+                    System.out.println("add");
+                    aStarWorld.createNode(e.getX(), e.getY(), 0);
+                    break;
+                }
+                case Remove: {
+                   selection.removeSelectedNodes();
+                }
             }
         }
         repaint();
@@ -223,7 +218,7 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
     }
 
     public enum Input {
-        SelectSingle, SelectRectangle, SelectCircle, AddNode, AddBox, AddCircle, RemoveRadius, Connect, ConnectAll
+        SelectSingle, SelectRectangle, SelectCircle, AddNode, AddBox, AddCircle, Remove, Connect, ConnectAll
     }
 
 
