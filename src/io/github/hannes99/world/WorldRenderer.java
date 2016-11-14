@@ -39,26 +39,31 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
     }
 
     @Override
-    public void paint(Graphics g) {
-        g.setColor(Color.BLACK);
+    public void paint(Graphics gr) {
+        Graphics2D g = (Graphics2D) gr;
+        g.setColor(Color.DARK_GRAY);
         g.fillRect(0, 0, getWidth(), getHeight());
 
+        g.setColor(Color.lightGray);
         aStarWorld.getAllNodes().forEach(n -> {
             Point3d p1 = n.getPosition();
-            g.setColor(Color.YELLOW);
             n.getConnections().forEach(c -> {
                 Point3d p2 = ((Node3d) c.getNode()).getPosition();
                 g.drawLine((int) p1.x, (int) p1.y, (int) p2.x, (int) p2.y);
             });
+        });
+
+        aStarWorld.getAllNodes().forEach(n -> {
+            Point3d p1 = n.getPosition();
             if (n.getPredecessor() == null)
-                g.setColor(Color.RED);
+                g.setColor(new Color(230, 230, 230));
             else
-                g.setColor(Color.BLUE);
+                g.setColor(new Color(255, 100, 100));
             g.fillOval((int) (p1.x - nodeRadius), (int) (p1.y - nodeRadius), (int) (nodeRadius * 2), (int) (nodeRadius * 2));
         });
 
 
-        g.setColor(Color.GREEN);
+        g.setColor(new Color(50, 255, 50));
         if (aStarWorld.getLastPath() != null) {
             aStarWorld.getLastPath().forEach(node -> {
                 Point3d p1 = ((Node3d) node).getPosition();
@@ -78,8 +83,16 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
         p1 = aStarWorld.getTarget().getPosition();
         g.fillOval((int) (p1.x - nodeRadius), (int) (p1.y - nodeRadius), (int) (nodeRadius * 2), (int) (nodeRadius * 2));
 
-        if (selection != null)
+        if (selection != null) {
+            g.setColor(new Color(0x0000FF));
+            g.setStroke(new BasicStroke(2));
             selection.paint(g);
+            for (Node3d n : selection.getSelectedNodes()) {
+                Point3d p = n.getPosition();
+                g.drawOval((int) (p.x - nodeRadius), (int) (p.y - nodeRadius), (int) (nodeRadius * 2), (int) (nodeRadius * 2));
+            }
+
+        }
     }
 
     public void setWorld(AStarWorld aStarWorld) {
