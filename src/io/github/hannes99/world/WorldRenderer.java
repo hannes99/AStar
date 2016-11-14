@@ -33,6 +33,10 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
         setNodeRadius(nodeRadius);
     }
 
+    public Selection getSelection() {
+        return selection;
+    }
+
     public void setNodeRadius(double nodeRadius) {
         this.nodeRadius = nodeRadius;
     }
@@ -146,7 +150,6 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
                 }
 
                 case Connect: {
-                    System.out.println("connect");
                     for (int i = 0; i < selectedList.size(); i++) {
                         if (i + 1 < selectedList.size())
                             selectedList.get(i).connectTo(selectedList.get(i + 1));
@@ -157,7 +160,6 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
                 }
 
                 case ConnectAll: {
-                    System.out.println("connect all");
                     for (Node3d n : selectedList) {
                         for (Node3d n1 : selectedList)
                             if (n != n1)
@@ -168,12 +170,8 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
                 }
 
                 case AddNode: {
-                    System.out.println("add");
                     aStarWorld.createNode(e.getX(), e.getY(), 0);
                     break;
-                }
-                case Remove: {
-                   selection.removeSelectedNodes();
                 }
             }
         }

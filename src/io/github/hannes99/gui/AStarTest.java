@@ -2,6 +2,7 @@ package io.github.hannes99.gui;
 
 import io.github.hannes99.gui.tool_popup.SelectionOptions;
 import io.github.hannes99.world.AStarWorld;
+import io.github.hannes99.world.Node3d;
 import io.github.hannes99.world.WorldRenderer;
 
 import javax.swing.*;
@@ -39,7 +40,7 @@ public class AStarTest extends JFrame implements ComponentListener {
 
         // Setup A*
         aStarWorld = new AStarWorld();
-        worldRenderer = new WorldRenderer(aStarWorld, 15); // 25
+        worldRenderer = new WorldRenderer(aStarWorld, 1); // 25
         worldRenderer.setInputMode(WorldRenderer.Input.SelectSingle);
         aStarWorld.setAutoConnectToAll(true);
 
@@ -128,7 +129,11 @@ public class AStarTest extends JFrame implements ComponentListener {
             // Connect all
             bConnectAll = new io.github.hannes99.gui.Button("ConnectAll");
             bConnectAll.addActionListener(e -> {
-                worldRenderer.setInputMode(WorldRenderer.Input.ConnectAll);
+                if(worldRenderer.getSelection()!=null){
+                    for(Node3d n:worldRenderer.getSelection().getSelectedNodes()){
+
+                    }
+                }
             });
             add(bConnectAll);
 
@@ -141,10 +146,13 @@ public class AStarTest extends JFrame implements ComponentListener {
             });
             add(bSelect);
 
-            // Remove Radius
+            // Remove
             bRemoveRadius = new io.github.hannes99.gui.Button("Remove Radius");
             bRemoveRadius.addActionListener(e -> {
-                worldRenderer.setInputMode(WorldRenderer.Input.Remove);
+                if(worldRenderer.getSelection()!=null) {
+                    worldRenderer.getSelection().removeSelectedNodes();
+                    worldRenderer.repaint();
+                }
             });
             add(bRemoveRadius);
         }

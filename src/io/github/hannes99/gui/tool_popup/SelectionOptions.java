@@ -3,6 +3,8 @@ package io.github.hannes99.gui.tool_popup;
 import io.github.hannes99.gui.Button;
 import io.github.hannes99.world.WorldRenderer;
 
+import java.awt.*;
+
 /**
  * Created by robert on 11/13/16.
  */
@@ -12,6 +14,7 @@ public class SelectionOptions extends ToolOptions {
 
     public SelectionOptions(WorldRenderer worldRenderer) {
         // Select single
+        PopupMenu m = new PopupMenu();
         bSelectSingle = new Button("Single");
         bSelectSingle.addActionListener(e -> {
             worldRenderer.setInputMode(WorldRenderer.Input.SelectSingle);
