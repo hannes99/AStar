@@ -77,10 +77,14 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
 
 
         g.setColor(Color.CYAN);
-        Point3d p1 = aStarWorld.getStart().getPosition();
-        g.fillOval((int) (p1.x - nodeRadius), (int) (p1.y - nodeRadius), (int) (nodeRadius * 2), (int) (nodeRadius * 2));
-        p1 = aStarWorld.getTarget().getPosition();
-        g.fillOval((int) (p1.x - nodeRadius), (int) (p1.y - nodeRadius), (int) (nodeRadius * 2), (int) (nodeRadius * 2));
+        if (aStarWorld.getStart() != null) {
+            Point3d p1 = aStarWorld.getStart().getPosition();
+            g.fillOval((int) (p1.x - nodeRadius), (int) (p1.y - nodeRadius), (int) (nodeRadius * 2), (int) (nodeRadius * 2));
+        }
+        if (aStarWorld.getTarget() != null) {
+            Point3d p1 = aStarWorld.getTarget().getPosition();
+            g.fillOval((int) (p1.x - nodeRadius), (int) (p1.y - nodeRadius), (int) (nodeRadius * 2), (int) (nodeRadius * 2));
+        }
 
         if (selection != null) {
             g.setColor(new Color(0x0000FF));
@@ -142,34 +146,13 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
     @Override
     public void mousePressed(MouseEvent e) {
         ArrayList<Node3d> selectedList = null;
-        if(selection!=null) {
+        if (selection != null) {
             selectedList = selection.getSelectedNodes();
             switch (mode) {
                 case SelectSingle: {
                     repaint();
                     break;
                 }
-
-                case Connect: {
-                    for (int i = 0; i < selectedList.size(); i++) {
-                        if (i + 1 < selectedList.size())
-                            selectedList.get(i).connectTo(selectedList.get(i + 1));
-                        selectedList.get(i + 1).connectTo(selectedList.get(i));
-                    }
-                    selectedList.clear();
-                    break;
-                }
-
-                case ConnectAll: {
-                    for (Node3d n : selectedList) {
-                        for (Node3d n1 : selectedList)
-                            if (n != n1)
-                                n.connectTo(n1);
-                    }
-                    selectedList.clear();
-                    break;
-                }
-
                 case AddNode: {
                     aStarWorld.createNode(e.getX(), e.getY(), 0);
                     break;
@@ -217,7 +200,7 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
     }
 
     public enum Input {
-        SelectSingle, SelectRectangle, SelectCircle, AddNode, AddBox, AddCircle, Remove, Connect, ConnectAll
+        SelectSingle, SelectRectangle, SelectCircle, AddNode, AddShape, AddArray
     }
 
 

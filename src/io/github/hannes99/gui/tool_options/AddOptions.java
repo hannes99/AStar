@@ -16,6 +16,8 @@ public class AddOptions extends ToolOptions {
     JTextField tMinDistance;
 
     public AddOptions(WorldRenderer worldRenderer) {
+        super(worldRenderer, WorldRenderer.Input.AddNode);
+
         lMinDistance = new JLabel("Min Distance: ");
         add(lMinDistance);
         tMinDistance = new JTextField(String.valueOf(128));

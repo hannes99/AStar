@@ -1,6 +1,6 @@
 package io.github.hannes99.gui.tool_options;
 
-import io.github.hannes99.gui.Button;
+import io.github.hannes99.gui.button.Button;
 import io.github.hannes99.world.WorldRenderer;
 
 import javax.swing.*;
@@ -14,6 +14,8 @@ public class SelectionOptions extends ToolOptions {
     private Button bRemove;
 
     public SelectionOptions(WorldRenderer worldRenderer) {
+        super(worldRenderer, WorldRenderer.Input.SelectRectangle);
+
         // Only one can be selected
         ButtonGroup buttonGroup = new ButtonGroup();
 
@@ -25,12 +27,13 @@ public class SelectionOptions extends ToolOptions {
         buttonGroup.add(bSelectSingle);
         add(bSelectSingle);
 
-        // Select square
+        // Select Rectangle
         bSelectRectangle = new JRadioButton("Rectangle");
         bSelectRectangle.addActionListener(e -> {
             worldRenderer.setInputMode(WorldRenderer.Input.SelectRectangle);
         });
         buttonGroup.add(bSelectRectangle);
+        buttonGroup.setSelected(bSelectRectangle.getModel(), true);
         add(bSelectRectangle);
 
         // Select circle
@@ -43,7 +46,7 @@ public class SelectionOptions extends ToolOptions {
 
 
         // Remove
-        bRemove = new io.github.hannes99.gui.Button("Remove");
+        bRemove = new Button("Remove", "remove.png");
         bRemove.addActionListener(e -> {
             if (worldRenderer.getSelection() != null) {
                 worldRenderer.getSelection().removeSelectedNodes();

@@ -25,7 +25,7 @@ public class SingleSelection extends Selection {
     public ArrayList<Node3d> getSelectedNodes() {
         ArrayList<Node3d> nodes = new ArrayList<Node3d>();
         Node3d selected = world.getNearestNode(pos);
-        if (selected.getPosition().distanceSquared(pos) <= nodeRadius * nodeRadius)
+        if (selected != null && selected.getPosition().distanceSquared(pos) <= nodeRadius * nodeRadius)
             nodes.add(selected);
         return nodes;
     }

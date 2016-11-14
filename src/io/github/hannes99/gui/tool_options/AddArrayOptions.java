@@ -8,6 +8,6 @@ import io.github.hannes99.world.WorldRenderer;
 public class AddArrayOptions extends ToolOptions {
 
     public AddArrayOptions(WorldRenderer worldRenderer) {
-
+        super(worldRenderer, WorldRenderer.Input.AddArray);
     }
 }

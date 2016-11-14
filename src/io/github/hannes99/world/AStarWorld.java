@@ -30,15 +30,15 @@ public class AStarWorld {
         allNodes.remove(node);
 
         Connection toDelete;
-        for(Connection c:node.getConnections()){
-            toDelete=null;
-            for(Connection cBack:c.getNode().getConnections()){
-                if(cBack.getNode()==node){
-                    toDelete=cBack;
+        for (Connection c : node.getConnections()) {
+            toDelete = null;
+            for (Connection cBack : c.getNode().getConnections()) {
+                if (cBack.getNode() == node) {
+                    toDelete = cBack;
                     continue;
                 }
             }
-            if(toDelete!=null)
+            if (toDelete != null)
                 c.getNode().getConnections().remove(toDelete);
 
         }
@@ -72,7 +72,8 @@ public class AStarWorld {
         allNodes.add(node);
         if (autoConnectToAll)
             connectToAll(node);
-        node.setH(target);
+        if (target != null)
+            node.setH(target);
         return node;
     }
 
@@ -104,24 +105,27 @@ public class AStarWorld {
      * @return The closest node to p
      */
     public Node3d getNearestNode(Point3d p) {
-        Node3d nearest = allNodes.get(0);
-        double dist2 = nearest.getPosition().distanceSquared(p);
-        for (Node3d node : allNodes) {
-            double d = node.getPosition().distanceSquared(p);
-            if (d < dist2) {
-                dist2 = d;
-                nearest = node;
+        Node3d nearest = null;
+        if (allNodes.size() > 0) {
+            nearest = allNodes.get(0);
+            double dist2 = nearest.getPosition().distanceSquared(p);
+            for (Node3d node : allNodes) {
+                double d = node.getPosition().distanceSquared(p);
+                if (d < dist2) {
+                    dist2 = d;
+                    nearest = node;
+                }
             }
         }
         return nearest;
     }
 
     // TODO return array so user knows all generated points?
-    public void generate2DGrid(int bX, int bY, int offsetX, int offsetY, int space){
+    public void generate2DGrid(int bX, int bY, int offsetX, int offsetY, int space) {
         Node3d[][] array = new Node3d[bX][bY];
 
-        for(int y = 0;y<bY;y++){
-            for(int x = 0;x<bX;x++){
+        for (int y = 0; y < bY; y++) {
+            for (int x = 0; x < bX; x++) {
                 array[x][y] = new Node3d(offsetX + x * space, offsetY + y * space, 0);
                 allNodes.add(array[x][y]);
             }
@@ -129,84 +133,84 @@ public class AStarWorld {
         Node3d n;
         setStart(array[0][0]); //TODO remove
         setTarget(array[bX - 1][bY - 1]);
-        for(int y = 0;y<bY;y++){
-            for(int x = 0;x<bX;x++){
-                n=array[x][y];
-                if(y==0){
-                    if(x==0){
+        for (int y = 0; y < bY; y++) {
+            for (int x = 0; x < bX; x++) {
+                n = array[x][y];
+                if (y == 0) {
+                    if (x == 0) {
                         n.connectTo(array[1][0]);
                         n.connectTo(array[1][1]);
                         n.connectTo(array[0][1]);
-                    } else if(x==bX-1){
-                        n.connectTo(array[x-1][0]);
-                        n.connectTo(array[x-1][1]);
+                    } else if (x == bX - 1) {
+                        n.connectTo(array[x - 1][0]);
+                        n.connectTo(array[x - 1][1]);
                         n.connectTo(array[x][1]);
                     } else {
-                        n.connectTo(array[x-1][0]);
-                        n.connectTo(array[x+1][0]);
-                        n.connectTo(array[x-1][1]);
+                        n.connectTo(array[x - 1][0]);
+                        n.connectTo(array[x + 1][0]);
+                        n.connectTo(array[x - 1][1]);
                         n.connectTo(array[x][1]);
-                        n.connectTo(array[x+1][1]);
+                        n.connectTo(array[x + 1][1]);
                     }
-                } else if(y==bY-1){
-                    if(x==0){
-                        n.connectTo(array[x][y-1]);
-                        n.connectTo(array[x+1][y-1]);
-                        n.connectTo(array[x+1][y]);
-                    } else if(x==bX-1){
-                        n.connectTo(array[x-1][y]);
-                        n.connectTo(array[x][y-1]);
-                        n.connectTo(array[x-1][y-1]);
+                } else if (y == bY - 1) {
+                    if (x == 0) {
+                        n.connectTo(array[x][y - 1]);
+                        n.connectTo(array[x + 1][y - 1]);
+                        n.connectTo(array[x + 1][y]);
+                    } else if (x == bX - 1) {
+                        n.connectTo(array[x - 1][y]);
+                        n.connectTo(array[x][y - 1]);
+                        n.connectTo(array[x - 1][y - 1]);
                     } else {
-                        n.connectTo(array[x-1][y]);
-                        n.connectTo(array[x+1][y]);
-                        n.connectTo(array[x+1][y-1]);
-                        n.connectTo(array[x-1][y-1]);
-                        n.connectTo(array[x][y-1]);
+                        n.connectTo(array[x - 1][y]);
+                        n.connectTo(array[x + 1][y]);
+                        n.connectTo(array[x + 1][y - 1]);
+                        n.connectTo(array[x - 1][y - 1]);
+                        n.connectTo(array[x][y - 1]);
                     }
-                } else if(x==0){
-                    if(y==0){
+                } else if (x == 0) {
+                    if (y == 0) {
                         n.connectTo(array[1][0]);
                         n.connectTo(array[1][1]);
                         n.connectTo(array[0][1]);
-                    } else if(y==bY-1){
-                        n.connectTo(array[x][y-1]);
-                        n.connectTo(array[x+1][y-1]);
-                        n.connectTo(array[x+1][y]);
+                    } else if (y == bY - 1) {
+                        n.connectTo(array[x][y - 1]);
+                        n.connectTo(array[x + 1][y - 1]);
+                        n.connectTo(array[x + 1][y]);
                     } else {
-                        n.connectTo(array[x][y-1]);
-                        n.connectTo(array[x][y+1]);
-                        n.connectTo(array[x+1][y+1]);
-                        n.connectTo(array[x+1][y]);
-                        n.connectTo(array[x+1][y-1]);
+                        n.connectTo(array[x][y - 1]);
+                        n.connectTo(array[x][y + 1]);
+                        n.connectTo(array[x + 1][y + 1]);
+                        n.connectTo(array[x + 1][y]);
+                        n.connectTo(array[x + 1][y - 1]);
                     }
-                } else if(x==bX-1){
-                    if(y==0){
-                        n.connectTo(array[x-1][0]);
-                        n.connectTo(array[x-1][1]);
+                } else if (x == bX - 1) {
+                    if (y == 0) {
+                        n.connectTo(array[x - 1][0]);
+                        n.connectTo(array[x - 1][1]);
                         n.connectTo(array[x][1]);
-                    } else if(y==bY-1){
-                        n.connectTo(array[x-1][y]);
-                        n.connectTo(array[x][y-1]);
-                        n.connectTo(array[x-1][y-1]);
+                    } else if (y == bY - 1) {
+                        n.connectTo(array[x - 1][y]);
+                        n.connectTo(array[x][y - 1]);
+                        n.connectTo(array[x - 1][y - 1]);
                     } else {
-                        n.connectTo(array[x][y+1]);
-                        n.connectTo(array[x][y-1]);
-                        n.connectTo(array[x-1][y+1]);
-                        n.connectTo(array[x-1][y]);
-                        n.connectTo(array[x-1][y-1]);
+                        n.connectTo(array[x][y + 1]);
+                        n.connectTo(array[x][y - 1]);
+                        n.connectTo(array[x - 1][y + 1]);
+                        n.connectTo(array[x - 1][y]);
+                        n.connectTo(array[x - 1][y - 1]);
                     }
                 } else {
-                    n.connectTo(array[x-1][y-1]);
-                    n.connectTo(array[x][y-1]);
-                    n.connectTo(array[x+1][y-1]);
-                    n.connectTo(array[x-1][y]);
-                    n.connectTo(array[x+1][y]);
-                    n.connectTo(array[x-1][y+1]);
-                    n.connectTo(array[x][y+1]);
-                    n.connectTo(array[x+1][y+1]);
+                    n.connectTo(array[x - 1][y - 1]);
+                    n.connectTo(array[x][y - 1]);
+                    n.connectTo(array[x + 1][y - 1]);
+                    n.connectTo(array[x - 1][y]);
+                    n.connectTo(array[x + 1][y]);
+                    n.connectTo(array[x - 1][y + 1]);
+                    n.connectTo(array[x][y + 1]);
+                    n.connectTo(array[x + 1][y + 1]);
                 }
-                array[x][y].setH(array[bX-1][bY-1]);
+                array[x][y].setH(array[bX - 1][bY - 1]);
             }
         }
 

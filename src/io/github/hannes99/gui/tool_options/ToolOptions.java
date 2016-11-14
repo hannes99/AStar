@@ -1,5 +1,7 @@
 package io.github.hannes99.gui.tool_options;
 
+import io.github.hannes99.world.WorldRenderer;
+
 import java.awt.*;
 
 /**
@@ -7,6 +9,16 @@ import java.awt.*;
  */
 public abstract class ToolOptions extends Panel {
     protected int a;
+
+    /**
+     * Force every input mode to set the selection mode.
+     *
+     * @param worldRenderer
+     * @param input
+     */
+    public ToolOptions(WorldRenderer worldRenderer, WorldRenderer.Input input) {
+        worldRenderer.setInputMode(input);
+    }
 
     @Override
     public void setBounds(int x, int y, int width, int height) {

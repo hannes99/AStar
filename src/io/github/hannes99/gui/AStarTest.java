@@ -69,11 +69,11 @@ public class AStarTest extends JFrame {
     }
 
     public static class ControlPanel extends Panel {
-        private Button bFindPath, bStep, bBack, bClear, bNodeRadius;
+        private io.github.hannes99.gui.button.Button bFindPath, bStep, bBack, bClear, bNodeRadius;
 
         public ControlPanel(WorldRenderer worldRenderer, AStarWorld aStarWorld) {
             // Find Path
-            bFindPath = new Button("Find Path");
+            bFindPath = new io.github.hannes99.gui.button.Button("Find Path", "findPath.png");
             bFindPath.addActionListener(e -> {
                 aStarWorld.findPath();
                 worldRenderer.repaint();
@@ -81,30 +81,31 @@ public class AStarTest extends JFrame {
             add(bFindPath);
 
             // Step
-            bStep = new Button("Step");
+            bStep = new io.github.hannes99.gui.button.Button("Step", "step.png");
             bStep.addActionListener(e -> {
                 // TODO
             });
             add(bStep);
 
             // Back
-            bBack = new Button("Back");
+            bBack = new io.github.hannes99.gui.button.Button("Back", "back.png");
             bBack.addActionListener(e -> {
                 // TODO
             });
             add(bBack);
 
             // Clear
-            bClear = new Button("Clear");
+            bClear = new io.github.hannes99.gui.button.Button("Clear", "clear.png");
             bClear.addActionListener(e -> { // TODO warning
                 aStarWorld.getAllNodes().clear();
                 aStarWorld.setStart(null);
                 aStarWorld.setTarget(null);
+                worldRenderer.repaint();
             });
             add(bClear);
 
             // Node Radius
-            bNodeRadius = new Button("Radius");
+            bNodeRadius = new io.github.hannes99.gui.button.Button("Radius", "radius.png");
             bNodeRadius.addActionListener(e -> {
                 // TODO
             });
@@ -125,29 +126,26 @@ public class AStarTest extends JFrame {
 
 
     public class ToolPanel extends Panel {
-        private Button bAddNode, bSelect, bAddArray, bAddShape;
+        private io.github.hannes99.gui.button.Button bAddNode, bSelect, bAddArray, bAddShape;
 
         public ToolPanel(WorldRenderer worldRenderer, AStarWorld aStarWorld) {
             // Select
-            bSelect = new Button("Select");
-            bSelect.addActionListener(e -> {
-                SelectionOptions selectionOptions = new SelectionOptions(worldRenderer);
-                setToolOptions(selectionOptions);
-            });
+            bSelect = new io.github.hannes99.gui.button.Button("Select", "select.png");
+            bSelect.addActionListener(e -> setToolOptions(new SelectionOptions(worldRenderer)));
             add(bSelect);
 
             // Add Node
-            bAddNode = new Button("Add");
+            bAddNode = new io.github.hannes99.gui.button.Button("Add", "add.png");
             bAddNode.addActionListener(e -> setToolOptions(new AddOptions(worldRenderer)));
             add(bAddNode);
 
             // Add Array
-            bAddArray = new Button("Array");
+            bAddArray = new io.github.hannes99.gui.button.Button("Array", "array.png");
             bAddArray.addActionListener(e -> setToolOptions(new AddArrayOptions(worldRenderer)));
             add(bAddArray);
 
             // Add Shape
-            bAddShape = new Button("Shape");
+            bAddShape = new io.github.hannes99.gui.button.Button("Shape", "shapes.png");
             bAddShape.addActionListener(e -> setToolOptions(new AddShapeOptions(worldRenderer)));
             add(bAddShape);
         }

@@ -8,6 +8,6 @@ import io.github.hannes99.world.WorldRenderer;
 public class AddShapeOptions extends ToolOptions {
 
     public AddShapeOptions(WorldRenderer worldRenderer) {
-
+        super(worldRenderer, WorldRenderer.Input.AddShape);
     }
 }
