@@ -12,4 +12,9 @@ public class Button extends JButton {
         setVerticalAlignment(SwingConstants.BOTTOM);
         setMargin(new Insets(5, 5, 5, 5));
     }
+
+    public Button(String text) {
+        super(text);
+        setMargin(new Insets(0, 0, 0, 0));
+    }
 }

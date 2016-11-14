@@ -29,7 +29,7 @@ public class AStarTest extends JFrame {
 
         // Setup A*
         aStarWorld = new AStarWorld();
-        worldRenderer = new WorldRenderer(aStarWorld, 1); // 25
+        worldRenderer = new WorldRenderer(aStarWorld, 11); // 11
         worldRenderer.setInputMode(WorldRenderer.Input.SelectSingle);
         aStarWorld.setAutoConnectToAll(true);
 
@@ -107,7 +107,12 @@ public class AStarTest extends JFrame {
             // Node Radius
             bNodeRadius = new io.github.hannes99.gui.button.Button("Radius", "radius.png");
             bNodeRadius.addActionListener(e -> {
-                // TODO
+                double r = worldRenderer.getNodeRadius();
+                r += 5;
+                if (r > 40)
+                    r = 0;
+                worldRenderer.setNodeRadius(r);
+                worldRenderer.repaint();
             });
             add(bNodeRadius);
         }

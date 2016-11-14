@@ -34,12 +34,16 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
         setNodeRadius(nodeRadius);
     }
 
-    public Selection getSelection() {
-        return selection;
+    public AStarWorld getWorld() {
+        return aStarWorld;
     }
 
-    public void setNodeRadius(double nodeRadius) {
-        this.nodeRadius = nodeRadius;
+    public void setWorld(AStarWorld aStarWorld) {
+        this.aStarWorld = aStarWorld;
+    }
+
+    public Selection getSelection() {
+        return selection;
     }
 
     @Override
@@ -98,8 +102,12 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
         }
     }
 
-    public void setWorld(AStarWorld aStarWorld) {
-        this.aStarWorld = aStarWorld;
+    public double getNodeRadius() {
+        return nodeRadius;
+    }
+
+    public void setNodeRadius(double nodeRadius) {
+        this.nodeRadius = nodeRadius;
     }
 
     public void setInputMode(Input in) {
