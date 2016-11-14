@@ -116,10 +116,6 @@ public class AStarWorld {
         return nearest;
     }
 
-    public void setTarget() {
-        // TODO update all h values and set target
-    }
-
     // TODO return array so user knows all generated points?
     public void generate2DGrid(int bX, int bY, int offsetX, int offsetY, int space){
         Node3d[][] array = new Node3d[bX][bY];
@@ -131,8 +127,8 @@ public class AStarWorld {
             }
         }
         Node3d n;
-        start = array[0][0]; //TODO remove
-        target = array[bX-1][bY-1];
+        setStart(array[0][0]); //TODO remove
+        setTarget(array[bX - 1][bY - 1]);
         for(int y = 0;y<bY;y++){
             for(int x = 0;x<bX;x++){
                 n=array[x][y];
@@ -217,7 +213,6 @@ public class AStarWorld {
 
     }
 
-
     public void findPath() {
         long t = System.currentTimeMillis();
         allNodes.forEach(n -> n.setPredecessor(null));
@@ -236,6 +231,11 @@ public class AStarWorld {
 
     public Node3d getTarget() {
         return target;
+    }
+
+    public void setTarget(Node3d t) {
+        target = t;
+        getAllNodes().forEach(n -> n.setH(t));
     }
 
     public ArrayList<Node3d> getAllNodes() {

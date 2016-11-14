@@ -6,13 +6,13 @@ import io.github.hannes99.world.WorldRenderer;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 
 /**
  * Program to show the A* Algorithm
  */
-public class AStarTest extends JFrame implements ComponentListener {
+public class AStarTest extends JFrame {
     private AStarWorld aStarWorld;
     private WorldRenderer worldRenderer;
     private ToolPanel toolPanel;
@@ -41,41 +41,24 @@ public class AStarTest extends JFrame implements ComponentListener {
         // ContentPane
         Container c = getContentPane();
         c.setLayout(null);
+        c.addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+                int h = c.getHeight() / 9;
+                int w = h * 4;
+                toolPanel.setBounds(0, 0, w, h);
+                toolOptions.setBounds(0, h, w, c.getHeight() - h);
+                worldRenderer.setBounds(w, 0, c.getWidth() - w - h, c.getHeight());
+                controlPanel.setBounds(c.getWidth() - h, 0, h, c.getHeight());
+            }
+        });
+
         c.add(worldRenderer);
         c.add(toolPanel);
         c.add(controlPanel);
         c.add(toolOptions);
 
-        // Register component listener for resize events
-        addComponentListener(this);
-
         // Show
         setVisible(true);
-    }
-
-    @Override
-    public void componentResized(ComponentEvent e) {
-        int w = getWidth() / 5;
-        int h = getHeight() / 9;
-        toolPanel.setBounds(0, 0, w, h);
-        toolOptions.setBounds(0, h, w, getHeight() - h);
-        worldRenderer.setBounds(w, 0, getWidth() - w - h, getHeight());
-        controlPanel.setBounds(getWidth() - h, 0, h, getHeight());
-    }
-
-    @Override
-    public void componentMoved(ComponentEvent e) {
-
-    }
-
-    @Override
-    public void componentShown(ComponentEvent e) {
-
-    }
-
-    @Override
-    public void componentHidden(ComponentEvent e) {
-
     }
 
     public void setToolOptions(ToolOptions t) {
@@ -86,7 +69,7 @@ public class AStarTest extends JFrame implements ComponentListener {
     }
 
     public static class ControlPanel extends Panel {
-        private Button bFindPath;
+        private Button bFindPath, bStep, bBack, bClear, bNodeRadius;
 
         public ControlPanel(WorldRenderer worldRenderer, AStarWorld aStarWorld) {
             // Find Path
@@ -96,6 +79,36 @@ public class AStarTest extends JFrame implements ComponentListener {
                 worldRenderer.repaint();
             });
             add(bFindPath);
+
+            // Step
+            bStep = new Button("Step");
+            bStep.addActionListener(e -> {
+                // TODO
+            });
+            add(bStep);
+
+            // Back
+            bBack = new Button("Back");
+            bBack.addActionListener(e -> {
+                // TODO
+            });
+            add(bBack);
+
+            // Clear
+            bClear = new Button("Clear");
+            bClear.addActionListener(e -> { // TODO warning
+                aStarWorld.getAllNodes().clear();
+                aStarWorld.setStart(null);
+                aStarWorld.setTarget(null);
+            });
+            add(bClear);
+
+            // Node Radius
+            bNodeRadius = new Button("Radius");
+            bNodeRadius.addActionListener(e -> {
+                // TODO
+            });
+            add(bNodeRadius);
         }
 
         @Override
@@ -103,6 +116,10 @@ public class AStarTest extends JFrame implements ComponentListener {
             super.setBounds(x, y, width, height);
             int a = getWidth();
             bFindPath.setBounds(0, a * 0, a, a);
+            bStep.setBounds(0, a * 1, a, a);
+            bBack.setBounds(0, a * 2, a, a);
+            bClear.setBounds(0, a * 3, a, a);
+            bNodeRadius.setBounds(0, height - a, a, a);
         }
     }
 
@@ -120,17 +137,17 @@ public class AStarTest extends JFrame implements ComponentListener {
             add(bSelect);
 
             // Add Node
-            bAddNode = new Button("Add Node");
+            bAddNode = new Button("Add");
             bAddNode.addActionListener(e -> setToolOptions(new AddOptions(worldRenderer)));
             add(bAddNode);
 
             // Add Array
-            bAddArray = new Button("Add Array");
+            bAddArray = new Button("Array");
             bAddArray.addActionListener(e -> setToolOptions(new AddArrayOptions(worldRenderer)));
             add(bAddArray);
 
             // Add Shape
-            bAddShape = new Button("Add Shape");
+            bAddShape = new Button("Shape");
             bAddShape.addActionListener(e -> setToolOptions(new AddShapeOptions(worldRenderer)));
             add(bAddShape);
         }

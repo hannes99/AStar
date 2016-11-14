@@ -36,34 +36,33 @@ public class AStar {
      * @return If the path was found
      */
     public static boolean findPath(Node start, Node end) {
-        // Validate input
-        if (start == null || end == null)
-            throw new IllegalArgumentException("null");
-
-        // Prepare Lists
-        openlist.clear();
-        openlist.add(start);
-        closedList.clear();
-
-        // Loop until
-        // - solution found
-        // - no possible solution
         boolean pathFound = false;
-        do {
-            // Node with the lowes f
-            Node currentNode = openlist.poll();
+        // Validate input
+        if (start != null && end != null) {
+            // Prepare Lists
+            openlist.clear();
+            openlist.add(start);
+            closedList.clear();
 
-            // Path found
-            pathFound = currentNode == end;
+            // Loop until
+            // - solution found
+            // - no possible solution
+            do {
+                // Node with the lowes f
+                Node currentNode = openlist.poll();
 
-            if (!pathFound) {
-                // This node shouldn't be checked again to prevent loops
-                closedList.add(currentNode);
+                // Path found
+                pathFound = currentNode == end;
 
-                // Add connected nodes
-                expandNode(currentNode, openlist, closedList);
-            }
-        } while (!openlist.isEmpty() && !pathFound);
+                if (!pathFound) {
+                    // This node shouldn't be checked again to prevent loops
+                    closedList.add(currentNode);
+
+                    // Add connected nodes
+                    expandNode(currentNode, openlist, closedList);
+                }
+            } while (!openlist.isEmpty() && !pathFound);
+        }
 
         // Return if the path was found
         return pathFound;
@@ -105,7 +104,7 @@ public class AStar {
      * Fills an ArrayList with the Nodes from end to start (the first element will be end).
      * This method can only work after findPath was called.
      *
-     * @param ret The list to fill
+     * @param ret   The list to fill
      * @param start Starting node of the path
      * @param end   Last node
      * @return The list for chaining
