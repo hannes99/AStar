@@ -12,7 +12,6 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.util.ArrayList;
 
 /**
  * Draws the state of the AStar Algorithm.
@@ -21,6 +20,11 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
     private AStarWorld aStarWorld;
     private Input mode;
     private double nodeRadius;
+
+
+    private double autoConnectDistance = 129, minDistance = 128; // TODO in add klasse auslogern?
+    private Node3d lastCreatedNode;
+
 
     private Selection selection = new SingleSelection(aStarWorld, nodeRadius);
 
@@ -42,6 +46,32 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
         this.aStarWorld = aStarWorld;
     }
 
+    public void clear() {
+        aStarWorld.getAllNodes().clear();
+        aStarWorld.setStart(null);
+        aStarWorld.setTarget(null);
+        lastCreatedNode = null;
+        repaint();
+    }
+
+    public double getMinDistance() {
+        return minDistance;
+    }
+
+    public void setMinDistance(double minDistance) {
+        this.minDistance = minDistance;
+        repaint();
+    }
+
+    public double getAutoConnectDistance() {
+        return autoConnectDistance;
+    }
+
+    public void setAutoConnectDistance(double autoConnectDistance) {
+        this.autoConnectDistance = autoConnectDistance;
+        repaint();
+    }
+
     public Selection getSelection() {
         return selection;
     }
@@ -52,6 +82,8 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
         g.setColor(Color.DARK_GRAY);
         g.fillRect(0, 0, getWidth(), getHeight());
 
+
+        // Connections
         g.setColor(Color.lightGray);
         aStarWorld.getAllNodes().forEach(n -> {
             Point3d p1 = n.getPosition();
@@ -61,6 +93,20 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
             });
         });
 
+        // Highlight path connections
+        g.setColor(Color.BLACK);
+        if (aStarWorld.getLastPath() != null) {
+            aStarWorld.getLastPath().forEach(node -> {
+                Node3d precedessor = (Node3d) node.getPredecessor();
+                if (precedessor != null) { // start node has no precedessor
+                    Point3d p1 = ((Node3d) node).getPosition();
+                    Point3d p2 = precedessor.getPosition();
+                    g.drawLine((int) p1.x, (int) p1.y, (int) p2.x, (int) p2.y);
+                }
+            });
+        }
+
+        // All nodes
         aStarWorld.getAllNodes().forEach(n -> {
             Point3d p1 = n.getPosition();
             if (n.getPredecessor() == null)
@@ -71,6 +117,7 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
         });
 
 
+        // Highlight path
         g.setColor(new Color(50, 255, 50));
         if (aStarWorld.getLastPath() != null) {
             aStarWorld.getLastPath().forEach(node -> {
@@ -80,6 +127,7 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
         }
 
 
+        // Highlight start an target nodes
         g.setColor(Color.CYAN);
         if (aStarWorld.getStart() != null) {
             Point3d p1 = aStarWorld.getStart().getPosition();
@@ -90,6 +138,16 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
             g.fillOval((int) (p1.x - nodeRadius), (int) (p1.y - nodeRadius), (int) (nodeRadius * 2), (int) (nodeRadius * 2));
         }
 
+        // Min and auto connect distance
+        if (mode == Input.AddNode && lastCreatedNode != null) {
+            Point3d p = lastCreatedNode.getPosition();
+            g.setColor(Color.MAGENTA);
+            g.drawOval((int) (p.x - minDistance), (int) (p.y - minDistance), (int) (minDistance * 2), (int) (minDistance * 2));
+            g.setColor(Color.RED);
+            g.drawOval((int) (p.x - autoConnectDistance), (int) (p.y - autoConnectDistance), (int) (autoConnectDistance * 2), (int) (autoConnectDistance * 2));
+        }
+
+        // Highlight selection
         if (selection != null) {
             g.setColor(new Color(0x0000FF));
             g.setStroke(new BasicStroke(2));
@@ -115,6 +173,7 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
 
         removeMouseListener(selection);
         removeMouseMotionListener(selection);
+        selection = null;
 
         switch (mode) {
             case SelectSingle: {
@@ -143,7 +202,7 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
         Point3d p = new Point3d(x, y, 0);
         Node3d ret = aStarWorld.getNearestNode(p);
         if (ret.getPosition().distanceSquared(p) > nodeRadius * nodeRadius)
-            ret = null; // squared
+            ret = null;
         return ret;
     }
 
@@ -153,21 +212,31 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
 
     @Override
     public void mousePressed(MouseEvent e) {
-        ArrayList<Node3d> selectedList = null;
-        if (selection != null) {
-            selectedList = selection.getSelectedNodes();
-            switch (mode) {
-                case SelectSingle: {
-                    repaint();
-                    break;
-                }
-                case AddNode: {
-                    aStarWorld.createNode(e.getX(), e.getY(), 0);
-                    break;
-                }
+        switch (mode) {
+            case SelectSingle: {
+                repaint();
+                break;
+            }
+            case AddNode: {
+                addNode(e.getX(), e.getY());
+                break;
             }
         }
-        repaint();
+    }
+
+    private void addNode(int x, int y) {
+        Point3d p = new Point3d(x, y, 0);
+        if (lastCreatedNode == null || lastCreatedNode.getPosition().distance(p) >= minDistance) {
+            Node3d n = aStarWorld.createNode(p.x, p.y, 0);
+            aStarWorld.getAllNodes().forEach(node -> {
+                if (node.getPosition().distanceSquared(p) <= autoConnectDistance * autoConnectDistance) {
+                    n.connectTo(node);
+                    node.connectTo(n);
+                }
+            });
+            lastCreatedNode = n;
+            repaint();
+        }
     }
 
     @Override
@@ -191,6 +260,10 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
             case SelectCircle:
             case SelectRectangle: {
                 repaint();
+                break;
+            }
+            case AddNode: {
+                addNode(e.getX(), e.getY());
                 break;
             }
         }
