@@ -8,9 +8,9 @@ import java.awt.*;
  */
 public class Button extends JButton {
     public Button(String text, String filename) {
-        super(text, new StretchIcon("src/io/github/hannes99/gui/button/" + filename));
+        super(text, new MyIcon("src/io/github/hannes99/gui/button/" + filename, true));
         setVerticalAlignment(SwingConstants.BOTTOM);
-        setMargin(new Insets(5, 5, 5, 5));
+        setMargin(new Insets(0, 5, 5, 5));
     }
 
     public Button(String text) {

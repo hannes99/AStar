@@ -22,6 +22,7 @@ public class AStarTest extends JFrame {
     public AStarTest() {
         // Frame
         setSize(1365, 768);
+        setMinimumSize(new Dimension(800, 600));
         setResizable(true);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("AStarTest");
