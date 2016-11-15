@@ -27,7 +27,6 @@ public class AStarWorld {
         x = 100;
         y= 100;
         generate2DGrid(x, y, 50, 50, 10);
-        createRandom();
         // TODO auto add 2 nodes
     }
 
