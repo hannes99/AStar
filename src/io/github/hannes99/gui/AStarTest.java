@@ -101,10 +101,7 @@ public class AStarTest extends JFrame {
             // Clear
             bClear = new io.github.hannes99.gui.button.Button("Clear", "clear.png");
             bClear.addActionListener(e -> { // TODO warning
-                aStarWorld.getAllNodes().clear();
-                aStarWorld.setStart(null);
-                aStarWorld.setTarget(null);
-                worldRenderer.repaint();
+                worldRenderer.clear();
             });
             add(bClear);
 

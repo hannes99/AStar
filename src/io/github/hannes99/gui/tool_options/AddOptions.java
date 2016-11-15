@@ -11,14 +11,14 @@ import java.awt.event.FocusListener;
  */
 public class AddOptions extends ToolOptions {
 
-    JSlider sMinDistance;
-    JLabel lMinDistance;
-    JTextField tMinDistance;
+    JSlider sMinDistance, sAutoConnect; // TODO eigene klasse für slider+label+textfield?
+    JLabel lMinDistance, lAutoConnect;
+    JTextField tMinDistance, tAutoConnect;
 
     public AddOptions(WorldRenderer worldRenderer) {
         super(worldRenderer, WorldRenderer.Input.AddNode);
 
-        lMinDistance = new JLabel("Min Distance: ");
+        lMinDistance = new JLabel("Min distance: ");
         add(lMinDistance);
         tMinDistance = new JTextField(String.valueOf(128));
         tMinDistance.addFocusListener(new FocusListener() {
@@ -41,15 +41,47 @@ public class AddOptions extends ToolOptions {
         sMinDistance = new JSlider(JSlider.HORIZONTAL, 1, 255, 128);
         sMinDistance.addChangeListener(changeEvent -> {
             tMinDistance.setText(String.valueOf(sMinDistance.getValue()));
+            worldRenderer.setMinDistance(sMinDistance.getValue());
         });
         add(sMinDistance);
+
+        lAutoConnect = new JLabel("Auto connect distance: ");
+        add(lAutoConnect);
+        tAutoConnect = new JTextField(String.valueOf(128));
+        tAutoConnect.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent event) {
+
+            }
+
+            @Override
+            public void focusLost(FocusEvent event) { // TODO besser / onders mochen
+                try {
+                    int i = Integer.parseInt(tAutoConnect.getText());
+                    sAutoConnect.setValue(i);
+                } catch (NumberFormatException e) {
+                    tAutoConnect.setText(String.valueOf(sAutoConnect.getValue()));
+                }
+            }
+        });
+        add(tAutoConnect);
+        sAutoConnect = new JSlider(JSlider.HORIZONTAL, 1, 255, 128);
+        sAutoConnect.addChangeListener(changeEvent -> {
+            tAutoConnect.setText(String.valueOf(sAutoConnect.getValue()));
+            worldRenderer.setAutoConnectDistance(sAutoConnect.getValue() + 1); // TODO bessere möglichkeit als +1?
+        });
+        add(sAutoConnect);
     }
 
     @Override
     public void setBounds(int x, int y, int width, int height) {
         super.setBounds(x, y, width, height);
-        lMinDistance.setBounds(0, 0 * a, width / 2, a);
-        tMinDistance.setBounds(width / 2, 0 * a, width / 2, a);
+        lMinDistance.setBounds(0, 0 * a, 2 * width / 3, a);
+        tMinDistance.setBounds(2 * width / 3, 0 * a, width / 3, a);
         sMinDistance.setBounds(0, 1 * a, width, a);
+
+        lAutoConnect.setBounds(0, 2 * a, 2 * width / 3, a);
+        tAutoConnect.setBounds(2 * width / 3, 2 * a, width / 3, a);
+        sAutoConnect.setBounds(0, 3 * a, width, a);
     }
 }
