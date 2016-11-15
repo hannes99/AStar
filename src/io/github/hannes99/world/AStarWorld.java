@@ -16,13 +16,18 @@ public class AStarWorld {
     private Node3d start, target;
     private boolean autoConnectToAll;
     private boolean autoUpdatePathList = true;
+    private int x;
+    private int y;
 
     public AStarWorld() {
         start = new Node3d(10, 10, 0);
         target = new Node3d(1000, 900, 0);
         allNodes.add(start);
         allNodes.add(target);
-        generate2DGrid(20, 15, 50, 50, 40);
+        x = 100;
+        y= 100;
+        generate2DGrid(x, y, 50, 50, 10);
+        createRandom();
         // TODO auto add 2 nodes
     }
 
@@ -66,6 +71,20 @@ public class AStarWorld {
             }
         }
     }
+
+    public void createRandom(){
+        allNodes.clear();
+        generate2DGrid(x,y,50,50,10);
+        java.util.Random rnd = new java.util.Random();
+        ArrayList<Node3d> toRemove = new ArrayList<>();
+        for(Node3d n:allNodes){
+            if(rnd.nextDouble()<0.5)
+                toRemove.add(n);
+        }
+        for(Node3d n:toRemove)
+            destroyNode(n);
+        }
+
 
     public Node3d createNode(double x, double y, double z) {
         Node3d node = new Node3d(x, y, z);

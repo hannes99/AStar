@@ -5,9 +5,12 @@ import io.github.hannes99.world.AStarWorld;
 import io.github.hannes99.world.WorldRenderer;
 
 import javax.swing.*;
+import javax.swing.event.MouseInputAdapter;
+import javax.swing.event.MouseInputListener;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseEvent;
 
 /**
  * Program to show the A* Algorithm
@@ -30,7 +33,7 @@ public class AStarTest extends JFrame {
 
         // Setup A*
         aStarWorld = new AStarWorld();
-        worldRenderer = new WorldRenderer(aStarWorld, 11); // 11
+        worldRenderer = new WorldRenderer(aStarWorld, 1); // 11
         worldRenderer.setInputMode(WorldRenderer.Input.SelectSingle);
         aStarWorld.setAutoConnectToAll(true);
 
@@ -70,7 +73,7 @@ public class AStarTest extends JFrame {
     }
 
     public static class ControlPanel extends Panel {
-        private io.github.hannes99.gui.button.Button bFindPath, bStep, bBack, bClear, bNodeRadius;
+        private io.github.hannes99.gui.button.Button bFindPath, bStep, bBack, bClear, bNodeRadius, bCreateRandom;
 
         public ControlPanel(WorldRenderer worldRenderer, AStarWorld aStarWorld) {
             // Find Path
@@ -107,15 +110,31 @@ public class AStarTest extends JFrame {
 
             // Node Radius
             bNodeRadius = new io.github.hannes99.gui.button.Button("Radius", "radius.png");
-            bNodeRadius.addActionListener(e -> {
-                double r = worldRenderer.getNodeRadius();
-                r += 5;
-                if (r > 40)
-                    r = 0;
-                worldRenderer.setNodeRadius(r);
-                worldRenderer.repaint();
+            bNodeRadius.addMouseListener(new MouseInputAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    super.mousePressed(e);
+                    double r = worldRenderer.getNodeRadius();
+
+                    if(SwingUtilities.isLeftMouseButton(e))
+                        r+=1;
+
+                    if(SwingUtilities.isRightMouseButton(e))
+                        r-=1;
+
+                    worldRenderer.setNodeRadius(r);
+                    worldRenderer.repaint();
+                }
             });
             add(bNodeRadius);
+
+            // Create Random
+            bCreateRandom = new io.github.hannes99.gui.button.Button("Random", "random.png");
+            bCreateRandom.addActionListener(e -> {
+                aStarWorld.createRandom();
+                worldRenderer.repaint();
+            });
+            add(bCreateRandom);
         }
 
         @Override
@@ -127,6 +146,7 @@ public class AStarTest extends JFrame {
             bBack.setBounds(0, a * 2, a, a);
             bClear.setBounds(0, a * 3, a, a);
             bNodeRadius.setBounds(0, height - a, a, a);
+            bCreateRandom.setBounds(0, height-(2*a),a,a);
         }
     }
 
