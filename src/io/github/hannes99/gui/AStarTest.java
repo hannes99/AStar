@@ -75,6 +75,8 @@ public class AStarTest extends JFrame {
         private io.github.hannes99.gui.button.Button bFindPath, bStep, bBack, bClear, bNodeRadius, bCreateRandom;
 
         public ControlPanel(WorldRenderer worldRenderer, AStarWorld aStarWorld) {
+            setLayout(null);
+
             // Find Path
             bFindPath = new io.github.hannes99.gui.button.Button("Find Path", "findPath.png");
             bFindPath.addActionListener(e -> worldRenderer.getPathRenderer().setStep(0));
@@ -148,6 +150,8 @@ public class AStarTest extends JFrame {
         private io.github.hannes99.gui.button.Button bAddNode, bSelect, bAddArray, bAddShape;
 
         public ToolPanel(WorldRenderer worldRenderer, AStarWorld aStarWorld) {
+            setLayout(null);
+
             // Select
             bSelect = new io.github.hannes99.gui.button.Button("Select", "select.png");
             bSelect.addActionListener(e -> setToolOptions(new SelectionOptions(worldRenderer)));

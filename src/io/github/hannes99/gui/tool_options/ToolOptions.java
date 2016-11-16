@@ -18,6 +18,7 @@ public abstract class ToolOptions extends Panel {
      */
     public ToolOptions(WorldRenderer worldRenderer, WorldRenderer.Input input) {
         worldRenderer.setInputMode(input);
+        setLayout(null);
     }
 
     @Override
