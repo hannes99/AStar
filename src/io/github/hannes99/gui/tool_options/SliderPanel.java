@@ -11,7 +11,7 @@ import java.awt.*;
 public abstract class SliderPanel extends Panel implements ChangeListener {
     private JSlider slider;
     private JLabel lDescription;
-    private JTextField tValue;
+    private JTextField tValue; // TODO input
 
     public SliderPanel(String description, int min, int max, int start) {
         setLayout(null);
