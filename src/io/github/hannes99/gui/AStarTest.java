@@ -94,8 +94,10 @@ public class AStarTest extends JFrame {
 
             // Clear
             bClear = new io.github.hannes99.gui.button.Button("Clear", "clear.png");
-            bClear.addActionListener(e -> { // TODO warning
-                worldRenderer.clear();
+            bClear.addActionListener(e -> {
+                int res = JOptionPane.showConfirmDialog(worldRenderer, "Are you sure you want to delete all nodes?", "Delete Nodes", JOptionPane.YES_NO_OPTION);
+                if (res == 0)
+                    worldRenderer.clear();
             });
             add(bClear);
 
@@ -107,11 +109,11 @@ public class AStarTest extends JFrame {
                     super.mousePressed(e);
                     double r = worldRenderer.getNodeRadius();
 
-                    if(SwingUtilities.isLeftMouseButton(e))
-                        r+=1;
+                    if (SwingUtilities.isLeftMouseButton(e))
+                        r += 1;
 
-                    if(SwingUtilities.isRightMouseButton(e))
-                        r-=1;
+                    if (SwingUtilities.isRightMouseButton(e))
+                        r -= 1;
 
                     worldRenderer.setNodeRadius(r);
                     worldRenderer.repaint();
@@ -137,7 +139,7 @@ public class AStarTest extends JFrame {
             bBack.setBounds(0, a * 2, a, a);
             bClear.setBounds(0, a * 3, a, a);
             bNodeRadius.setBounds(0, height - a, a, a);
-            bCreateRandom.setBounds(0, height-(2*a),a,a);
+            bCreateRandom.setBounds(0, height - (2 * a), a, a);
         }
     }
 

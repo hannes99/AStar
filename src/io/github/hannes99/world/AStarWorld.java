@@ -27,7 +27,7 @@ public class AStarWorld {
         x = 100;
         y = 100;
         generate2DGrid(x, y, 50, 50, 10);
-        // TODO auto add 2 nodes
+        // TODO clean up
     }
 
     public void destroyNode(Node3d node) {
@@ -98,10 +98,8 @@ public class AStarWorld {
     public void connectToAll(Node3d node) {
         allNodes.forEach(n -> {
             double distance = node.getPosition().distance(n.getPosition());
-            if (distance < 3) { // TODO remove if
-                node.connectTo(n);
-                n.connectTo(node);
-            }
+            node.connectTo(n);
+            n.connectTo(node);
         });
 
     }
@@ -138,8 +136,7 @@ public class AStarWorld {
         return nearest;
     }
 
-    // TODO return array so user knows all generated points?
-    public void generate2DGrid(int bX, int bY, int offsetX, int offsetY, int space) {
+    public Node[][] generate2DGrid(int bX, int bY, int offsetX, int offsetY, int space) {
         Node3d[][] array = new Node3d[bX][bY];
 
         for (int y = 0; y < bY; y++) {
@@ -149,8 +146,6 @@ public class AStarWorld {
             }
         }
         Node3d n;
-        setStart(array[0][0]); //TODO remove
-        setTarget(array[bX - 1][bY - 1]);
         for (int y = 0; y < bY; y++) {
             for (int x = 0; x < bX; x++) {
                 n = array[x][y];
@@ -231,8 +226,7 @@ public class AStarWorld {
                 array[x][y].setH(array[bX - 1][bY - 1]);
             }
         }
-
-
+        return array;
     }
 
     public void findPath() {
@@ -243,8 +237,6 @@ public class AStarWorld {
             updatePathList();
         else
             lastPath.clear();
-
-        System.out.println("findPath: " + (System.currentTimeMillis() - t)); // TODO remove
     }
 
     public void updatePathList() {

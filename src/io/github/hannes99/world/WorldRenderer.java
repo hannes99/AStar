@@ -22,7 +22,7 @@ public class WorldRenderer extends JComponent implements MouseInputListener, Mou
     private double nodeRadius;
     private PathRenderer pathRenderer;
 
-    private double autoConnectDistance = 129, minDistance = 128; // TODO in add klasse auslogern?
+    private double autoConnectDistance = 129, minDistance = 128;
     private Node3d lastCreatedNode;
 
 
