@@ -25,7 +25,7 @@ public class AStarWorld {
         allNodes.add(start);
         allNodes.add(target);
         x = 100;
-        y= 100;
+        y = 100;
         generate2DGrid(x, y, 50, 50, 10);
         // TODO auto add 2 nodes
     }
@@ -71,18 +71,18 @@ public class AStarWorld {
         }
     }
 
-    public void createRandom(){
+    public void createRandom() {
         allNodes.clear();
-        generate2DGrid(x,y,50,50,10);
+        generate2DGrid(x, y, 50, 50, 10);
         java.util.Random rnd = new java.util.Random();
         ArrayList<Node3d> toRemove = new ArrayList<>();
-        for(Node3d n:allNodes){
-            if(rnd.nextDouble()<0.5)
+        for (Node3d n : allNodes) {
+            if (rnd.nextDouble() < 0.5)
                 toRemove.add(n);
         }
-        for(Node3d n:toRemove)
+        for (Node3d n : toRemove)
             destroyNode(n);
-        }
+    }
 
 
     public Node3d createNode(double x, double y, double z) {

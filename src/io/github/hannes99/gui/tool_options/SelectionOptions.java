@@ -111,6 +111,8 @@ public class SelectionOptions extends ToolOptions {
 
         // Select Rectangle
         bSelectRectangle.doClick(); // TODO better way?
+
+        // TODO button to invert selected nodes
     }
 
     @Override

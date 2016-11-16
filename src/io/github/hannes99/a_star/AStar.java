@@ -36,6 +36,20 @@ public class AStar {
      * @return If the path was found
      */
     public static boolean findPath(Node start, Node end) {
+        return findPath(start, end, 0);
+    }
+
+
+    /**
+     * Calculates the path. All precedessors need to be null. Terminates if the path was found,
+     * if there is no way or if steps reaches maxSteps.
+     *
+     * @param start    Start node
+     * @param end      End node
+     * @param maxSteps Maximum number of steps, 0 = no limit
+     * @return If the path was found
+     */
+    public static boolean findPath(Node start, Node end, long maxSteps) {
         boolean pathFound = false;
         // Validate input
         if (start != null && end != null) {
@@ -47,6 +61,7 @@ public class AStar {
             // Loop until
             // - solution found
             // - no possible solution
+            long steps = 0;
             do {
                 // Node with the lowes f
                 Node currentNode = openlist.poll();
@@ -60,8 +75,9 @@ public class AStar {
 
                     // Add connected nodes
                     expandNode(currentNode, openlist, closedList);
+                    ++steps;
                 }
-            } while (!openlist.isEmpty() && !pathFound);
+            } while (!openlist.isEmpty() && !pathFound && (maxSteps == 0 || steps != maxSteps));
         }
 
         // Return if the path was found

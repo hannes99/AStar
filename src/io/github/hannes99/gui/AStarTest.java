@@ -6,7 +6,6 @@ import io.github.hannes99.world.WorldRenderer;
 
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
-import javax.swing.event.MouseInputListener;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -78,24 +77,19 @@ public class AStarTest extends JFrame {
         public ControlPanel(WorldRenderer worldRenderer, AStarWorld aStarWorld) {
             // Find Path
             bFindPath = new io.github.hannes99.gui.button.Button("Find Path", "findPath.png");
-            bFindPath.addActionListener(e -> {
-                aStarWorld.findPath();
-                worldRenderer.repaint();
-            });
+            bFindPath.addActionListener(e -> worldRenderer.getPathRenderer().setStep(0));
             add(bFindPath);
 
             // Step
             bStep = new io.github.hannes99.gui.button.Button("Step", "step.png");
-            bStep.addActionListener(e -> {
-                // TODO
-            });
+            bStep.addActionListener(e -> worldRenderer.getPathRenderer().addToStep(1));
             add(bStep);
+
+            // TODO step size
 
             // Back
             bBack = new io.github.hannes99.gui.button.Button("Back", "back.png");
-            bBack.addActionListener(e -> {
-                // TODO
-            });
+            bBack.addActionListener(e -> worldRenderer.getPathRenderer().addToStep(-1));
             add(bBack);
 
             // Clear

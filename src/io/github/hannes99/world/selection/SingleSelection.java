@@ -18,6 +18,10 @@ public class SingleSelection extends Selection {
 
     public SingleSelection(AStarWorld world, double nodeRadius) {
         super(world);
+        setNodeRadius(nodeRadius);
+    }
+
+    public void setNodeRadius(double nodeRadius) {
         this.nodeRadius = nodeRadius;
     }
 
