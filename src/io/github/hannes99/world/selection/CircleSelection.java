@@ -31,16 +31,7 @@ public class CircleSelection extends Selection {
         return ret;
     }
 
-    @Override
-    public int removeSelectedNodes() {
-        ArrayList<Node3d> nodes = getSelectedNodes();
-        int ret = nodes.size();
-        for (Node3d n : nodes) {
-            worldRenderer.getWorld().destroyNode(n);
-        }
-        worldRenderer.repaint();
-        return ret;
-    }
+
 
     @Override
     public void paint(Graphics g) {

@@ -60,17 +60,6 @@ public class PathRenderer {
                 g.fillOval((int) (p1.x - radius), (int) (p1.y - radius), (int) (radius * 2), (int) (radius * 2));
             });
         }
-
-        // Highlight start an target nodes
-        g.setColor(Color.CYAN);
-        if (world.getStart() != null) {
-            Point3d p1 = world.getStart().getPosition();
-            g.fillOval((int) (p1.x - radius), (int) (p1.y - radius), (int) (radius * 2), (int) (radius * 2));
-        }
-        if (world.getTarget() != null) {
-            Point3d p1 = world.getTarget().getPosition();
-            g.fillOval((int) (p1.x - radius), (int) (p1.y - radius), (int) (radius * 2), (int) (radius * 2));
-        }
     }
 
     public void setRadius(double radius) {
@@ -82,6 +71,7 @@ public class PathRenderer {
     }
 
     public void setStep(long step) {
+        worldRenderer.setRenderPath(true);
         drawAll = world.findPath();
         // Only show steps if a path exists
         if (drawAll) {

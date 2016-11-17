@@ -14,6 +14,8 @@ public class WorldRenderer extends JComponent {
     private Input mode;
     private double nodeRadius;
     private PathRenderer pathRenderer;
+    private boolean renderPath;
+
 
     private double autoConnectDistance = 129, minDistance = 128;
     private Node3d lastCreatedNode;
@@ -61,6 +63,14 @@ public class WorldRenderer extends JComponent {
         repaint();
     }
 
+    public boolean getRenderPath() {
+        return renderPath;
+    }
+
+    public void setRenderPath(boolean renderPath) {
+        this.renderPath = renderPath;
+    }
+
     public Selection getSelection() {
         return selection;
     }
@@ -90,13 +100,26 @@ public class WorldRenderer extends JComponent {
         });
 
         // Path
-        pathRenderer.paint(g);
+        if(renderPath)
+            pathRenderer.paint(g);
+        renderPath = false;
+
+        // Highlight start an target nodes
+        g.setColor(Color.CYAN);
+        if (world.getStart() != null) {
+            Point3d p1 = world.getStart().getPosition();
+            g.fillOval((int) (p1.x - nodeRadius), (int) (p1.y - nodeRadius), (int) (nodeRadius * 2), (int) (nodeRadius * 2));
+        }
+        if (world.getTarget() != null) {
+            Point3d p1 = world.getTarget().getPosition();
+            g.fillOval((int) (p1.x - nodeRadius), (int) (p1.y - nodeRadius), (int) (nodeRadius * 2), (int) (nodeRadius * 2));
+        }
 
         // Highlight selection
         if (selection != null) {
+            selection.paint(g);
             g.setColor(new Color(0x0000FF));
             g.setStroke(new BasicStroke(2));
-            selection.paint(g);
             for (Node3d n : selection.getSelectedNodes()) {
                 Point3d p = n.getPosition();
                 g.drawOval((int) (p.x - nodeRadius), (int) (p.y - nodeRadius), (int) (nodeRadius * 2), (int) (nodeRadius * 2));

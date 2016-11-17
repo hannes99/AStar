@@ -20,17 +20,20 @@ public abstract class Selection implements MouseInputListener {
         this.worldRenderer = worldRenderer;
     }
 
+    public int removeSelectedNodes() {
+        ArrayList<Node3d> nodes = getSelectedNodes();
+        int ret = nodes.size();
+        for (Node3d n : nodes) {
+            worldRenderer.getWorld().destroyNode(n);
+        }
+        worldRenderer.repaint();
+        return ret;
+    }
+
     /**
      * Puts all selected nodes into the list
      */
     public abstract ArrayList<Node3d> getSelectedNodes();
-
-    /**
-     * Removes all nodes within the selection
-     *
-     * @return Number of removed nodes
-     */
-    public abstract int removeSelectedNodes();
 
     /**
      * Draws the selection
