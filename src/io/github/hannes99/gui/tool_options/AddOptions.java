@@ -24,7 +24,7 @@ public class AddOptions extends ToolOptions {
 
         sAutoConnect = new SliderPanel("Auto connect distance: ", 1, 255, 128) {
             @Override
-            void stateChanged(ChangeEvent e, int value) {
+            public void stateChanged(ChangeEvent e, int value) {
                 worldRenderer.setAutoConnectDistance(value + 1);
             }
         };

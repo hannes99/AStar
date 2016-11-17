@@ -4,6 +4,7 @@ import io.github.hannes99.world.Node3d;
 import io.github.hannes99.world.WorldRenderer;
 
 import javax.swing.event.MouseInputListener;
+import javax.vecmath.Point3d;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -28,6 +29,16 @@ public abstract class Selection implements MouseInputListener {
         }
         worldRenderer.repaint();
         return ret;
+    }
+
+    public void highlightNodes(Graphics2D g) {
+        g.setColor(new Color(0x0000FF));
+        g.setStroke(new BasicStroke(2));
+        for (Node3d n : getSelectedNodes()) {
+            Point3d p = n.getPosition();
+            double r = worldRenderer.getNodeRadius();
+            g.drawOval((int) (p.x - r), (int) (p.y - r), (int) (r * 2), (int) (r * 2));
+        }
     }
 
     /**

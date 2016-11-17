@@ -24,7 +24,7 @@ public abstract class SliderPanel extends Panel implements ChangeListener {
         add(slider);
     }
 
-    abstract void stateChanged(ChangeEvent e, int value);
+    public abstract void stateChanged(ChangeEvent e, int value);
 
     @Override
     public void setBounds(int x, int y, int width, int height) {

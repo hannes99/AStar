@@ -22,7 +22,7 @@ public class AddArrayOptions extends ToolOptions {
 
         sDistance = new SliderPanel("Distance", 1, 127, 64) {
             @Override
-            void stateChanged(ChangeEvent e, int value) {
+            public void stateChanged(ChangeEvent e, int value) {
                 ((AddArraySelection) worldRenderer.getSelection()).setDistance(value);
             }
         };
@@ -30,7 +30,7 @@ public class AddArrayOptions extends ToolOptions {
 
         sRemoveRandom = new SliderPanel("Percentage to remove: ", 0, 100, 0) {
             @Override
-            void stateChanged(ChangeEvent e, int value) {
+            public void stateChanged(ChangeEvent e, int value) {
             }
         };
         add(sRemoveRandom);

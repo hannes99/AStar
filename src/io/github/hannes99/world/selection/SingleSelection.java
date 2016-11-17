@@ -38,7 +38,6 @@ public class SingleSelection extends Selection {
     @Override
     public void paint(Graphics g) {
         g.setColor(selectionColor);
-        double nodeRadius = worldRenderer.getNodeRadius();
-        g.drawOval((int) (pos.x - nodeRadius), (int) (pos.y - nodeRadius), (int) (nodeRadius * 2), (int) (nodeRadius * 2));
+        highlightNodes((Graphics2D) g);
     }
 }

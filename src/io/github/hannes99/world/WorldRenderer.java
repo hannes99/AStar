@@ -16,6 +16,7 @@ public class WorldRenderer extends JComponent {
     private PathRenderer pathRenderer;
     private boolean renderPath;
 
+    private boolean drawNodes, drawConnections;
 
     private double autoConnectDistance = 129, minDistance = 128;
     private Node3d lastCreatedNode;
@@ -27,6 +28,8 @@ public class WorldRenderer extends JComponent {
         setWorld(world);
         pathRenderer = new PathRenderer(world, this, nodeRadius);
         setNodeRadius(nodeRadius);
+        drawConnections = true;
+        drawNodes = true;
     }
 
     public AStarWorld getWorld() {
@@ -54,6 +57,24 @@ public class WorldRenderer extends JComponent {
         repaint();
     }
 
+    public boolean getDrawConnections() {
+        return drawConnections;
+    }
+
+    public void setDrawConnections(boolean drawConnections) {
+        this.drawConnections = drawConnections;
+        repaint();
+    }
+
+    public boolean getDrawNodes() {
+        return drawNodes;
+    }
+
+    public void setDrawNodes(boolean drawNodes) {
+        this.drawNodes = drawNodes;
+        repaint();
+    }
+
     public double getAutoConnectDistance() {
         return autoConnectDistance;
     }
@@ -77,55 +98,58 @@ public class WorldRenderer extends JComponent {
 
     @Override
     public void paint(Graphics gr) {
+        long time = System.currentTimeMillis();
         Graphics2D g = (Graphics2D) gr;
         g.setColor(Color.DARK_GRAY);
         g.fillRect(0, 0, getWidth(), getHeight());
 
 
         // Connections
-        g.setColor(Color.lightGray);
-        world.getAllNodes().forEach(n -> {
-            Point3d p1 = n.getPosition();
-            n.getConnections().forEach(c -> {
-                Point3d p2 = ((Node3d) c.getNode()).getPosition();
-                g.drawLine((int) p1.x, (int) p1.y, (int) p2.x, (int) p2.y);
+        if (drawConnections) {
+            g.setColor(Color.lightGray);
+            world.getAllNodes().forEach(n -> {
+                Point3d p1 = n.getPosition();
+                n.getConnections().forEach(c -> {
+                    Point3d p2 = ((Node3d) c.getNode()).getPosition();
+                    g.drawLine((int) p1.x, (int) p1.y, (int) p2.x, (int) p2.y);
+                });
             });
-        });
+        }
 
         // All nodes
-        world.getAllNodes().forEach(n -> {
-            Point3d p1 = n.getPosition();
-            g.setColor(new Color(230, 230, 230));
-            g.fillOval((int) (p1.x - nodeRadius), (int) (p1.y - nodeRadius), (int) (nodeRadius * 2), (int) (nodeRadius * 2));
-        });
+        if (drawNodes) {
+            world.getAllNodes().forEach(n -> {
+                Point3d p1 = n.getPosition();
+                g.setColor(new Color(230, 230, 230));
+                g.fillOval((int) (p1.x - nodeRadius), (int) (p1.y - nodeRadius), (int) (nodeRadius * 2), (int) (nodeRadius * 2));
+            });
+        }
 
         // Path
-        if(renderPath)
+        if (renderPath) {
             pathRenderer.paint(g);
-        renderPath = false;
+            renderPath = false;
+        }
 
         // Highlight start an target nodes
-        g.setColor(Color.CYAN);
-        if (world.getStart() != null) {
-            Point3d p1 = world.getStart().getPosition();
-            g.fillOval((int) (p1.x - nodeRadius), (int) (p1.y - nodeRadius), (int) (nodeRadius * 2), (int) (nodeRadius * 2));
-        }
-        if (world.getTarget() != null) {
-            Point3d p1 = world.getTarget().getPosition();
-            g.fillOval((int) (p1.x - nodeRadius), (int) (p1.y - nodeRadius), (int) (nodeRadius * 2), (int) (nodeRadius * 2));
+        if (drawNodes) {
+            g.setColor(Color.CYAN);
+            if (world.getStart() != null) {
+                Point3d p1 = world.getStart().getPosition();
+                g.fillOval((int) (p1.x - nodeRadius), (int) (p1.y - nodeRadius), (int) (nodeRadius * 2), (int) (nodeRadius * 2));
+            }
+            if (world.getTarget() != null) {
+                Point3d p1 = world.getTarget().getPosition();
+                g.fillOval((int) (p1.x - nodeRadius), (int) (p1.y - nodeRadius), (int) (nodeRadius * 2), (int) (nodeRadius * 2));
+            }
         }
 
-        // Highlight selection
+        // Draw selection
         if (selection != null) {
             selection.paint(g);
-            g.setColor(new Color(0x0000FF));
-            g.setStroke(new BasicStroke(2));
-            for (Node3d n : selection.getSelectedNodes()) {
-                Point3d p = n.getPosition();
-                g.drawOval((int) (p.x - nodeRadius), (int) (p.y - nodeRadius), (int) (nodeRadius * 2), (int) (nodeRadius * 2));
-            }
-
         }
+
+        System.out.println("Frametime: " + (System.currentTimeMillis() - time) + "  Nodes: " + world.getAllNodes().size());
     }
 
     public double getNodeRadius() {
@@ -133,6 +157,8 @@ public class WorldRenderer extends JComponent {
     }
 
     public void setNodeRadius(double nodeRadius) {
+        if (nodeRadius < 0)
+            nodeRadius = 0;
         this.nodeRadius = nodeRadius;
         pathRenderer.setRadius(nodeRadius);
         repaint();
@@ -143,15 +169,16 @@ public class WorldRenderer extends JComponent {
 
         removeMouseListener(selection);
         removeMouseMotionListener(selection);
-        selection = null;
 
         switch (mode) {
             case SelectSingle: {
+                if (!(selection instanceof SingleSelection)) // TODO
                 selection = new SingleSelection(this);
                 break;
             }
             case SelectRectangle: {
-                selection = new RectangleSelection(this);
+                if (!(selection instanceof RectangleSelection)) // TODO
+                    selection = new RectangleSelection(this);
                 break;
             }
             case SelectCircle: {
@@ -165,6 +192,9 @@ public class WorldRenderer extends JComponent {
             case AddArray: {
                 selection = new AddArraySelection(this);
                 break;
+            }
+            default: {
+                selection = null;
             }
         }
 

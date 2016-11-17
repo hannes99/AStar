@@ -20,6 +20,7 @@ public class AStarTest extends JFrame {
     private ToolPanel toolPanel;
     private ControlPanel controlPanel;
     private ToolOptions toolOptions;
+    private SettingsPanel settingsPanel;
 
     public AStarTest() {
         // Frame
@@ -39,6 +40,7 @@ public class AStarTest extends JFrame {
         toolPanel = new ToolPanel(worldRenderer);
         controlPanel = new ControlPanel(worldRenderer);
         toolOptions = new SelectionOptions(worldRenderer);
+        settingsPanel = new SettingsPanel(worldRenderer);
 
         // ContentPane
         Container c = getContentPane();
@@ -48,7 +50,8 @@ public class AStarTest extends JFrame {
                 int h = c.getHeight() / 9;
                 int w = h * 4;
                 toolPanel.setBounds(0, 0, w, h);
-                toolOptions.setBounds(0, h, w, c.getHeight() - h);
+                toolOptions.setBounds(0, h, w, c.getHeight() - 3 * h / 2);
+                settingsPanel.setBounds(0, c.getHeight() - h / 2, w, h / 2);
                 worldRenderer.setBounds(w, 0, c.getWidth() - w - h, c.getHeight());
                 controlPanel.setBounds(c.getWidth() - h, 0, h, c.getHeight());
             }
@@ -58,7 +61,7 @@ public class AStarTest extends JFrame {
         c.add(toolPanel);
         c.add(controlPanel);
         c.add(toolOptions);
-
+        c.add(settingsPanel);
         // Show
         setVisible(true);
     }
@@ -70,7 +73,7 @@ public class AStarTest extends JFrame {
         add(toolOptions);
     }
 
-    public static class ControlPanel extends Panel {
+    private class ControlPanel extends Panel {
         private io.github.hannes99.gui.button.Button bFindPath, bStep, bStepCount, bBack, bClear, bNodeRadius;
         private int stepCount;
 
@@ -135,7 +138,6 @@ public class AStarTest extends JFrame {
                         r -= 1;
 
                     worldRenderer.setNodeRadius(r);
-                    worldRenderer.repaint();
                 }
             });
             add(bNodeRadius);
@@ -190,6 +192,32 @@ public class AStarTest extends JFrame {
             bAddNode.setBounds(a * 1, 0, a, a);
             bAddArray.setBounds(a * 2, 0, a, a);
             bAddShape.setBounds(a * 3, 0, a, a);
+        }
+    }
+
+    private class SettingsPanel extends Panel { // TODO
+        JToggleButton tNodes, tConnections;
+
+        public SettingsPanel(WorldRenderer worldRenderer) {
+            setLayout(null);
+
+            tNodes = new JToggleButton("Nodes");
+            tNodes.setSelected(worldRenderer.getDrawNodes());
+            tNodes.addActionListener(e -> worldRenderer.setDrawNodes(tNodes.isSelected()));
+            add(tNodes);
+
+            tConnections = new JToggleButton("Connections");
+            tConnections.setSelected(worldRenderer.getDrawConnections());
+            tConnections.addActionListener(e -> worldRenderer.setDrawConnections(tConnections.isSelected()));
+            add(tConnections);
+        }
+
+        @Override
+        public void setBounds(int x, int y, int width, int height) {
+            super.setBounds(x, y, width, height);
+
+            tNodes.setBounds(0, 0, width / 2, height);
+            tConnections.setBounds(width / 2, 0, width / 2, height);
         }
     }
 
