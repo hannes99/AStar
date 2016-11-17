@@ -16,18 +16,12 @@ public class AStarWorld {
     private Node3d start, target;
     private boolean autoConnectToAll;
     private boolean autoUpdatePathList = true;
-    private int x;
-    private int y;
 
     public AStarWorld() {
         start = new Node3d(10, 10, 0);
-        target = new Node3d(1000, 900, 0);
+        target = new Node3d(600, 600, 0);
         allNodes.add(start);
         allNodes.add(target);
-        x = 100;
-        y = 100;
-        generate2DGrid(x, y, 50, 50, 10);
-        // TODO clean up
     }
 
     public void destroyNode(Node3d node) {
@@ -70,20 +64,6 @@ public class AStarWorld {
             }
         }
     }
-
-    public void createRandom() {
-        allNodes.clear();
-        generate2DGrid(x, y, 50, 50, 10);
-        java.util.Random rnd = new java.util.Random();
-        ArrayList<Node3d> toRemove = new ArrayList<>();
-        for (Node3d n : allNodes) {
-            if (rnd.nextDouble() < 0.5)
-                toRemove.add(n);
-        }
-        for (Node3d n : toRemove)
-            destroyNode(n);
-    }
-
 
     public Node3d createNode(double x, double y, double z) {
         Node3d node = new Node3d(x, y, z);
@@ -136,7 +116,7 @@ public class AStarWorld {
         return nearest;
     }
 
-    public Node[][] generate2DGrid(int bX, int bY, int offsetX, int offsetY, int space) {
+    public Node3d[][] generate2DGrid(int bX, int bY, int offsetX, int offsetY, int space) {
         Node3d[][] array = new Node3d[bX][bY];
 
         for (int y = 0; y < bY; y++) {

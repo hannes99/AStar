@@ -1,13 +1,58 @@
 package io.github.hannes99.gui.tool_options;
 
+import io.github.hannes99.gui.button.Button;
+import io.github.hannes99.world.AStarWorld;
+import io.github.hannes99.world.Node3d;
 import io.github.hannes99.world.WorldRenderer;
+import io.github.hannes99.world.selection.AddArraySelection;
+
+import javax.swing.event.ChangeEvent;
+import java.util.ArrayList;
 
 /**
  * Created by robert on 11/14/16.
  */
 public class AddArrayOptions extends ToolOptions {
+    private SliderPanel sDistance, sRemoveRandom;
+    private double removePercent;
+    private Button bGenerate, bRemoveRandom;
 
     public AddArrayOptions(WorldRenderer worldRenderer) {
         super(worldRenderer, WorldRenderer.Input.AddArray);
+
+        sDistance = new SliderPanel("Distance", 1, 127, 64) {
+            @Override
+            void stateChanged(ChangeEvent e, int value) {
+                ((AddArraySelection) worldRenderer.getSelection()).setDistance(value);
+            }
+        };
+        add(sDistance);
+
+        sRemoveRandom = new SliderPanel("Percentage to remove: ", 0, 100, 0) {
+            @Override
+            void stateChanged(ChangeEvent e, int value) {
+            }
+        };
+        add(sRemoveRandom);
+
+        bGenerate = new Button("Generate");
+        bGenerate.addActionListener(e -> {
+            ((AddArraySelection) worldRenderer.getSelection()).generateArray();
+            ArrayList<Node3d> nodes = ((AddArraySelection) worldRenderer.getSelection()).getSelectedNodes();
+            int i = nodes.size() * (100 - sRemoveRandom.getValue()) / 100;
+            AStarWorld world = worldRenderer.getWorld();
+            while (nodes.size() > i)
+                world.destroyNode(nodes.remove((int) (Math.random() * nodes.size())));
+        });
+        add(bGenerate);
+    }
+
+    @Override
+    public void setBounds(int x, int y, int width, int height) {
+        super.setBounds(x, y, width, height);
+
+        sDistance.setBounds(0, 0 * a, width, a);
+        sRemoveRandom.setBounds(0, 1 * a, width, a);
+        bGenerate.setBounds(0, 2 * a, width, a);
     }
 }

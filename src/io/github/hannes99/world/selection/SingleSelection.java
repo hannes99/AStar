@@ -1,7 +1,7 @@
 package io.github.hannes99.world.selection;
 
-import io.github.hannes99.world.AStarWorld;
 import io.github.hannes99.world.Node3d;
+import io.github.hannes99.world.WorldRenderer;
 
 import javax.vecmath.Point3d;
 import java.awt.*;
@@ -14,21 +14,16 @@ import java.util.ArrayList;
 public class SingleSelection extends Selection {
 
     public Point3d pos = new Point3d();
-    private double nodeRadius;
 
-    public SingleSelection(AStarWorld world, double nodeRadius) {
-        super(world);
-        setNodeRadius(nodeRadius);
-    }
-
-    public void setNodeRadius(double nodeRadius) {
-        this.nodeRadius = nodeRadius;
+    public SingleSelection(WorldRenderer worldRenderer) {
+        super(worldRenderer);
     }
 
     @Override
     public ArrayList<Node3d> getSelectedNodes() {
         ArrayList<Node3d> nodes = new ArrayList<Node3d>();
-        Node3d selected = world.getNearestNode(pos);
+        Node3d selected = worldRenderer.getWorld().getNearestNode(pos);
+        double nodeRadius = worldRenderer.getNodeRadius();
         if (selected != null && selected.getPosition().distanceSquared(pos) <= nodeRadius * nodeRadius)
             nodes.add(selected);
         return nodes;
@@ -39,19 +34,22 @@ public class SingleSelection extends Selection {
         ArrayList<Node3d> nodes = getSelectedNodes();
         int ret = nodes.size();
         for (Node3d n : nodes) {
-            world.destroyNode(n);
+            worldRenderer.getWorld().destroyNode(n);
         }
+        worldRenderer.repaint();
         return ret;
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
         pos.set(e.getX(), e.getY(), 0);
+        worldRenderer.repaint();
     }
 
     @Override
     public void paint(Graphics g) {
         g.setColor(selectionColor);
+        double nodeRadius = worldRenderer.getNodeRadius();
         g.drawOval((int) (pos.x - nodeRadius), (int) (pos.y - nodeRadius), (int) (nodeRadius * 2), (int) (nodeRadius * 2));
     }
 }

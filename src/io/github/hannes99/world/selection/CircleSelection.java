@@ -1,7 +1,7 @@
 package io.github.hannes99.world.selection;
 
-import io.github.hannes99.world.AStarWorld;
 import io.github.hannes99.world.Node3d;
+import io.github.hannes99.world.WorldRenderer;
 
 import javax.vecmath.Point3d;
 import java.awt.*;
@@ -15,15 +15,15 @@ public class CircleSelection extends Selection {
     private Point3d pos = new Point3d();
     private double radius;
 
-    public CircleSelection(AStarWorld world) {
-        super(world);
+    public CircleSelection(WorldRenderer worldRenderer) {
+        super(worldRenderer);
     }
 
     @Override
     public ArrayList<Node3d> getSelectedNodes() {
         ArrayList<Node3d> ret = new ArrayList<Node3d>();
         double radiusSquared = radius * radius;
-        for (Node3d n : world.getAllNodes()) {
+        for (Node3d n : worldRenderer.getWorld().getAllNodes()) {
             if (n.getPosition().distanceSquared(pos) <= radiusSquared) {
                 ret.add(n);
             }
@@ -36,8 +36,9 @@ public class CircleSelection extends Selection {
         ArrayList<Node3d> nodes = getSelectedNodes();
         int ret = nodes.size();
         for (Node3d n : nodes) {
-            world.destroyNode(n);
+            worldRenderer.getWorld().destroyNode(n);
         }
+        worldRenderer.repaint();
         return ret;
     }
 
@@ -51,6 +52,7 @@ public class CircleSelection extends Selection {
     public void mousePressed(MouseEvent e) {
         pos.set(e.getX(), e.getY(), 0);
         radius = 0;
+        worldRenderer.repaint();
     }
 
     @Override
@@ -59,5 +61,6 @@ public class CircleSelection extends Selection {
         double dY = e.getY() - pos.getY();
 
         radius = Math.sqrt(dX * dX + dY * dY);
+        worldRenderer.repaint();
     }
 }

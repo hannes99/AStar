@@ -15,7 +15,7 @@ import java.awt.event.MouseEvent;
  * Program to show the A* Algorithm
  */
 public class AStarTest extends JFrame {
-    private AStarWorld aStarWorld;
+    private AStarWorld world;
     private WorldRenderer worldRenderer;
     private ToolPanel toolPanel;
     private ControlPanel controlPanel;
@@ -31,13 +31,13 @@ public class AStarTest extends JFrame {
         setLocationRelativeTo(null);
 
         // Setup A*
-        aStarWorld = new AStarWorld();
-        worldRenderer = new WorldRenderer(aStarWorld, 11); // 11
+        world = new AStarWorld();
+        worldRenderer = new WorldRenderer(world, 11); // 11
         worldRenderer.setInputMode(WorldRenderer.Input.SelectSingle);
 
         // Panels
-        toolPanel = new ToolPanel(worldRenderer, aStarWorld);
-        controlPanel = new ControlPanel(worldRenderer, aStarWorld);
+        toolPanel = new ToolPanel(worldRenderer);
+        controlPanel = new ControlPanel(worldRenderer);
         toolOptions = new SelectionOptions(worldRenderer);
 
         // ContentPane
@@ -71,10 +71,10 @@ public class AStarTest extends JFrame {
     }
 
     public static class ControlPanel extends Panel {
-        private io.github.hannes99.gui.button.Button bFindPath, bStep, bStepCount, bBack, bClear, bNodeRadius, bCreateRandom;
+        private io.github.hannes99.gui.button.Button bFindPath, bStep, bStepCount, bBack, bClear, bNodeRadius;
         private int stepCount;
 
-        public ControlPanel(WorldRenderer worldRenderer, AStarWorld aStarWorld) {
+        public ControlPanel(WorldRenderer worldRenderer) {
             setLayout(null);
 
             // Find Path
@@ -139,14 +139,6 @@ public class AStarTest extends JFrame {
                 }
             });
             add(bNodeRadius);
-
-            // Create Random
-            bCreateRandom = new io.github.hannes99.gui.button.Button("Random", "random.png");
-            bCreateRandom.addActionListener(e -> {
-                aStarWorld.createRandom();
-                worldRenderer.repaint();
-            });
-            add(bCreateRandom);
         }
 
         @Override
@@ -158,7 +150,6 @@ public class AStarTest extends JFrame {
             bStep.setBounds(0, a * 2, a, a);
             bBack.setBounds(0, a * 3, a, a);
             bClear.setBounds(0, a * 4, a, a);
-            bCreateRandom.setBounds(0, height - (2 * a), a, a);
             bNodeRadius.setBounds(0, height - a, a, a);
         }
     }
@@ -167,7 +158,7 @@ public class AStarTest extends JFrame {
     public class ToolPanel extends Panel {
         private io.github.hannes99.gui.button.Button bAddNode, bSelect, bAddArray, bAddShape;
 
-        public ToolPanel(WorldRenderer worldRenderer, AStarWorld aStarWorld) {
+        public ToolPanel(WorldRenderer worldRenderer) {
             setLayout(null);
 
             // Select

@@ -1,7 +1,7 @@
 package io.github.hannes99.world.selection;
 
-import io.github.hannes99.world.AStarWorld;
 import io.github.hannes99.world.Node3d;
+import io.github.hannes99.world.WorldRenderer;
 
 import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
@@ -13,18 +13,18 @@ import java.util.ArrayList;
  * Created by robert on 11/13/16.
  */
 public class RectangleSelection extends Selection {
-    private Point2d pos1 = new Point2d();
-    private Point2d pos2 = new Point2d();
+    protected Point2d pos1 = new Point2d();
+    protected Point2d pos2 = new Point2d();
 
-    public RectangleSelection(AStarWorld world) {
-        super(world);
+    public RectangleSelection(WorldRenderer worldRenderer) {
+        super(worldRenderer);
     }
 
     @Override
     public ArrayList<Node3d> getSelectedNodes() {
         ArrayList<Node3d> ret = new ArrayList<Node3d>();
 
-        for (Node3d n : world.getAllNodes()) {
+        for (Node3d n : worldRenderer.getWorld().getAllNodes()) {
             Point3d p = n.getPosition();
             if (p.x >= pos1.x && p.y >= pos1.y && p.x <= pos2.x && p.y <= pos2.y) { // TODO test
                 ret.add(n);
@@ -39,8 +39,9 @@ public class RectangleSelection extends Selection {
         ArrayList<Node3d> nodes = getSelectedNodes();
         int ret = nodes.size();
         for (Node3d n : nodes) {
-            world.destroyNode(n);
+            worldRenderer.getWorld().destroyNode(n);
         }
+        worldRenderer.repaint();
         return ret;
     }
 
@@ -48,6 +49,7 @@ public class RectangleSelection extends Selection {
     public void mousePressed(MouseEvent e) {
         pos1.set(e.getX(), e.getY());
         pos2.set(pos1);
+        worldRenderer.repaint();
     }
 
     @Override
@@ -64,6 +66,7 @@ public class RectangleSelection extends Selection {
             pos1.y = pos2.y;
             pos2.y = tmp;
         }
+        worldRenderer.repaint();
     }
 
     @Override

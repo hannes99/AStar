@@ -42,4 +42,8 @@ public abstract class SliderPanel extends Panel implements ChangeListener {
         tValue.setText(String.valueOf(v));
         stateChanged(e, v);
     }
+
+    public int getValue() {
+        return slider.getValue();
+    }
 }

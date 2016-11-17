@@ -1,7 +1,7 @@
 package io.github.hannes99.world.selection;
 
-import io.github.hannes99.world.AStarWorld;
 import io.github.hannes99.world.Node3d;
+import io.github.hannes99.world.WorldRenderer;
 
 import javax.swing.event.MouseInputListener;
 import java.awt.*;
@@ -13,11 +13,11 @@ import java.util.ArrayList;
  */
 public abstract class Selection implements MouseInputListener {
 
-    protected AStarWorld world;
+    protected WorldRenderer worldRenderer;
     protected Color selectionColor = Color.BLUE;
 
-    public Selection(AStarWorld world) {
-        this.world = world;
+    public Selection(WorldRenderer worldRenderer) {
+        this.worldRenderer = worldRenderer;
     }
 
     /**
