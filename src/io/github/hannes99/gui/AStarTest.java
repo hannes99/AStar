@@ -32,7 +32,7 @@ public class AStarTest extends JFrame {
 
         // Setup A*
         aStarWorld = new AStarWorld();
-        worldRenderer = new WorldRenderer(aStarWorld, 1); // 11
+        worldRenderer = new WorldRenderer(aStarWorld, 11); // 11
         worldRenderer.setInputMode(WorldRenderer.Input.SelectSingle);
 
         // Panels
@@ -71,7 +71,8 @@ public class AStarTest extends JFrame {
     }
 
     public static class ControlPanel extends Panel {
-        private io.github.hannes99.gui.button.Button bFindPath, bStep, bBack, bClear, bNodeRadius, bCreateRandom;
+        private io.github.hannes99.gui.button.Button bFindPath, bStep, bStepCount, bBack, bClear, bNodeRadius, bCreateRandom;
+        private int stepCount;
 
         public ControlPanel(WorldRenderer worldRenderer, AStarWorld aStarWorld) {
             setLayout(null);
@@ -81,16 +82,33 @@ public class AStarTest extends JFrame {
             bFindPath.addActionListener(e -> worldRenderer.getPathRenderer().setStep(0));
             add(bFindPath);
 
+            // Step count
+            bStepCount = new io.github.hannes99.gui.button.Button("1", "");
+            bStepCount.addMouseListener(new MouseInputAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    super.mousePressed(e);
+                    if (SwingUtilities.isLeftMouseButton(e)) {
+                        stepCount += 1;
+                    }
+                    if (SwingUtilities.isRightMouseButton(e)) {
+                        stepCount -= 1;
+                        if (stepCount < 0)
+                            stepCount = 0;
+                    }
+                    bStepCount.setText(String.valueOf((int) Math.pow(2, stepCount)));
+                }
+            });
+            add(bStepCount);
+
             // Step
             bStep = new io.github.hannes99.gui.button.Button("Step", "step.png");
-            bStep.addActionListener(e -> worldRenderer.getPathRenderer().addToStep(1));
+            bStep.addActionListener(e -> worldRenderer.getPathRenderer().addToStep((int) Math.pow(2, stepCount)));
             add(bStep);
-
-            // TODO step size
 
             // Back
             bBack = new io.github.hannes99.gui.button.Button("Back", "back.png");
-            bBack.addActionListener(e -> worldRenderer.getPathRenderer().addToStep(-1));
+            bBack.addActionListener(e -> worldRenderer.getPathRenderer().addToStep((int) -Math.pow(2, stepCount)));
             add(bBack);
 
             // Clear
@@ -136,11 +154,12 @@ public class AStarTest extends JFrame {
             super.setBounds(x, y, width, height);
             int a = getWidth();
             bFindPath.setBounds(0, a * 0, a, a);
-            bStep.setBounds(0, a * 1, a, a);
-            bBack.setBounds(0, a * 2, a, a);
-            bClear.setBounds(0, a * 3, a, a);
-            bNodeRadius.setBounds(0, height - a, a, a);
+            bStepCount.setBounds(0, a * 1, a, a);
+            bStep.setBounds(0, a * 2, a, a);
+            bBack.setBounds(0, a * 3, a, a);
+            bClear.setBounds(0, a * 4, a, a);
             bCreateRandom.setBounds(0, height - (2 * a), a, a);
+            bNodeRadius.setBounds(0, height - a, a, a);
         }
     }
 

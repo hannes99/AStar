@@ -92,9 +92,10 @@ public class SelectionOptions extends ToolOptions {
             Selection s = worldRenderer.getSelection();
             if (s instanceof SingleSelection) {
                 Node3d n = null;
-                if (s.getSelectedNodes().size() > 0)
+                if (s.getSelectedNodes().size() > 0) {
                     n = s.getSelectedNodes().get(0);
-                worldRenderer.getWorld().setTarget(n);
+                    worldRenderer.getWorld().setTarget(n);
+                }
                 worldRenderer.repaint();
             }
         });

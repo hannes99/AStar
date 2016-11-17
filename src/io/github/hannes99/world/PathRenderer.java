@@ -13,7 +13,7 @@ public class PathRenderer {
     private WorldRenderer worldRenderer;
     private double radius;
     private long step = 0;
-    private boolean drawPath = false;
+    private boolean drawAll = false;
 
     public PathRenderer(AStarWorld world, WorldRenderer worldRenderer, double radius) {
         this.world = world;
@@ -21,7 +21,8 @@ public class PathRenderer {
         setRadius(radius);
     }
 
-    public void paint(Graphics g) {
+    public void paint(Graphics gr) {
+        Graphics2D g = (Graphics2D) gr;
 
         // Openlist
         g.setColor(new Color(255, 100, 100));
@@ -38,9 +39,11 @@ public class PathRenderer {
         });
 
         // Draw complete path
-        if (drawPath && world.getLastPath() != null) {
+        if (drawAll && world.getLastPath() != null) {
             // Connections
             g.setColor(Color.BLACK);
+            Stroke oldStroke = g.getStroke();
+            g.setStroke(new BasicStroke(2));
             world.getLastPath().forEach(node -> {
                 Node3d precedessor = (Node3d) node.getPredecessor();
                 if (precedessor != null) { // start node has no precedessor
@@ -49,6 +52,7 @@ public class PathRenderer {
                     g.drawLine((int) p1.x, (int) p1.y, (int) p2.x, (int) p2.y);
                 }
             });
+            g.setStroke(oldStroke);
             // Nodes
             g.setColor(new Color(50, 255, 50));
             world.getLastPath().forEach(node -> {
@@ -78,19 +82,40 @@ public class PathRenderer {
     }
 
     public void setStep(long step) {
-        if (step < 0)
-            this.step = 0;
-        else if (step == 1)
-            this.step = 1;
-        else if (!drawPath || step < this.step)
-            this.step = step;
+        drawAll = world.findPath();
+        // Only show steps if a path exists
+        if (drawAll) {
+            long allSteps = 0;
+            boolean found = false;
+            do {
+                ++allSteps;
+                world.getAllNodes().forEach(n -> n.setPredecessor(null));
+                found = AStar.findPath(world.getStart(), world.getTarget(), allSteps);
+            } while (!found);
 
-        AStar.closedList.clear();
-        AStar.openlist.clear();
-        drawPath = AStar.findPath(world.getStart(), world.getTarget(), this.step);
-        if (drawPath) {
-            world.updatePathList();
+            if (step < 0) { // Draw second last step
+                this.step = allSteps;
+            } else if (this.step == 0 && step > 0) { // Draw fist step
+                this.step = 1;
+            } else if (step > allSteps) { // If target reached
+                this.step = 0;
+            } else { // Step
+                this.step = step;
+            }
+
+            world.getAllNodes().forEach(n -> n.setPredecessor(null));
+            drawAll = AStar.findPath(world.getStart(), world.getTarget(), this.step);
+
+            if (this.step == 0) {
+                world.updatePathList();
+            } else {
+                drawAll = false;
+            }
+
+            System.out.println("all steps: " + allSteps);
+            System.out.println("this.step: " + this.step);
         }
+
         worldRenderer.repaint();
     }
 

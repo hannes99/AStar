@@ -229,7 +229,7 @@ public class AStarWorld {
         return array;
     }
 
-    public void findPath() {
+    public boolean findPath() {
         long t = System.currentTimeMillis();
         allNodes.forEach(n -> n.setPredecessor(null));
         boolean ok = AStar.findPath(start, target);
@@ -237,6 +237,7 @@ public class AStarWorld {
             updatePathList();
         else
             lastPath.clear();
+        return ok;
     }
 
     public void updatePathList() {
