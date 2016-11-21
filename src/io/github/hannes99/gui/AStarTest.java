@@ -137,6 +137,10 @@ public class AStarTest extends JFrame {
                     if (SwingUtilities.isRightMouseButton(e))
                         r -= 1;
 
+                    if(r>10)
+                        worldRenderer.setDrawValues(true);
+                    else
+                        worldRenderer.setDrawValues(false);
                     worldRenderer.setNodeRadius(r);
                 }
             });

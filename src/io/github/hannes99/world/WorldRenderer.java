@@ -14,13 +14,16 @@ public class WorldRenderer extends JComponent {
     private Input mode;
     private double nodeRadius;
     private PathRenderer pathRenderer;
-    private boolean renderPath;
+    private boolean renderPath, drawValues;
 
     private boolean drawNodes, drawConnections;
 
     private double autoConnectDistance = 129, minDistance = 128;
     private Node3d lastCreatedNode;
 
+    public void setDrawValues(boolean b) {
+        drawValues = b;
+    }
 
     private Selection selection = new SingleSelection(this);
 
@@ -122,6 +125,7 @@ public class WorldRenderer extends JComponent {
                 Point3d p1 = n.getPosition();
                 g.setColor(new Color(230, 230, 230));
                 g.fillOval((int) (p1.x - nodeRadius), (int) (p1.y - nodeRadius), (int) (nodeRadius * 2), (int) (nodeRadius * 2));
+                // G, H and F values
             });
         }
 
@@ -130,6 +134,22 @@ public class WorldRenderer extends JComponent {
             pathRenderer.paint(g);
             renderPath = false;
         }
+        if (drawValues)
+            world.getAllNodes().forEach(n -> {
+                Point3d p1 = n.getPosition();
+                Graphics2D gg = (Graphics2D) g;
+                gg.setFont(new Font("Arial", Font.CENTER_BASELINE, (int) nodeRadius / 2));
+                gg.setColor(Color.black);
+                String toDraw = Math.round(n.getF() * 100.0) / 100.0 + "";
+                FontMetrics fm = gg.getFontMetrics();
+                g.drawString(toDraw, (int) (p1.x - (fm.stringWidth(toDraw) / 2)), (int) p1.y + fm.getHeight() / 2);
+                gg.setFont(new Font("Arial", Font.CENTER_BASELINE, (int) nodeRadius / 3));
+                fm = gg.getFontMetrics();
+                toDraw = "G:"+Math.round(n.getG() * 100.0) / 100.0 ;
+                g.drawString(toDraw, (int) (p1.x - (fm.stringWidth(toDraw) / 2)), (int) (p1.y + fm.getHeight()*1.5));
+                toDraw = "H:"+Math.round(n.getH() * 100.0) / 100.0;
+                g.drawString(toDraw, (int) (p1.x - (fm.stringWidth(toDraw) / 2)), (int) p1.y - fm.getHeight() / 2);
+            });
 
         // Highlight start an target nodes
         if (drawNodes) {
@@ -173,7 +193,7 @@ public class WorldRenderer extends JComponent {
         switch (mode) {
             case SelectSingle: {
                 if (!(selection instanceof SingleSelection)) // TODO
-                selection = new SingleSelection(this);
+                    selection = new SingleSelection(this);
                 break;
             }
             case SelectRectangle: {
