@@ -8,7 +8,8 @@ import java.util.ArrayList;
 public abstract class Node {
     private double g, h; // G and H function values
     private Node predecessor; // To store the shortest (known) way to start
-    private ArrayList<Connection> connections = new ArrayList<Connection>();
+    private ArrayList<Connection> connectionsTo = new ArrayList<Connection>();
+    private ArrayList<Node> connectionsFrom = new ArrayList<Node>();
 
     /**
      * @return G
@@ -62,10 +63,18 @@ public abstract class Node {
     }
 
     /**
+     * Nodes which are connected to this
+     * @return
+     */
+    public ArrayList<Node> getConnectionsFrom() {
+        return connectionsFrom;
+    }
+
+    /**
      * @return All connections from this node
      */
-    public ArrayList<Connection> getConnections() {
-        return connections;
+    public ArrayList<Connection> getConnectionsTo() {
+        return connectionsTo;
     }
 
     /**
@@ -78,11 +87,12 @@ public abstract class Node {
         Connection connection = null;
         if (target != null && target != this) {
             boolean exists = false;
-            for (int i = 0; i < connections.size() && !exists; ++i)
-                exists = connections.get(i).getNode() == target;
+            for (int i = 0; i < connectionsTo.size() && !exists; ++i)
+                exists = connectionsTo.get(i).getNode() == target;
             if (!exists) {
                 connection = new Connection(target, value);
-                connections.add(connection);
+                connectionsTo.add(connection);
+                target.getConnectionsFrom().add(this);
             }
         }
         return connection;

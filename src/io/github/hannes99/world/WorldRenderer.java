@@ -112,7 +112,7 @@ public class WorldRenderer extends JComponent {
             g.setColor(Color.lightGray);
             world.getAllNodes().forEach(n -> {
                 Point3d p1 = n.getPosition();
-                n.getConnections().forEach(c -> {
+                n.getConnectionsTo().forEach(c -> {
                     Point3d p2 = ((Node3d) c.getNode()).getPosition();
                     g.drawLine((int) p1.x, (int) p1.y, (int) p2.x, (int) p2.y);
                 });

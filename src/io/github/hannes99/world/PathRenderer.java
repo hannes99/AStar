@@ -23,9 +23,10 @@ public class PathRenderer {
     public void paint(Graphics gr) {
         Graphics2D g = (Graphics2D) gr;
 
+        long t = System.currentTimeMillis();
         world.getAllNodes().forEach(n -> n.setPredecessor(null));
         boolean drawAll = AStar.findPath(world.getStart(), world.getTarget(), step);
-
+        System.out.println("Time:"+(System.currentTimeMillis()-t));
         if (worldRenderer.getDrawNodes()) {
             // Openlist
             g.setColor(new Color(255, 100, 100));
