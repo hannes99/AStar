@@ -13,7 +13,6 @@ public class PathRenderer {
     private WorldRenderer worldRenderer;
     private double radius;
     private long step = 0;
-    private boolean drawAll = false;
 
     public PathRenderer(AStarWorld world, WorldRenderer worldRenderer, double radius) {
         this.world = world;
@@ -25,7 +24,9 @@ public class PathRenderer {
         Graphics2D g = (Graphics2D) gr;
 
         world.getAllNodes().forEach(n -> n.setPredecessor(null));
-        AStar.findPath(world.getStart(), world.getTarget(), step);
+        boolean drawAll = AStar.findPath(world.getStart(), world.getTarget(), step);
+        world.updatePathList();
+
 
         // Openlist
         g.setColor(new Color(255, 100, 100));
