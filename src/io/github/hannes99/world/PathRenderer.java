@@ -24,6 +24,8 @@ public class PathRenderer {
         Graphics2D g = (Graphics2D) gr;
 
         world.getAllNodes().forEach(n -> n.setPredecessor(null));
+        AStar.closedList.clear();
+        AStar.openlist.clear();
         boolean drawAll = AStar.findPath(world.getStart(), world.getTarget(), step);
 
         if (worldRenderer.getDrawNodes()) {

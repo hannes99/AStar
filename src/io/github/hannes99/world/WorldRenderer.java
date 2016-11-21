@@ -132,7 +132,7 @@ public class WorldRenderer extends JComponent {
         // Path
         if (renderPath) {
             pathRenderer.paint(g);
-            renderPath = false;
+            //renderPath = false; // TODO
         }
         if (drawValues)
             world.getAllNodes().forEach(n -> {
