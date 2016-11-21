@@ -24,6 +24,9 @@ public class PathRenderer {
     public void paint(Graphics gr) {
         Graphics2D g = (Graphics2D) gr;
 
+        world.getAllNodes().forEach(n -> n.setPredecessor(null));
+        AStar.findPath(world.getStart(), world.getTarget(), step);
+
         // Openlist
         g.setColor(new Color(255, 100, 100));
         AStar.openlist.forEach(node -> {
@@ -74,40 +77,9 @@ public class PathRenderer {
 
     public void setStep(long step) {
         worldRenderer.setRenderPath(true);
-        drawAll = world.findPath();
-        // Only show steps if a path exists
-        if (drawAll && step != 0) {
-            long allSteps = 0;
-            boolean found = false;
-            do {
-                ++allSteps;
-                world.getAllNodes().forEach(n -> n.setPredecessor(null));
-                found = AStar.findPath(world.getStart(), world.getTarget(), allSteps);
-            } while (!found); // TODO nicht jedes mal berechnen?
-
-            if (step < 0) { // Draw second last step
-                this.step = allSteps;
-            } else if (this.step == 0 && step > 0) { // Draw fist step
-                this.step = 1;
-            } else if (step > allSteps) { // If target reached
-                this.step = 0;
-            } else { // Step
-                this.step = step;
-            }
-
-            world.getAllNodes().forEach(n -> n.setPredecessor(null));
-            drawAll = AStar.findPath(world.getStart(), world.getTarget(), this.step);
-
-            if (this.step == 0) {
-                world.updatePathList();
-            } else {
-                drawAll = false;
-            }
-
-            System.out.println("all steps: " + allSteps);
-            System.out.println("this.step: " + this.step);
-        }
-
+        if (step < 0)
+            step = 0;
+        this.step = step;
         worldRenderer.repaint();
     }
 
