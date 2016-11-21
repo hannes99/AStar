@@ -51,6 +51,8 @@ public class PathRenderer {
                     Point3d p2 = precedessor.getPosition();
                     g.drawLine((int) p1.x, (int) p1.y, (int) p2.x, (int) p2.y);
                 }
+                g.setColor(new Color(255, 100, 100));
+
             });
             g.setStroke(oldStroke);
             // Nodes
@@ -74,14 +76,14 @@ public class PathRenderer {
         worldRenderer.setRenderPath(true);
         drawAll = world.findPath();
         // Only show steps if a path exists
-        if (drawAll) {
+        if (drawAll && step != 0) {
             long allSteps = 0;
             boolean found = false;
             do {
                 ++allSteps;
                 world.getAllNodes().forEach(n -> n.setPredecessor(null));
                 found = AStar.findPath(world.getStart(), world.getTarget(), allSteps);
-            } while (!found);
+            } while (!found); // TODO nicht jedes mal berechnen?
 
             if (step < 0) { // Draw second last step
                 this.step = allSteps;

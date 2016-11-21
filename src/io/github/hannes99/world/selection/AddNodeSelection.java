@@ -59,6 +59,7 @@ public class AddNodeSelection extends SingleSelection {
     @Override
     public void mouseDragged(MouseEvent e) {
         super.mouseDragged(e);
+        // TODO max distance begrenzen
         addNode(e.getX(), e.getY());
         worldRenderer.repaint();
     }

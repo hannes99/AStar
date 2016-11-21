@@ -14,7 +14,7 @@ public class AddOptions extends ToolOptions {
     public AddOptions(WorldRenderer worldRenderer) {
         super(worldRenderer, WorldRenderer.Input.AddNode);
 
-        sMinDistance = new SliderPanel("Min distance", 1, 255, 128) {
+        sMinDistance = new SliderPanel("Min distance", 1, 256, 128) {
             @Override
             public void stateChanged(ChangeEvent e, int value) {
                 worldRenderer.setMinDistance(value);
@@ -22,7 +22,7 @@ public class AddOptions extends ToolOptions {
         };
         add(sMinDistance);
 
-        sAutoConnect = new SliderPanel("Auto connect distance: ", 1, 255, 128) {
+        sAutoConnect = new SliderPanel("Auto connect distance: ", 1, 256, 128) {
             @Override
             public void stateChanged(ChangeEvent e, int value) {
                 worldRenderer.setAutoConnectDistance(value + 1);

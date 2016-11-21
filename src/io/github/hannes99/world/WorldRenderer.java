@@ -20,11 +20,6 @@ public class WorldRenderer extends JComponent {
 
     private double autoConnectDistance = 129, minDistance = 128;
     private Node3d lastCreatedNode;
-
-    public void setDrawValues(boolean b) {
-        drawValues = b;
-    }
-
     private Selection selection = new SingleSelection(this);
 
     public WorldRenderer(AStarWorld world, double nodeRadius) {
@@ -33,6 +28,10 @@ public class WorldRenderer extends JComponent {
         setNodeRadius(nodeRadius);
         drawConnections = true;
         drawNodes = true;
+    }
+
+    public void setDrawValues(boolean b) {
+        drawValues = b;
     }
 
     public AStarWorld getWorld() {
@@ -48,6 +47,7 @@ public class WorldRenderer extends JComponent {
         world.setStart(null);
         world.setTarget(null);
         lastCreatedNode = null;
+
         repaint();
     }
 
