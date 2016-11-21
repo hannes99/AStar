@@ -59,4 +59,8 @@ public class AddArraySelection extends RectangleSelection {
         this.distance = distance;
         worldRenderer.repaint();
     }
+
+    @Override
+    public void highlightNodes(Graphics2D g) {
+    }
 }

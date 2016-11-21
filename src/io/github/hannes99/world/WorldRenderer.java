@@ -145,9 +145,9 @@ public class WorldRenderer extends JComponent {
                 g.drawString(toDraw, (int) (p1.x - (fm.stringWidth(toDraw) / 2)), (int) p1.y + fm.getHeight() / 2);
                 gg.setFont(new Font("Arial", Font.CENTER_BASELINE, (int) nodeRadius / 3));
                 fm = gg.getFontMetrics();
-                toDraw = "G:"+Math.round(n.getG() * 100.0) / 100.0 ;
-                g.drawString(toDraw, (int) (p1.x - (fm.stringWidth(toDraw) / 2)), (int) (p1.y + fm.getHeight()*1.5));
-                toDraw = "H:"+Math.round(n.getH() * 100.0) / 100.0;
+                toDraw = "G:" + Math.round(n.getG() * 100.0) / 100.0;
+                g.drawString(toDraw, (int) (p1.x - (fm.stringWidth(toDraw) / 2)), (int) (p1.y + fm.getHeight() * 1.5));
+                toDraw = "H:" + Math.round(n.getH() * 100.0) / 100.0;
                 g.drawString(toDraw, (int) (p1.x - (fm.stringWidth(toDraw) / 2)), (int) p1.y - fm.getHeight() / 2);
             });
 
@@ -162,10 +162,11 @@ public class WorldRenderer extends JComponent {
                 Point3d p1 = world.getTarget().getPosition();
                 g.fillOval((int) (p1.x - nodeRadius), (int) (p1.y - nodeRadius), (int) (nodeRadius * 2), (int) (nodeRadius * 2));
             }
-            // Draw selection
-            if (selection != null) {
-                selection.paint(g);
-            }
+        }
+
+        // Draw selection
+        if (selection != null) {
+            selection.paint(g);
         }
 
 
