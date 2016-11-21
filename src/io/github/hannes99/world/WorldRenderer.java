@@ -192,6 +192,10 @@ public class WorldRenderer extends JComponent {
         removeMouseMotionListener(selection);
 
         switch (mode) {
+            case MoveSingle:{
+                selection = new MoveSingle(this);
+                break;
+            }
             case SelectSingle: {
                 if (!(selection instanceof SingleSelection)) // TODO
                     selection = new SingleSelection(this);
@@ -241,6 +245,6 @@ public class WorldRenderer extends JComponent {
     }
 
     public enum Input {
-        SelectSingle, SelectRectangle, SelectCircle, AddNode, AddShape, AddArray
+        SelectSingle, SelectRectangle, SelectCircle, AddNode, AddShape, AddArray, MoveSingle
     }
 }

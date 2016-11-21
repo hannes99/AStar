@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class SelectionOptions extends ToolOptions {
 
-    private JRadioButton bSelectSingle, bSelectRectangle, bSelectCircle;
+    private JRadioButton bSelectSingle, bSelectRectangle, bSelectCircle, bMove;
     private Button bConnect, bSetStart, bSetTarget, bRemove;
 
     public SelectionOptions(WorldRenderer worldRenderer) {
@@ -22,6 +22,15 @@ public class SelectionOptions extends ToolOptions {
 
         // Only one can be selected
         ButtonGroup buttonGroup = new ButtonGroup();
+
+        // move
+        bMove = new JRadioButton("Move");
+        bMove.addActionListener(e->{
+            worldRenderer.setInputMode(WorldRenderer.Input.MoveSingle);
+
+        });
+        buttonGroup.add(bMove);
+        add(bMove);
 
         // Select single
         bSelectSingle = new JRadioButton("Single");
@@ -119,12 +128,13 @@ public class SelectionOptions extends ToolOptions {
     @Override
     public void setBounds(int x, int y, int width, int height) {
         super.setBounds(x, y, width, height);
-        bSelectSingle.setBounds(0, 0 * a, width, a);
-        bSelectRectangle.setBounds(0, 1 * a, width, a);
-        bSelectCircle.setBounds(0, 2 * a, width, a);
-        bConnect.setBounds(0, 3 * a, width, a);
-        bSetStart.setBounds(0, 4 * a, width, a);
-        bSetTarget.setBounds(0, 5 * a, width, a);
-        bRemove.setBounds(0, 6 * a, width, a);
+        bMove.setBounds(0,0*a, width, a);
+        bSelectSingle.setBounds(0, 1 * a, width, a);
+        bSelectRectangle.setBounds(0, 2 * a, width, a);
+        bSelectCircle.setBounds(0, 3 * a, width, a);
+        bConnect.setBounds(0, 4 * a, width, a);
+        bSetStart.setBounds(0, 5 * a, width, a);
+        bSetTarget.setBounds(0, 6 * a, width, a);
+        bRemove.setBounds(0, 7 * a, width, a);
     }
 }
