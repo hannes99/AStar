@@ -27,27 +27,36 @@ public class AStarWorld {
     public void destroyNode(Node3d node) {
         allNodes.remove(node);
 
+        for(Node n:node.getConnectionsFrom()){
+            for(Connection nn:n.getConnectionsTo()){
+                if(nn.getNode()==node){
+                    n.getConnectionsTo().remove(nn);
+                    break;
+                }
+            }
+        }
+        /*
         Connection toDelete;
-        for (Connection c : node.getConnections()) {
+        for (Connection c : node.getConnectionsTo()) {
             toDelete = null;
-            for (Connection cBack : c.getNode().getConnections()) {
+            for (Connection cBack : c.getNode().getConnectionsTo()) {
                 if (cBack.getNode() == node) {
                     toDelete = cBack;
                     continue;
                 }
             }
             if (toDelete != null)
-                c.getNode().getConnections().remove(toDelete);
+                c.getNode().getConnectionsTo().remove(toDelete);
 
         }
 
         /*
         // TODO move to another function
         allNodes.forEach(n -> {
-            for (int i = 0; i < n.getConnections().size(); ++i) {
-                Connection c = n.getConnections().get(i);
+            for (int i = 0; i < n.getConnectionsTo().size(); ++i) {
+                Connection c = n.getConnectionsTo().get(i);
                 if (c.getNode() == node) {
-                    n.getConnections().remove(c);
+                    n.getConnectionsTo().remove(c);
                     --i;
                 }
             }

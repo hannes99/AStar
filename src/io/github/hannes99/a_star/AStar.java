@@ -94,7 +94,7 @@ public class AStar {
      * @param closedlist  Closedlist
      */
     private static void expandNode(Node currendNode, PriorityQueue<Node> openlist, HashSet<Node> closedlist) {
-        currendNode.getConnections().forEach(successor -> {
+        currendNode.getConnectionsTo().forEach(successor -> {
             // Check closed list
             if (!closedlist.contains(successor.getNode())) {
                 // Tentative cost
