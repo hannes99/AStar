@@ -125,6 +125,7 @@ public class AStarWorld {
                 allNodes.add(array[x][y]);
             }
         }
+        System.out.println(bX+"|"+bY);
         Node3d n;
         for (int y = 0; y < bY; y++) {
             for (int x = 0; x < bX; x++) {
@@ -205,6 +206,7 @@ public class AStarWorld {
                 }
                 array[x][y].setH(array[bX - 1][bY - 1]);
             }
+            System.out.println(y);
         }
         return array;
     }

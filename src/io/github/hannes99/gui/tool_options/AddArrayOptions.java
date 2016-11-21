@@ -39,10 +39,12 @@ public class AddArrayOptions extends ToolOptions {
         bGenerate.addActionListener(e -> {
             ((AddArraySelection) worldRenderer.getSelection()).generateArray();
             ArrayList<Node3d> nodes = ((AddArraySelection) worldRenderer.getSelection()).getSelectedNodes();
-            int i = nodes.size() * (100 - sRemoveRandom.getValue()) / 100;
-            AStarWorld world = worldRenderer.getWorld();
-            while (nodes.size() > i)
-                world.destroyNode(nodes.remove((int) (Math.random() * nodes.size())));
+            if(sRemoveRandom.getValue()!=0) {
+                int i = nodes.size() * (100 - sRemoveRandom.getValue()) / 100;
+                AStarWorld world = worldRenderer.getWorld();
+                while (nodes.size() > i)
+                    world.destroyNode(nodes.remove((int) (Math.random() * nodes.size())));
+            }
         });
         add(bGenerate);
     }

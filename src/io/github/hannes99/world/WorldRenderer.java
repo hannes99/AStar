@@ -162,12 +162,12 @@ public class WorldRenderer extends JComponent {
                 Point3d p1 = world.getTarget().getPosition();
                 g.fillOval((int) (p1.x - nodeRadius), (int) (p1.y - nodeRadius), (int) (nodeRadius * 2), (int) (nodeRadius * 2));
             }
+            // Draw selection
+            if (selection != null) {
+                selection.paint(g);
+            }
         }
 
-        // Draw selection
-        if (selection != null) {
-            selection.paint(g);
-        }
 
         System.out.println("Frametime: " + (System.currentTimeMillis() - time) + "  Nodes: " + world.getAllNodes().size());
     }
