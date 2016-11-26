@@ -99,6 +99,18 @@ public class AStarWorld {
     }
 
     /**
+     * Updates the h value for a node
+     *
+     * @param node
+     */
+    public void updateHForNode(Node3d node) {
+        if (node == target)
+            setTarget(node);
+        else if (target != null)
+            node.setH(target);
+    }
+
+    /**
      * Generates a 2D grid.
      *
      * @param pos      Position

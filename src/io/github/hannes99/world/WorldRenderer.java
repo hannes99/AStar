@@ -97,14 +97,20 @@ public class WorldRenderer extends JComponent {
     }
 
     public void setSelection(Selection s) {
+        // Remove listener from old selection
         removeMouseListener(selection);
         removeMouseMotionListener(selection);
+
+        // Prepare new selection
+        if (s != null)
+            s.setWorldRenderer(this);
         s.previousSelection(selection);
         selection = s;
-        if (selection != null)
-            selection.setWorldRenderer(this);
+
+        // Add listeners
         addMouseListener(selection);
         addMouseMotionListener(selection);
+
         repaint();
     }
 

@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class SelectionOptions extends ToolOptions {
 
-    private JRadioButton bSelectSingle, bSelectRectangle, bSelectCircle, bMove;
+    private JRadioButton bSelectSingle, bSelectRectangle, bSelectCircle, bMove, bMove2;
     private Button bConnect, bSetStart, bSetTarget, bRemove;
 
     public SelectionOptions(WorldRenderer worldRenderer) {
@@ -29,6 +29,14 @@ public class SelectionOptions extends ToolOptions {
         });
         buttonGroup.add(bMove);
         add(bMove);
+
+        // move
+        bMove2 = new JRadioButton("Move2");
+        bMove2.addActionListener(e -> {
+            worldRenderer.setSelection(new MoveSingle2());
+        });
+        buttonGroup.add(bMove2);
+        add(bMove2);
 
         // Select single
         bSelectSingle = new JRadioButton("Single");
@@ -130,12 +138,13 @@ public class SelectionOptions extends ToolOptions {
     public void setBounds(int x, int y, int width, int height) {
         super.setBounds(x, y, width, height);
         bMove.setBounds(0, 0 * a, width, a);
-        bSelectSingle.setBounds(0, 1 * a, width, a);
-        bSelectRectangle.setBounds(0, 2 * a, width, a);
-        bSelectCircle.setBounds(0, 3 * a, width, a);
-        bConnect.setBounds(0, 4 * a, width, a);
-        bSetStart.setBounds(0, 5 * a, width, a);
-        bSetTarget.setBounds(0, 6 * a, width, a);
-        bRemove.setBounds(0, 7 * a, width, a);
+        bMove2.setBounds(0, 1 * a, width, a);
+        bSelectSingle.setBounds(0, 2 * a, width, a);
+        bSelectRectangle.setBounds(0, 3 * a, width, a);
+        bSelectCircle.setBounds(0, 4 * a, width, a);
+        bConnect.setBounds(0, 5 * a, width, a);
+        bSetStart.setBounds(0, 6 * a, width, a);
+        bSetTarget.setBounds(0, 7 * a, width, a);
+        bRemove.setBounds(0, 8 * a, width, a);
     }
 }
