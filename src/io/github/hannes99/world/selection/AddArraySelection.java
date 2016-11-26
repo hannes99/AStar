@@ -3,6 +3,7 @@ package io.github.hannes99.world.selection;
 import io.github.hannes99.world.Node3d;
 import io.github.hannes99.world.WorldRenderer;
 
+import javax.vecmath.Point2d;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -21,7 +22,7 @@ public class AddArraySelection extends RectangleSelection {
     public void generateArray() {
         int w = (int) (pos2.x - pos1.x);
         int h = (int) (pos2.y - pos1.y);
-        nodes = worldRenderer.getWorld().generate2DGrid((int) (w / distance) + 1, (int) (h / distance) + 1, (int) pos1.x, (int) pos1.y, (int) distance);
+        nodes = worldRenderer.getWorld().generate2DGrid(new Point2d(pos1), (int) (w / distance) + 1, (int) (h / distance) + 1, distance);
         worldRenderer.repaint();
     }
 

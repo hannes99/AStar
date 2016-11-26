@@ -1,9 +1,9 @@
 package io.github.hannes99.world;
 
 import io.github.hannes99.a_star.AStar;
-import io.github.hannes99.a_star.Connection;
 import io.github.hannes99.a_star.Node;
 
+import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
 import java.util.ArrayList;
 
@@ -11,102 +11,75 @@ import java.util.ArrayList;
  * Manages all the nodes in a world.
  */
 public class AStarWorld {
-    private final ArrayList<Node3d> allNodes = new ArrayList<Node3d>();
-    private final ArrayList<Node> lastPath = new ArrayList<Node>();
+    private final ArrayList<Node3d> allNodes = new ArrayList<>();
+    private final ArrayList<Node> lastPath = new ArrayList<>();
     private Node3d start, target;
     private boolean autoConnectToAll;
-    private boolean autoUpdatePathList = true;
 
+    /**
+     * Creates a new empty world
+     */
     public AStarWorld() {
-        start = new Node3d(10, 10, 0);
-        target = new Node3d(600, 600, 0);
-        allNodes.add(start);
-        allNodes.add(target);
     }
 
+    /**
+     * Removes a node and all connections to it
+     *
+     * @param node The node to remove
+     */
     public void destroyNode(Node3d node) {
-        allNodes.remove(node);
-
-        for(Node n:node.getConnectionsFrom()){
-            for(Connection nn:n.getConnectionsTo()){
-                if(nn.getNode()==node){
-                    n.getConnectionsTo().remove(nn);
-                    break;
-                }
-            }
-        }
-        /*
-        Connection toDelete;
-        for (Connection c : node.getConnectionsTo()) {
-            toDelete = null;
-            for (Connection cBack : c.getNode().getConnectionsTo()) {
-                if (cBack.getNode() == node) {
-                    toDelete = cBack;
-                    continue;
-                }
-            }
-            if (toDelete != null)
-                c.getNode().getConnectionsTo().remove(toDelete);
-
-        }
-
-        /*
-        // TODO move to another function
-        allNodes.forEach(n -> {
-            for (int i = 0; i < n.getConnectionsTo().size(); ++i) {
-                Connection c = n.getConnectionsTo().get(i);
-                if (c.getNode() == node) {
-                    n.getConnectionsTo().remove(c);
-                    --i;
-                }
-            }
-        }); */
+        allNodes.remove(node); // Remove the node
+        // Remove all connections to this node
+        for (Node n : node.getConnectionsFrom())
+            n.removeConnectionTo(node);
     }
 
-    public void destroyRadius(Point3d p, double radius) {
-        //radius = radius;
-        for (int i = 0; i < allNodes.size(); ++i) {
-            Node3d node = allNodes.get(i);
-            if (node.getPosition().distance(p) <= radius) {
-                destroyNode(node);
-                --i;
-            }
-        }
-    }
-
+    /**
+     * Creates a new node. If autoConnectToAll is set the node will be connected to all the other nodes in this
+     * world. The h value is calculated if the target is set.
+     *
+     * @param x X Position
+     * @param y Y Position
+     * @param z Z Position
+     * @return The created node
+     */
     public Node3d createNode(double x, double y, double z) {
         Node3d node = new Node3d(x, y, z);
         allNodes.add(node);
-        if (autoConnectToAll)
+        if (autoConnectToAll) // TODO autoConnect distance in world
             connectToAll(node);
         if (target != null)
             node.setH(target);
         return node;
     }
 
+    /**
+     * Connects a node to every other node.
+     *
+     * @param node The node
+     */
     public void connectToAll(Node3d node) {
         allNodes.forEach(n -> {
             double distance = node.getPosition().distance(n.getPosition());
-            node.connectTo(n);
-            n.connectTo(node);
+            node.connectTo(n, distance);
+            n.connectTo(node, distance);
         });
-
     }
 
-    public boolean isAutoUpdatePathList() {
-        return autoUpdatePathList;
-    }
-
-    public void setAutoUpdatePathList(boolean autoUpdatePathList) {
-        this.autoUpdatePathList = autoUpdatePathList;
-    }
-
+    /**
+     * Returns a list with the last path from end to start. If no path was found the list is empty.
+     *
+     * @return The list
+     */
     public ArrayList<Node> getLastPath() {
         return lastPath;
     }
 
     /**
-     * @param p A position
+     * Returns the closest node to a postion.
+     * TODO method for a list sorted by distance?
+     *
+     * @param p The position
      * @return The closest node to p
      */
     public Node3d getNearestNode(Point3d p) {
@@ -125,141 +98,136 @@ public class AStarWorld {
         return nearest;
     }
 
-    public Node3d[][] generate2DGrid(int bX, int bY, int offsetX, int offsetY, int space) {
-        Node3d[][] array = new Node3d[bX][bY];
+    /**
+     * Generates a 2D grid.
+     *
+     * @param pos      Position
+     * @param width    Horizontal nodes
+     * @param height   Vertical nodes
+     * @param distance Distance between nodes
+     * @return An array with all the created nodes.
+     */
+    public Node3d[][] generate2DGrid(Point2d pos, int width, int height, double distance) {
+        Node3d[][] array = new Node3d[width][height];
 
-        for (int y = 0; y < bY; y++) {
-            for (int x = 0; x < bX; x++) {
-                array[x][y] = new Node3d(offsetX + x * space, offsetY + y * space, 0);
+        // Create nodes
+        allNodes.ensureCapacity(allNodes.size() + width * height);
+        for (int x = 0; x < width; ++x) {
+            double px = pos.x + x * distance;
+            for (int y = 0; y < height; ++y) {
+                array[x][y] = new Node3d(px, pos.y + y * distance, 0);
                 allNodes.add(array[x][y]);
             }
         }
-        System.out.println(bX+"|"+bY);
-        Node3d n;
-        for (int y = 0; y < bY; y++) {
-            for (int x = 0; x < bX; x++) {
-                n = array[x][y];
-                if (y == 0) {
-                    if (x == 0) {
-                        n.connectTo(array[1][0]);
-                        n.connectTo(array[1][1]);
-                        n.connectTo(array[0][1]);
-                    } else if (x == bX - 1) {
-                        n.connectTo(array[x - 1][0]);
-                        n.connectTo(array[x - 1][1]);
-                        n.connectTo(array[x][1]);
-                    } else {
-                        n.connectTo(array[x - 1][0]);
-                        n.connectTo(array[x + 1][0]);
-                        n.connectTo(array[x - 1][1]);
-                        n.connectTo(array[x][1]);
-                        n.connectTo(array[x + 1][1]);
+
+        // To avoid Math.sqrt inside the loops
+        double diagonalDistance = Math.sqrt(2 * distance * distance);
+
+        // Connect nodes to right/bottom
+        for (int x = 0; x < width; ++x) {
+            for (int y = 0; y < height; ++y) {
+                if (x + 1 < width) {
+                    // horizontal
+                    array[x][y].connectTo(array[x + 1][y], distance);
+                    array[x + 1][y].connectTo(array[x][y], distance);
+
+                    // Diagonal \
+                    if (y + 1 < height) {
+                        array[x][y].connectTo(array[x + 1][y + 1], diagonalDistance);
+                        array[x + 1][y + 1].connectTo(array[x][y], diagonalDistance);
                     }
-                } else if (y == bY - 1) {
-                    if (x == 0) {
-                        n.connectTo(array[x][y - 1]);
-                        n.connectTo(array[x + 1][y - 1]);
-                        n.connectTo(array[x + 1][y]);
-                    } else if (x == bX - 1) {
-                        n.connectTo(array[x - 1][y]);
-                        n.connectTo(array[x][y - 1]);
-                        n.connectTo(array[x - 1][y - 1]);
-                    } else {
-                        n.connectTo(array[x - 1][y]);
-                        n.connectTo(array[x + 1][y]);
-                        n.connectTo(array[x + 1][y - 1]);
-                        n.connectTo(array[x - 1][y - 1]);
-                        n.connectTo(array[x][y - 1]);
+                    // Diagonal /
+                    if (y > 0) {
+                        array[x][y].connectTo(array[x + 1][y - 1], diagonalDistance);
+                        array[x + 1][y - 1].connectTo(array[x][y], diagonalDistance);
                     }
-                } else if (x == 0) {
-                    if (y == 0) {
-                        n.connectTo(array[1][0]);
-                        n.connectTo(array[1][1]);
-                        n.connectTo(array[0][1]);
-                    } else if (y == bY - 1) {
-                        n.connectTo(array[x][y - 1]);
-                        n.connectTo(array[x + 1][y - 1]);
-                        n.connectTo(array[x + 1][y]);
-                    } else {
-                        n.connectTo(array[x][y - 1]);
-                        n.connectTo(array[x][y + 1]);
-                        n.connectTo(array[x + 1][y + 1]);
-                        n.connectTo(array[x + 1][y]);
-                        n.connectTo(array[x + 1][y - 1]);
-                    }
-                } else if (x == bX - 1) {
-                    if (y == 0) {
-                        n.connectTo(array[x - 1][0]);
-                        n.connectTo(array[x - 1][1]);
-                        n.connectTo(array[x][1]);
-                    } else if (y == bY - 1) {
-                        n.connectTo(array[x - 1][y]);
-                        n.connectTo(array[x][y - 1]);
-                        n.connectTo(array[x - 1][y - 1]);
-                    } else {
-                        n.connectTo(array[x][y + 1]);
-                        n.connectTo(array[x][y - 1]);
-                        n.connectTo(array[x - 1][y + 1]);
-                        n.connectTo(array[x - 1][y]);
-                        n.connectTo(array[x - 1][y - 1]);
-                    }
-                } else {
-                    n.connectTo(array[x - 1][y - 1]);
-                    n.connectTo(array[x][y - 1]);
-                    n.connectTo(array[x + 1][y - 1]);
-                    n.connectTo(array[x - 1][y]);
-                    n.connectTo(array[x + 1][y]);
-                    n.connectTo(array[x - 1][y + 1]);
-                    n.connectTo(array[x][y + 1]);
-                    n.connectTo(array[x + 1][y + 1]);
                 }
-                array[x][y].setH(array[bX - 1][bY - 1]);
+                // Vertical
+                if (y + 1 < height) {
+                    array[x][y].connectTo(array[x][y + 1], distance);
+                    array[x][y + 1].connectTo(array[x][y], distance);
+                }
             }
-            System.out.println(y);
         }
+
         return array;
     }
 
+    /**
+     * Calls AStar to find a path and uptades the last path list.
+     *
+     * @return True if a path was found.
+     */
     public boolean findPath() {
         long t = System.currentTimeMillis();
         allNodes.forEach(n -> n.setPredecessor(null));
         boolean ok = AStar.findPath(start, target);
-        if (ok && autoUpdatePathList)
+        if (ok)
             updatePathList();
         else
             lastPath.clear();
         return ok;
     }
 
+    /**
+     * Updates the path list.
+     * TODO remove?
+     */
     public void updatePathList() {
         AStar.backtrackPath(lastPath, start, target);
     }
 
+    /**
+     * @return The current target
+     */
     public Node3d getTarget() {
         return target;
     }
 
+    /**
+     * Sets a node as target and updates all h values.
+     *
+     * @param t The new target
+     */
     public void setTarget(Node3d t) {
         target = t;
-        getAllNodes().forEach(n -> n.setH(t));
+        if (t != null)
+            getAllNodes().forEach(n -> n.setH(t));
     }
 
+    /**
+     * @return All nodes in this world
+     */
     public ArrayList<Node3d> getAllNodes() {
         return allNodes;
     }
 
+    /**
+     * @return The current start
+     */
     public Node3d getStart() {
         return start;
     }
 
+    /**
+     * Sets a node as start
+     *
+     * @param start The node
+     */
     public void setStart(Node3d start) {
         this.start = start;
     }
 
+    /**
+     * @return If new nodes are automatically connected to all other nodes.
+     */
     public boolean getAutoConnectToAll() {
         return autoConnectToAll;
     }
 
+    /**
+     * @param autoConnectToAll If new nodes should be automatically connected to all other nodes.
+     */
     public void setAutoConnectToAll(boolean autoConnectToAll) {
         this.autoConnectToAll = autoConnectToAll;
     }

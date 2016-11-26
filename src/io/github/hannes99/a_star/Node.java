@@ -8,8 +8,8 @@ import java.util.ArrayList;
 public abstract class Node {
     private double g, h; // G and H function values
     private Node predecessor; // To store the shortest (known) way to start
-    private ArrayList<Connection> connectionsTo = new ArrayList<Connection>();
-    private ArrayList<Node> connectionsFrom = new ArrayList<Node>();
+    private ArrayList<Connection> connectionsTo = new ArrayList<>();
+    private ArrayList<Node> connectionsFrom = new ArrayList<>();
 
     /**
      * @return G
@@ -98,4 +98,21 @@ public abstract class Node {
         return connection;
     }
 
+    /**
+     * Removes the connection to a node
+     *
+     * @param node The node
+     * @return If there was a connection
+     */
+    public boolean removeConnectionTo(Node node) {
+        boolean removed = false;
+        for (int i = 0; i < connectionsTo.size() && !removed; ++i) {
+            Connection c = connectionsTo.get(i);
+            if (c.getNode() == node) {
+                connectionsTo.remove(i);
+                removed = true;
+            }
+        }
+        return removed;
+    }
 }
