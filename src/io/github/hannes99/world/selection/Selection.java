@@ -17,8 +17,8 @@ public abstract class Selection implements MouseInputListener {
     protected WorldRenderer worldRenderer;
     protected Color selectionColor = Color.BLUE;
 
-    public Selection(WorldRenderer worldRenderer) {
-        this.worldRenderer = worldRenderer;
+    public void setWorldRenderer(WorldRenderer w) {
+        worldRenderer = w;
     }
 
     public int removeSelectedNodes() {

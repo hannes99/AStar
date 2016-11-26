@@ -1,7 +1,6 @@
 package io.github.hannes99.world.selection;
 
 import io.github.hannes99.world.Node3d;
-import io.github.hannes99.world.WorldRenderer;
 
 import javax.vecmath.Point3d;
 import java.awt.*;
@@ -14,10 +13,6 @@ import java.util.ArrayList;
 public class SingleSelection extends Selection {
 
     public Point3d pos = new Point3d();
-
-    public SingleSelection(WorldRenderer worldRenderer) {
-        super(worldRenderer);
-    }
 
     @Override
     public ArrayList<Node3d> getSelectedNodes() {

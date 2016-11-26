@@ -2,7 +2,6 @@ package io.github.hannes99.world.selection;
 
 import io.github.hannes99.world.AStarWorld;
 import io.github.hannes99.world.Node3d;
-import io.github.hannes99.world.WorldRenderer;
 
 import javax.vecmath.Point3d;
 import java.awt.*;
@@ -13,10 +12,6 @@ import java.awt.event.MouseEvent;
  */
 public class AddNodeSelection extends SingleSelection {
     private Node3d lastCreatedNode;
-
-    public AddNodeSelection(WorldRenderer worldRenderer) {
-        super(worldRenderer);
-    }
 
     private void addNode(int x, int y) {
         Point3d p = new Point3d(x, y, 0);

@@ -1,6 +1,6 @@
 package io.github.hannes99.world;
 
-import io.github.hannes99.world.selection.*;
+import io.github.hannes99.world.selection.Selection;
 
 import javax.swing.*;
 import javax.vecmath.Point3d;
@@ -11,7 +11,6 @@ import java.awt.*;
  */
 public class WorldRenderer extends JComponent {
     private AStarWorld world;
-    private Input mode;
     private double nodeRadius;
     private PathRenderer pathRenderer;
     private boolean renderPath, drawValues;
@@ -19,7 +18,7 @@ public class WorldRenderer extends JComponent {
     private boolean drawNodes, drawConnections;
 
     private double autoConnectDistance = 129, minDistance = 128;
-    private Selection selection = new SingleSelection(this);
+    private Selection selection;
 
     public WorldRenderer(AStarWorld world, double nodeRadius) {
         setWorld(world);
@@ -95,6 +94,16 @@ public class WorldRenderer extends JComponent {
 
     public Selection getSelection() {
         return selection;
+    }
+
+    public void setSelection(Selection s) {
+        removeMouseListener(selection);
+        removeMouseMotionListener(selection);
+        selection = s;
+        if (selection != null)
+            selection.setWorldRenderer(this);
+        addMouseListener(selection);
+        addMouseMotionListener(selection);
     }
 
     @Override
@@ -183,48 +192,6 @@ public class WorldRenderer extends JComponent {
         repaint();
     }
 
-    public void setInputMode(Input in) {
-        mode = in;
-
-        removeMouseListener(selection);
-        removeMouseMotionListener(selection);
-
-        switch (mode) {
-            case MoveSingle:{
-                selection = new MoveSingle(this);
-                break;
-            }
-            case SelectSingle: {
-                if (!(selection instanceof SingleSelection)) // TODO
-                    selection = new SingleSelection(this);
-                break;
-            }
-            case SelectRectangle: {
-                if (!(selection instanceof RectangleSelection)) // TODO
-                    selection = new RectangleSelection(this);
-                break;
-            }
-            case SelectCircle: {
-                selection = new CircleSelection(this);
-                break;
-            }
-            case AddNode: {
-                selection = new AddNodeSelection(this);
-                break;
-            }
-            case AddArray: {
-                selection = new AddArraySelection(this);
-                break;
-            }
-            default: {
-                selection = null;
-            }
-        }
-
-        addMouseListener(selection);
-        addMouseMotionListener(selection);
-    }
-
     /**
      * @param x X position
      * @param y Y position
@@ -240,9 +207,5 @@ public class WorldRenderer extends JComponent {
 
     public PathRenderer getPathRenderer() {
         return pathRenderer;
-    }
-
-    public enum Input {
-        SelectSingle, SelectRectangle, SelectCircle, AddNode, AddShape, AddArray, MoveSingle
     }
 }

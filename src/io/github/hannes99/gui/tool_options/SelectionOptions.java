@@ -3,8 +3,7 @@ package io.github.hannes99.gui.tool_options;
 import io.github.hannes99.gui.button.Button;
 import io.github.hannes99.world.Node3d;
 import io.github.hannes99.world.WorldRenderer;
-import io.github.hannes99.world.selection.Selection;
-import io.github.hannes99.world.selection.SingleSelection;
+import io.github.hannes99.world.selection.*;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -18,7 +17,10 @@ public class SelectionOptions extends ToolOptions {
     private Button bConnect, bSetStart, bSetTarget, bRemove;
 
     public SelectionOptions(WorldRenderer worldRenderer) {
-        super(worldRenderer, WorldRenderer.Input.SelectRectangle);
+        super(worldRenderer);
+        // TODO if was array selection
+        // TODO if no selection: single
+        worldRenderer.setSelection(new RectangleSelection());
 
         // Only one can be selected
         ButtonGroup buttonGroup = new ButtonGroup();
@@ -26,8 +28,7 @@ public class SelectionOptions extends ToolOptions {
         // move
         bMove = new JRadioButton("Move");
         bMove.addActionListener(e->{
-            worldRenderer.setInputMode(WorldRenderer.Input.MoveSingle);
-
+            worldRenderer.setSelection(new MoveSingle());
         });
         buttonGroup.add(bMove);
         add(bMove);
@@ -35,7 +36,7 @@ public class SelectionOptions extends ToolOptions {
         // Select single
         bSelectSingle = new JRadioButton("Single");
         bSelectSingle.addActionListener(e -> {
-            worldRenderer.setInputMode(WorldRenderer.Input.SelectSingle);
+            worldRenderer.setSelection(new SingleSelection());
             bConnect.setEnabled(false);
             bSetStart.setEnabled(true);
             bSetTarget.setEnabled(true);
@@ -46,7 +47,7 @@ public class SelectionOptions extends ToolOptions {
         // Select Rectangle
         bSelectRectangle = new JRadioButton("Rectangle");
         bSelectRectangle.addActionListener(e -> {
-            worldRenderer.setInputMode(WorldRenderer.Input.SelectRectangle);
+            worldRenderer.setSelection(new RectangleSelection());
             bConnect.setEnabled(true);
             bSetStart.setEnabled(false);
             bSetTarget.setEnabled(false);
@@ -57,7 +58,7 @@ public class SelectionOptions extends ToolOptions {
         // Select circle
         bSelectCircle = new JRadioButton("Circle");
         bSelectCircle.addActionListener(e -> {
-            worldRenderer.setInputMode(WorldRenderer.Input.SelectCircle);
+            worldRenderer.setSelection(new CircleSelection());
             bConnect.setEnabled(true);
             bSetStart.setEnabled(false);
             bSetTarget.setEnabled(false);
@@ -79,6 +80,7 @@ public class SelectionOptions extends ToolOptions {
                 worldRenderer.repaint();
             }
         });
+        bConnect.setEnabled(true);
         add(bConnect);
 
         // Set Start
@@ -93,6 +95,7 @@ public class SelectionOptions extends ToolOptions {
                 worldRenderer.repaint();
             }
         });
+        bSetStart.setEnabled(false);
         add(bSetStart);
 
         // Set Target
@@ -108,6 +111,7 @@ public class SelectionOptions extends ToolOptions {
                 worldRenderer.repaint();
             }
         });
+        bSetTarget.setEnabled(false);
         add(bSetTarget);
         // Remove
         bRemove = new Button("Remove");
@@ -118,9 +122,6 @@ public class SelectionOptions extends ToolOptions {
             }
         });
         add(bRemove);
-
-        // Select Rectangle
-        bSelectRectangle.doClick(); // TODO better way?
 
         // TODO button to invert selected nodes
     }

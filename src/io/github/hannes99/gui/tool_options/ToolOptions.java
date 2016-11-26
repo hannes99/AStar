@@ -11,13 +11,10 @@ public abstract class ToolOptions extends Panel {
     protected int a;
 
     /**
-     * Force every input mode to set the selection mode.
      *
      * @param worldRenderer
-     * @param input
      */
-    public ToolOptions(WorldRenderer worldRenderer, WorldRenderer.Input input) {
-        worldRenderer.setInputMode(input);
+    public ToolOptions(WorldRenderer worldRenderer) {
         setLayout(null);
     }
 

@@ -1,7 +1,6 @@
 package io.github.hannes99.world.selection;
 
 import io.github.hannes99.world.Node3d;
-import io.github.hannes99.world.WorldRenderer;
 
 import javax.vecmath.Point2d;
 import javax.vecmath.Point3d;
@@ -15,10 +14,6 @@ import java.util.ArrayList;
 public class RectangleSelection extends Selection {
     protected Point2d pos1 = new Point2d();
     protected Point2d pos2 = new Point2d();
-
-    public RectangleSelection(WorldRenderer worldRenderer) {
-        super(worldRenderer);
-    }
 
     @Override
     public ArrayList<Node3d> getSelectedNodes() {

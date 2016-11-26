@@ -18,7 +18,8 @@ public class AddArrayOptions extends ToolOptions {
     private Button bGenerate, bRemoveRandom;
 
     public AddArrayOptions(WorldRenderer worldRenderer) {
-        super(worldRenderer, WorldRenderer.Input.AddArray);
+        super(worldRenderer);
+        worldRenderer.setSelection(new AddArraySelection());
 
         sDistance = new SliderPanel("Distance", 1, 127, 64) {
             @Override

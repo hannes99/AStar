@@ -3,7 +3,6 @@ package io.github.hannes99.world.selection;
 import io.github.hannes99.a_star.Connection;
 import io.github.hannes99.a_star.Node;
 import io.github.hannes99.world.Node3d;
-import io.github.hannes99.world.WorldRenderer;
 
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -15,9 +14,6 @@ public class MoveSingle extends SingleSelection{
 
     private Node3d node = null;
 
-    public MoveSingle(WorldRenderer worldRenderer) {
-        super(worldRenderer);
-    }
 
     @Override
     public void mouseClicked(MouseEvent e){

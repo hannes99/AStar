@@ -33,8 +33,7 @@ public class AStarTest extends JFrame {
 
         // Setup A*
         world = new AStarWorld();
-        worldRenderer = new WorldRenderer(world, 11); // 11
-        worldRenderer.setInputMode(WorldRenderer.Input.SelectSingle);
+        worldRenderer = new WorldRenderer(world, 11);
 
         // Panels
         toolPanel = new ToolPanel(worldRenderer);

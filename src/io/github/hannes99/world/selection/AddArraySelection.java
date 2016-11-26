@@ -1,7 +1,6 @@
 package io.github.hannes99.world.selection;
 
 import io.github.hannes99.world.Node3d;
-import io.github.hannes99.world.WorldRenderer;
 
 import javax.vecmath.Point2d;
 import java.awt.*;
@@ -14,8 +13,7 @@ public class AddArraySelection extends RectangleSelection {
     private double distance = 64;
     private Node3d[][] nodes;
 
-    public AddArraySelection(WorldRenderer worldRenderer) {
-        super(worldRenderer);
+    public AddArraySelection() {
         selectionColor = Color.RED;
     }
 

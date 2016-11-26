@@ -1,6 +1,7 @@
 package io.github.hannes99.gui.tool_options;
 
 import io.github.hannes99.world.WorldRenderer;
+import io.github.hannes99.world.selection.AddNodeSelection;
 
 import javax.swing.event.ChangeEvent;
 
@@ -12,7 +13,8 @@ public class AddOptions extends ToolOptions {
     SliderPanel sMinDistance, sAutoConnect;
 
     public AddOptions(WorldRenderer worldRenderer) {
-        super(worldRenderer, WorldRenderer.Input.AddNode);
+        super(worldRenderer);
+        worldRenderer.setSelection(new AddNodeSelection());
 
         sMinDistance = new SliderPanel("Min distance", 1, 256, 128) {
             @Override
