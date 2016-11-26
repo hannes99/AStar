@@ -18,16 +18,13 @@ public class SelectionOptions extends ToolOptions {
 
     public SelectionOptions(WorldRenderer worldRenderer) {
         super(worldRenderer);
-        // TODO if was array selection
-        // TODO if no selection: single
-        worldRenderer.setSelection(new RectangleSelection());
 
         // Only one can be selected
         ButtonGroup buttonGroup = new ButtonGroup();
 
         // move
         bMove = new JRadioButton("Move");
-        bMove.addActionListener(e->{
+        bMove.addActionListener(e -> {
             worldRenderer.setSelection(new MoveSingle());
         });
         buttonGroup.add(bMove);
@@ -124,12 +121,15 @@ public class SelectionOptions extends ToolOptions {
         add(bRemove);
 
         // TODO button to invert selected nodes
+
+        // Set rectangle selection
+        bSelectRectangle.doClick();
     }
 
     @Override
     public void setBounds(int x, int y, int width, int height) {
         super.setBounds(x, y, width, height);
-        bMove.setBounds(0,0*a, width, a);
+        bMove.setBounds(0, 0 * a, width, a);
         bSelectSingle.setBounds(0, 1 * a, width, a);
         bSelectRectangle.setBounds(0, 2 * a, width, a);
         bSelectCircle.setBounds(0, 3 * a, width, a);

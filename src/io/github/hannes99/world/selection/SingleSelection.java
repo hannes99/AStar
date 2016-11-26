@@ -15,6 +15,14 @@ public class SingleSelection extends Selection {
     public Point3d pos = new Point3d();
 
     @Override
+    public void previousSelection(Selection selection) {
+        if (selection instanceof SingleSelection) {
+            SingleSelection s = (SingleSelection) selection;
+            pos.set(s.pos);
+        }
+    }
+
+    @Override
     public ArrayList<Node3d> getSelectedNodes() {
         ArrayList<Node3d> nodes = new ArrayList<Node3d>();
         Node3d selected = worldRenderer.getWorld().getNearestNode(pos);

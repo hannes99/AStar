@@ -17,9 +17,12 @@ public abstract class Selection implements MouseInputListener {
     protected WorldRenderer worldRenderer;
     protected Color selectionColor = Color.BLUE;
 
+    public abstract void previousSelection(Selection selection);
+
     public void setWorldRenderer(WorldRenderer w) {
         worldRenderer = w;
     }
+
 
     public int removeSelectedNodes() {
         ArrayList<Node3d> nodes = getSelectedNodes();

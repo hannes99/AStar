@@ -15,6 +15,11 @@ public class CircleSelection extends Selection {
     private double radius;
 
     @Override
+    public void previousSelection(Selection selection) {
+
+    }
+
+    @Override
     public ArrayList<Node3d> getSelectedNodes() {
         ArrayList<Node3d> ret = new ArrayList<Node3d>();
         double radiusSquared = radius * radius;

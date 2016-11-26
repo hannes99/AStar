@@ -17,6 +17,12 @@ public class AddArraySelection extends RectangleSelection {
         selectionColor = Color.RED;
     }
 
+    public AddArraySelection(RectangleSelection rectangleSelection) {
+        this();
+        pos1.set(rectangleSelection.pos1);
+        pos2.set(rectangleSelection.pos2);
+    }
+
     public void generateArray() {
         int w = (int) (pos2.x - pos1.x);
         int h = (int) (pos2.y - pos1.y);
