@@ -49,8 +49,8 @@ public class AStarTest extends JFrame {
                 int h = c.getHeight() / 9;
                 int w = h * 4;
                 toolPanel.setBounds(0, 0, w, h);
-                toolOptions.setBounds(0, h, w, c.getHeight() - 3 * h / 2);
-                settingsPanel.setBounds(0, c.getHeight() - h / 2, w, h / 2);
+                toolOptions.setBounds(0, h, w, c.getHeight() - 3 * h);
+                settingsPanel.setBounds(0, c.getHeight() - 2 * h, w, 2 * h);
                 worldRenderer.setBounds(w, 0, c.getWidth() - w - h, c.getHeight());
                 controlPanel.setBounds(c.getWidth() - h, 0, h, c.getHeight());
             }
@@ -136,7 +136,7 @@ public class AStarTest extends JFrame {
                     if (SwingUtilities.isRightMouseButton(e))
                         r -= 1;
 
-                    if(r>10)
+                    if (r > 10)
                         worldRenderer.setDrawValues(true);
                     else
                         worldRenderer.setDrawValues(false);
@@ -199,28 +199,30 @@ public class AStarTest extends JFrame {
     }
 
     private class SettingsPanel extends Panel { // TODO
-        JToggleButton tNodes, tConnections;
+        JCheckBox cDrawNodes, cDrawConnections;
 
         public SettingsPanel(WorldRenderer worldRenderer) {
+            setBackground(Color.gray); // TODO remove
             setLayout(null);
 
-            tNodes = new JToggleButton("Nodes");
-            tNodes.setSelected(worldRenderer.getDrawNodes());
-            tNodes.addActionListener(e -> worldRenderer.setDrawNodes(tNodes.isSelected()));
-            add(tNodes);
+            cDrawNodes = new JCheckBox("Draw Nodes");
+            cDrawNodes.setSelected(worldRenderer.getDrawNodes());
+            cDrawNodes.addActionListener(e -> worldRenderer.setDrawNodes(cDrawNodes.isSelected()));
+            add(cDrawNodes);
 
-            tConnections = new JToggleButton("Connections");
-            tConnections.setSelected(worldRenderer.getDrawConnections());
-            tConnections.addActionListener(e -> worldRenderer.setDrawConnections(tConnections.isSelected()));
-            add(tConnections);
+            cDrawConnections = new JCheckBox("Draw Connections");
+            cDrawConnections.setSelected(worldRenderer.getDrawConnections());
+            cDrawConnections.addActionListener(e -> worldRenderer.setDrawConnections(cDrawConnections.isSelected()));
+            add(cDrawConnections);
         }
 
         @Override
         public void setBounds(int x, int y, int width, int height) {
             super.setBounds(x, y, width, height);
 
-            tNodes.setBounds(0, 0, width / 2, height);
-            tConnections.setBounds(width / 2, 0, width / 2, height);
+            int a = height / 4;
+            cDrawNodes.setBounds(0, 3 * a, width / 2, a);
+            cDrawConnections.setBounds(width / 2, 3 * a, width / 2, a);
         }
     }
 

@@ -21,6 +21,6 @@ public abstract class ToolOptions extends Panel {
     @Override
     public void setBounds(int x, int y, int width, int height) {
         super.setBounds(x, y, width, height);
-        a = height / 18;
+        a = height / 14; // TODO
     }
 }
