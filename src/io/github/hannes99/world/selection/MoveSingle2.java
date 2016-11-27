@@ -28,6 +28,15 @@ public class MoveSingle2 extends SingleSelection {
                 Node3d node = getSelectedNodes().get(0);
                 node.getPosition().set(pos);
                 worldRenderer.getWorld().updateHForNode(node);
+                node.getConnectionsFrom().forEach(n->{
+                    n.getConnectionsTo().forEach(c->{
+                        if(c.getNode()==node)
+                            c.setValue(((Node3d)n).getPosition().distance(node.getPosition()));
+                    });
+                });
+                node.getConnectionsTo().forEach(c->{
+                    c.setValue(node.getPosition().distance(((Node3d)c.getNode()).getPosition()));
+                });
                 worldRenderer.repaint();
             }
         }
