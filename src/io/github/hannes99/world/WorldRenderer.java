@@ -30,6 +30,7 @@ public class WorldRenderer extends JComponent {
 
     public void setDrawValues(boolean b) {
         drawValues = b;
+        repaint();
     }
 
     public AStarWorld getWorld() {
@@ -155,14 +156,24 @@ public class WorldRenderer extends JComponent {
                 Graphics2D gg = (Graphics2D) g;
                 gg.setFont(new Font("Arial", Font.CENTER_BASELINE, (int) nodeRadius / 2));
                 gg.setColor(Color.black);
-                String toDraw = Math.round(n.getF() * 100.0) / 100.0 + "";
+                String toDraw;
+                if(n.getG()==0)
+                    toDraw = "F: ?";
+                else
+                    toDraw = Math.round(n.getF() * 100.0) / 100.0 + "";
                 FontMetrics fm = gg.getFontMetrics();
                 g.drawString(toDraw, (int) (p1.x - (fm.stringWidth(toDraw) / 2)), (int) p1.y + fm.getHeight() / 2);
                 gg.setFont(new Font("Arial", Font.CENTER_BASELINE, (int) nodeRadius / 3));
                 fm = gg.getFontMetrics();
-                toDraw = "G:" + Math.round(n.getG() * 100.0) / 100.0;
+                if(n.getG()==0)
+                    toDraw="G: ?";
+                else
+                    toDraw = "G:" + Math.round(n.getG() * 100.0) / 100.0;
                 g.drawString(toDraw, (int) (p1.x - (fm.stringWidth(toDraw) / 2)), (int) (p1.y + fm.getHeight() * 1.5));
-                toDraw = "H:" + Math.round(n.getH() * 100.0) / 100.0;
+                if(n.getH()==0)
+                    toDraw = "H: ?";
+                else
+                    toDraw = "H:" + Math.round(n.getH() * 100.0) / 100.0;
                 g.drawString(toDraw, (int) (p1.x - (fm.stringWidth(toDraw) / 2)), (int) p1.y - fm.getHeight() / 2);
             });
 

@@ -58,7 +58,6 @@ public class RectangleSelection extends Selection {
     @Override
     public void mouseDragged(MouseEvent e) {
         pos2.set(e.getX(), e.getY());
-
         if (pos2.x < pos1.x) { // TODO ????????
             double tmp = pos1.x;
             pos1.x = pos2.x;

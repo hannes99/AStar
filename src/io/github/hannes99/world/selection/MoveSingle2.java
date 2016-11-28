@@ -25,7 +25,7 @@ public class MoveSingle2 extends SingleSelection {
         if (node != null) {
             pos.set(e.getX(), e.getY(), 0);
             if (getSelectedNodes().size() != 0) {
-                Node3d node = getSelectedNodes().get(0);
+                //Node3d node = getSelectedNodes().get(0); // wenn über a ondere node gemoved bisch hots di hel geselected
                 node.getPosition().set(pos);
                 worldRenderer.getWorld().updateHForNode(node);
                 node.getConnectionsFrom().forEach(n->{

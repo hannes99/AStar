@@ -129,17 +129,10 @@ public class AStarTest extends JFrame {
                 public void mousePressed(MouseEvent e) {
                     super.mousePressed(e);
                     double r = worldRenderer.getNodeRadius();
-
                     if (SwingUtilities.isLeftMouseButton(e))
                         r += 1;
-
                     if (SwingUtilities.isRightMouseButton(e))
                         r -= 1;
-
-                    if (r > 10)
-                        worldRenderer.setDrawValues(true);
-                    else
-                        worldRenderer.setDrawValues(false);
                     worldRenderer.setNodeRadius(r);
                 }
             });
@@ -199,11 +192,17 @@ public class AStarTest extends JFrame {
     }
 
     private class SettingsPanel extends Panel { // TODO
-        JCheckBox cDrawNodes, cDrawConnections;
+        JCheckBox cDrawNodes, cDrawConnections, cDrawValues;
 
         public SettingsPanel(WorldRenderer worldRenderer) {
             setBackground(Color.gray); // TODO remove
             setLayout(null);
+
+            cDrawValues = new JCheckBox("Show Values");
+            cDrawValues.addActionListener(e->{
+                worldRenderer.setDrawValues(cDrawValues.isSelected());
+            });
+            add(cDrawValues);
 
             cDrawNodes = new JCheckBox("Draw Nodes");
             cDrawNodes.setSelected(worldRenderer.getDrawNodes());
@@ -221,6 +220,7 @@ public class AStarTest extends JFrame {
             super.setBounds(x, y, width, height);
 
             int a = height / 4;
+            cDrawValues.setBounds(0,2 * a, width/2, a);
             cDrawNodes.setBounds(0, 3 * a, width / 2, a);
             cDrawConnections.setBounds(width / 2, 3 * a, width / 2, a);
         }
