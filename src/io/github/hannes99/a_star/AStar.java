@@ -9,7 +9,7 @@ import java.util.PriorityQueue;
  */
 public class AStar {
     // Nodes with possible next nodes
-    public static final PriorityQueue<Node> openlist = new PriorityQueue<Node>((o1, o2) -> {
+    public static final PriorityQueue<Node> openlist = new PriorityQueue<>((o1, o2) -> {
         int ret = 0;
         if (o1.getF() < o2.getF())
             ret = -1;
@@ -19,7 +19,7 @@ public class AStar {
     });
 
     // Path known
-    public static final HashSet<Node> closedList = new HashSet<Node>();
+    public static final HashSet<Node> closedList = new HashSet<>();
 
 
     /**

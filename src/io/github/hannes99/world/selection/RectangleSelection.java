@@ -75,6 +75,7 @@ public class RectangleSelection extends Selection {
     public void paint(Graphics g) {
         g.setColor(selectionColor);
         g.drawRect((int) pos1.x, (int) pos1.y, (int) (pos2.x - pos1.x), (int) (pos2.y - pos1.y));
-        highlightNodes((Graphics2D) g);
+        if (worldRenderer.getDrawNodes())
+            highlightNodes((Graphics2D) g);
     }
 }

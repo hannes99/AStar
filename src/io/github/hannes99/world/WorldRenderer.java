@@ -182,14 +182,14 @@ public class WorldRenderer extends JComponent {
             g.setFont(new Font("Arial", Font.CENTER_BASELINE, (int) nodeRadius / 2));
             FontMetrics fm = g.getFontMetrics();
             if (world.getStart() != null) {
-                g.setColor(Color.CYAN);
+                g.setColor(new Color(0xA5EF00));
                 Point3d p1 = world.getStart().getPosition();
                 g.fillOval((int) (p1.x - nodeRadius), (int) (p1.y - nodeRadius), (int) (nodeRadius * 2), (int) (nodeRadius * 2));
                 g.setColor(Color.BLACK);
                 g.drawString("Start", (int) (p1.x - (fm.stringWidth("Start") / 2)), (int) p1.y+fm.getHeight()/4);
             }
             if (world.getTarget() != null) {
-                g.setColor(Color.CYAN);
+                g.setColor(new Color(0xA5EF00));
                 Point3d p1 = world.getTarget().getPosition();
                 g.fillOval((int) (p1.x - nodeRadius), (int) (p1.y - nodeRadius), (int) (nodeRadius * 2), (int) (nodeRadius * 2));
                 g.setColor(Color.BLACK);

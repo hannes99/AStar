@@ -31,14 +31,14 @@ public class PathRenderer {
         System.out.println("Time:"+(System.currentTimeMillis()-t));
         if (worldRenderer.getDrawNodes()) {
             // Openlist
-            g.setColor(new Color(255, 100, 100));
+            g.setColor(new Color(0xFD7279));
             AStar.openlist.forEach(node -> {
                 Point3d p1 = ((Node3d) node).getPosition();
                 g.fillOval((int) (p1.x - radius), (int) (p1.y - radius), (int) (radius * 2), (int) (radius * 2));
             });
 
             // Closed list
-            g.setColor(new Color(50, 100, 100));
+            g.setColor(new Color(0x009D91));
             AStar.closedList.forEach(node -> {
                 Point3d p1 = ((Node3d) node).getPosition();
                 g.fillOval((int) (p1.x - radius), (int) (p1.y - radius), (int) (radius * 2), (int) (radius * 2));
@@ -66,7 +66,7 @@ public class PathRenderer {
                 }
                 // Nodes
                 if (worldRenderer.getDrawNodes()) {
-                    g.setColor(new Color(50, 255, 50));
+                    g.setColor(new Color(0x14D100));
                     world.getLastPath().forEach(node -> {
                         Point3d p1 = ((Node3d) node).getPosition();
                         g.fillOval((int) (p1.x - radius), (int) (p1.y - radius), (int) (radius * 2), (int) (radius * 2));
