@@ -195,7 +195,6 @@ public class AStarTest extends JFrame {
         JCheckBox cDrawNodes, cDrawConnections, cDrawValues;
 
         public SettingsPanel(WorldRenderer worldRenderer) {
-            setBackground(Color.gray); // TODO remove
             setLayout(null);
 
             cDrawValues = new JCheckBox("Show Values");
