@@ -9,15 +9,23 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 /**
- * Created by robert on 11/13/16.
+ * Select a rectangle.
  */
 public class RectangleSelection extends Selection {
     protected Point2d pos1 = new Point2d();
     protected Point2d pos2 = new Point2d();
 
+    /**
+     * Creates a new RectangleSelection.
+     */
     public RectangleSelection() {
     }
 
+    /**
+     * Creates a new RectangleSelection from an AddArraySelection.
+     *
+     * @param addArraySelection The previous selection.
+     */
     public RectangleSelection(AddArraySelection addArraySelection) {
         this();
         pos1.set(addArraySelection.pos1);
@@ -43,7 +51,6 @@ public class RectangleSelection extends Selection {
                 ret.add(n);
             }
         }
-
         return ret;
     }
 
@@ -58,7 +65,7 @@ public class RectangleSelection extends Selection {
     @Override
     public void mouseDragged(MouseEvent e) {
         pos2.set(e.getX(), e.getY());
-        if (pos2.x < pos1.x) { // TODO ????????
+        if (pos2.x < pos1.x) { // TODO fix or keep as feature?
             double tmp = pos1.x;
             pos1.x = pos2.x;
             pos2.x = tmp;

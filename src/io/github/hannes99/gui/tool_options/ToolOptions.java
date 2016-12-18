@@ -5,14 +5,15 @@ import io.github.hannes99.world.WorldRenderer;
 import java.awt.*;
 
 /**
- * Created by robert on 11/13/16.
+ * Panel to use and control different tools.
  */
 public abstract class ToolOptions extends Panel {
     protected int a;
 
     /**
+     * Creates a new ToolOptions instance.
      *
-     * @param worldRenderer
+     * @param worldRenderer the WorldRenderer
      */
     public ToolOptions(WorldRenderer worldRenderer) {
         setLayout(null);

@@ -10,20 +10,33 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 /**
- * Manages selections in WorldRenderer
+ * Selections in WorldRenderer.
  */
 public abstract class Selection implements MouseInputListener {
-
     protected WorldRenderer worldRenderer;
     protected Color selectionColor = Color.BLUE;
 
+    /**
+     * Called when added to a WorldRenderer.
+     *
+     * @param selection The previous selection.
+     */
     public abstract void previousSelection(Selection selection);
 
+    /**
+     * Called when added to a WorldRenderer.
+     *
+     * @param w
+     */
     public void setWorldRenderer(WorldRenderer w) {
         worldRenderer = w;
     }
 
-
+    /**
+     * Deletes all selected nodes.
+     *
+     * @return Count of nodes deleted.
+     */
     public int removeSelectedNodes() {
         ArrayList<Node3d> nodes = getSelectedNodes();
         int ret = nodes.size();
@@ -34,6 +47,11 @@ public abstract class Selection implements MouseInputListener {
         return ret;
     }
 
+    /**
+     * Highlights the selected nodes with a blue circle.
+     *
+     * @param g The graphics context.
+     */
     public void highlightNodes(Graphics2D g) {
         g.setColor(new Color(0x0000FF));
         g.setStroke(new BasicStroke(2));

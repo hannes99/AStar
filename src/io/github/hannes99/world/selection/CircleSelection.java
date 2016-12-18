@@ -8,7 +8,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 /**
- * Created by robert on 11/13/16.
+ * Selects a circle.
  */
 public class CircleSelection extends Selection {
     private Point3d pos = new Point3d();
@@ -16,7 +16,6 @@ public class CircleSelection extends Selection {
 
     @Override
     public void previousSelection(Selection selection) {
-
     }
 
     @Override
@@ -30,8 +29,6 @@ public class CircleSelection extends Selection {
         }
         return ret;
     }
-
-
 
     @Override
     public void paint(Graphics g) {

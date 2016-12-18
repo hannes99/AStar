@@ -6,12 +6,16 @@ import io.github.hannes99.world.selection.AddNodeSelection;
 import javax.swing.event.ChangeEvent;
 
 /**
- * Created by robert on 11/14/16.
+ * ToolOptions to create single nodes.
  */
 public class AddOptions extends ToolOptions {
-
     SliderPanel sMinDistance, sAutoConnect;
 
+    /**
+     * Creates a new AddOptions instance.
+     *
+     * @param worldRenderer the WorldRenderer
+     */
     public AddOptions(WorldRenderer worldRenderer) {
         super(worldRenderer);
         worldRenderer.setSelection(new AddNodeSelection());

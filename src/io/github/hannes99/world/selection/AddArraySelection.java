@@ -7,22 +7,33 @@ import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * Created by robert on 11/17/16.
+ * Selection to add a field of nodes.
  */
 public class AddArraySelection extends RectangleSelection {
     private double distance = 64;
     private Node3d[][] nodes;
 
+    /**
+     * Creates a new AddArraySelection.
+     */
     public AddArraySelection() {
         selectionColor = Color.RED;
     }
 
+    /**
+     * Creates a new AddArraySelection from a RectangleSelection.
+     *
+     * @param rectangleSelection The previous selection.
+     */
     public AddArraySelection(RectangleSelection rectangleSelection) {
         this();
         pos1.set(rectangleSelection.pos1);
         pos2.set(rectangleSelection.pos2);
     }
 
+    /**
+     * Generates the nodes.
+     */
     public void generateArray() {
         int w = (int) (pos2.x - pos1.x);
         int h = (int) (pos2.y - pos1.y);
@@ -56,15 +67,27 @@ public class AddArraySelection extends RectangleSelection {
         super.paint(g);
     }
 
+    /**
+     * @return The distance between nodes.
+     */
     public double getDistance() {
         return distance;
     }
 
+    /**
+     *
+     * @param distance The distance between nodes.
+     */
     public void setDistance(double distance) {
         this.distance = distance;
         worldRenderer.repaint();
     }
 
+    /**
+     * Don't highlight nodes inside the selection.
+     *
+     * @param g
+     */
     @Override
     public void highlightNodes(Graphics2D g) {
     }

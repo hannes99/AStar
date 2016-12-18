@@ -7,7 +7,7 @@ import javax.vecmath.Point3d;
 import java.awt.*;
 
 /**
- * Draws the state of the AStar Algorithm.
+ * Draws the state of the AStar World and Algorithm.
  */
 public class WorldRenderer extends JComponent {
     private AStarWorld world;
@@ -20,6 +20,12 @@ public class WorldRenderer extends JComponent {
     private double autoConnectDistance = 129, minDistance = 128;
     private Selection selection;
 
+    /**
+     * Creates a new WorldRenderer.
+     *
+     * @param world      The world to render.
+     * @param nodeRadius Size of the nodes.
+     */
     public WorldRenderer(AStarWorld world, double nodeRadius) {
         setWorld(world);
         pathRenderer = new PathRenderer(world, this, nodeRadius);
@@ -28,19 +34,35 @@ public class WorldRenderer extends JComponent {
         drawNodes = true;
     }
 
+    /**
+     * Should text values be drawn. Repaints afterwards.
+     *
+     * @param b Should text values be drawn.
+     */
     public void setDrawValues(boolean b) {
         drawValues = b;
         repaint();
     }
 
+    /**
+     *
+     * @return The world
+     */
     public AStarWorld getWorld() {
         return world;
     }
 
+    /**
+     *
+     * @param aStarWorld A world
+     */
     public void setWorld(AStarWorld aStarWorld) {
         this.world = aStarWorld;
     }
 
+    /**
+     * Resets the world.
+     */
     public void clear() {
         world.getAllNodes().clear();
         world.setStart(null);
@@ -49,63 +71,119 @@ public class WorldRenderer extends JComponent {
         repaint();
     }
 
+    /**
+     * Min distance when creating single nodes.
+     *
+     * @return the distance
+     */
     public double getMinDistance() {
         return minDistance;
     }
 
+    /**
+     * Min distance when creating single nodes.
+     *
+     * @param minDistance the distance
+     */
     public void setMinDistance(double minDistance) {
         this.minDistance = minDistance;
         repaint();
     }
 
+    /**
+     *
+     * @return if connecitons are visible
+     */
     public boolean getDrawConnections() {
         return drawConnections;
     }
 
+    /**
+     * Should connections be drawn? Repaints afterwards.
+     *
+     * @param drawConnections draw connections
+     */
     public void setDrawConnections(boolean drawConnections) {
         this.drawConnections = drawConnections;
         repaint();
     }
 
+    /**
+     * @return If nodes are visible.
+     */
     public boolean getDrawNodes() {
         return drawNodes;
     }
 
+    /**
+     * Set if nodes should be drawn. Repaints afterwards.
+     *
+     * @param drawNodes draw nodes
+     */
     public void setDrawNodes(boolean drawNodes) {
         this.drawNodes = drawNodes;
         repaint();
     }
 
+    /**
+     * Distance for auto connections
+     *
+     * @return the distance
+     */
     public double getAutoConnectDistance() {
         return autoConnectDistance;
     }
 
+    /**
+     * Distance for auto connections
+     *
+     * @param autoConnectDistance the distance
+     */
     public void setAutoConnectDistance(double autoConnectDistance) {
         this.autoConnectDistance = autoConnectDistance;
         repaint();
     }
 
+    /**
+     *
+     * @return Is the algorithm visible
+     */
     public boolean getRenderPath() {
         return renderPath;
     }
 
+    /**
+     * Should the algorithm be drawn
+     *
+     * @param renderPath render path
+     */
     public void setRenderPath(boolean renderPath) {
         this.renderPath = renderPath;
     }
 
+    /**
+     *
+     * @return current selection
+     */
     public Selection getSelection() {
         return selection;
     }
 
+    /**
+     * Set a new selection
+     *
+     * @param s the selection
+     */
     public void setSelection(Selection s) {
         // Remove listener from old selection
         removeMouseListener(selection);
         removeMouseMotionListener(selection);
 
         // Prepare new selection
-        if (s != null)
+        if (s != null) {
             s.setWorldRenderer(this);
-        s.previousSelection(selection);
+            s.previousSelection(selection);
+        }
         selection = s;
 
         // Add listeners
@@ -115,6 +193,11 @@ public class WorldRenderer extends JComponent {
         repaint();
     }
 
+    /**
+     * Paints connections, nodes, path, values, selections
+     *
+     * @param gr Graphics context
+     */
     @Override
     public void paint(Graphics gr) {
         long time = System.currentTimeMillis();
@@ -202,14 +285,21 @@ public class WorldRenderer extends JComponent {
             selection.paint(g);
         }
 
-
-        System.out.println("Frametime: " + (System.currentTimeMillis() - time) + "  Nodes: " + world.getAllNodes().size());
+        System.out.println("WorldRenderer) Frametime: " + (System.currentTimeMillis() - time) + "  Nodes: " + world.getAllNodes().size());
     }
 
+    /**
+     *
+     * @return Current node radius
+     */
     public double getNodeRadius() {
         return nodeRadius;
     }
 
+    /**
+     *
+     * @param nodeRadius New node radius
+     */
     public void setNodeRadius(double nodeRadius) {
         if (nodeRadius < 0)
             nodeRadius = 0;
@@ -231,6 +321,10 @@ public class WorldRenderer extends JComponent {
         return ret;
     }
 
+    /**
+     *
+     * @return Current PathRenderer
+     */
     public PathRenderer getPathRenderer() {
         return pathRenderer;
     }

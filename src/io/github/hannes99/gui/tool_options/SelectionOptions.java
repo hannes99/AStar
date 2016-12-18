@@ -9,13 +9,17 @@ import javax.swing.*;
 import java.util.ArrayList;
 
 /**
- * Created by robert on 11/13/16.
+ * ToolOptions to select and edit nodes.
  */
 public class SelectionOptions extends ToolOptions {
-
     private JRadioButton bSelectSingle, bSelectRectangle, bSelectCircle, bMove, bMove2;
     private Button bConnect, bSetStart, bSetTarget, bRemove;
 
+    /**
+     * Creates a new SelectionOptions instance.
+     *
+     * @param worldRenderer the WorldRenderer
+     */
     public SelectionOptions(WorldRenderer worldRenderer) {
         super(worldRenderer);
 
@@ -23,7 +27,7 @@ public class SelectionOptions extends ToolOptions {
         ButtonGroup buttonGroup = new ButtonGroup();
 
         // move
-        bMove = new JRadioButton("Move");
+        bMove = new JRadioButton("Move (reconnect 20 dist)");
         bMove.addActionListener(e -> {
             worldRenderer.setSelection(new MoveSingle());
         });
@@ -31,7 +35,7 @@ public class SelectionOptions extends ToolOptions {
         add(bMove);
 
         // move
-        bMove2 = new JRadioButton("Move2");
+        bMove2 = new JRadioButton("Move");
         bMove2.addActionListener(e -> {
             worldRenderer.setSelection(new MoveSingle2());
         });

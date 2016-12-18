@@ -8,11 +8,17 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 
 /**
- * Created by robert on 11/17/16.
+ * Selection to add single nodes.
  */
 public class AddNodeSelection extends SingleSelection {
     private Node3d lastCreatedNode;
 
+    /**
+     * Creates a node.
+     *
+     * @param x X coordinate.
+     * @param y Y coordinate.
+     */
     private void addNode(int x, int y) {
         Point3d p = new Point3d(x, y, 0);
         AStarWorld world = worldRenderer.getWorld();

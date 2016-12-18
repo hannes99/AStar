@@ -11,7 +11,6 @@ import java.util.ArrayList;
  * Selects a single node
  */
 public class SingleSelection extends Selection {
-
     public Point3d pos = new Point3d();
 
     @Override

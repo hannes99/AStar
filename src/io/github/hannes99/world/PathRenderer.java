@@ -6,20 +6,32 @@ import javax.vecmath.Point3d;
 import java.awt.*;
 
 /**
- * Created by robert on 11/16/16.
+ * Renders the A* algorithm.
  */
 public class PathRenderer {
     private AStarWorld world;
     private WorldRenderer worldRenderer;
-    private double radius;
+    private double radius; // TODO replace by worldRenderer.getNodeRadius()
     private long step = 0;
 
+    /**
+     * Creates a new PathRenderer
+     *
+     * @param world         The AStarWorld
+     * @param worldRenderer The WorldRenderer
+     * @param radius        The node radius.
+     */
     public PathRenderer(AStarWorld world, WorldRenderer worldRenderer, double radius) {
         this.world = world;
         this.worldRenderer = worldRenderer;
         setRadius(radius);
     }
 
+    /**
+     * Paints the openList and the closedList. Highlights the connections and nodes if a path was found.
+     *
+     * @param gr Graphics context
+     */
     public void paint(Graphics gr) {
         Graphics2D g = (Graphics2D) gr;
 
@@ -76,14 +88,26 @@ public class PathRenderer {
         }
     }
 
+    /**
+     *
+     * @param radius Node radius
+     */
     public void setRadius(double radius) {
         this.radius = radius;
     }
 
+    /**
+     *
+     * @return How many steps does the algorithm attempt.
+     */
     public long getStep() {
         return step;
     }
 
+    /**
+     *
+     * @param step How many steps should the algorithm attempt.
+     */
     public void setStep(long step) {
         worldRenderer.setRenderPath(true);
         if (step < 0)
@@ -92,6 +116,11 @@ public class PathRenderer {
         worldRenderer.repaint();
     }
 
+    /**
+     * Adds a number to to step.
+     *
+     * @param l The number.
+     */
     public void addToStep(long l) {
         setStep(step + l);
     }

@@ -1,6 +1,9 @@
 package io.github.hannes99.gui;
 
-import io.github.hannes99.gui.tool_options.*;
+import io.github.hannes99.gui.tool_options.AddArrayOptions;
+import io.github.hannes99.gui.tool_options.AddOptions;
+import io.github.hannes99.gui.tool_options.SelectionOptions;
+import io.github.hannes99.gui.tool_options.ToolOptions;
 import io.github.hannes99.world.AStarWorld;
 import io.github.hannes99.world.WorldRenderer;
 
@@ -22,6 +25,9 @@ public class AStarTest extends JFrame {
     private ToolOptions toolOptions;
     private SettingsPanel settingsPanel;
 
+    /**
+     * Creates and shows a new window.
+     */
     public AStarTest() {
         // Frame
         setSize(1365, 768);
@@ -72,10 +78,18 @@ public class AStarTest extends JFrame {
         add(toolOptions);
     }
 
+    /**
+     * Panel on the left with options to control the algorithm.
+     */
     private class ControlPanel extends Panel {
         private io.github.hannes99.gui.button.Button bFindPath, bStep, bStepCount, bBack, bClear, bNodeRadius;
         private int stepCount;
 
+        /**
+         * Creates a new ControlPanel.
+         *
+         * @param worldRenderer the WorldRenderer
+         */
         public ControlPanel(WorldRenderer worldRenderer) {
             setLayout(null);
 
@@ -152,10 +166,17 @@ public class AStarTest extends JFrame {
         }
     }
 
-
+    /**
+     * Panel to select a ToolOptions panel.
+     */
     public class ToolPanel extends Panel {
         private io.github.hannes99.gui.button.Button bAddNode, bSelect, bAddArray, bAddShape;
 
+        /**
+         * Creates a new ToolPanel.
+         *
+         * @param worldRenderer the WorldRenderer
+         */
         public ToolPanel(WorldRenderer worldRenderer) {
             setLayout(null);
 
@@ -176,7 +197,8 @@ public class AStarTest extends JFrame {
 
             // Add Shape
             bAddShape = new io.github.hannes99.gui.button.Button("Shape", "shapes.png");
-            bAddShape.addActionListener(e -> setToolOptions(new AddShapeOptions(worldRenderer)));
+            // TODO implement shapes
+            // bAddShape.addActionListener(e -> setToolOptions(new AddShapeOptions(worldRenderer)));
             add(bAddShape);
         }
 
@@ -191,9 +213,17 @@ public class AStarTest extends JFrame {
         }
     }
 
-    private class SettingsPanel extends Panel { // TODO
+    /**
+     * Panel for general settings.
+     */
+    private class SettingsPanel extends Panel {
         JCheckBox cDrawNodes, cDrawConnections, cDrawValues;
 
+        /**
+         * Creates a new SettingsPanel.
+         *
+         * @param worldRenderer the WorldRenderer
+         */
         public SettingsPanel(WorldRenderer worldRenderer) {
             setLayout(null);
 

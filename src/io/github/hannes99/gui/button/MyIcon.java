@@ -6,17 +6,34 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 
 /**
- * Created by robert on 11/15/16.
+ * ImageIcon for the buttons. Scales automatically to 1/3 of the button size.
+ *
+ * TODO: paint icons
  */
 public class MyIcon extends ImageIcon {
-
+    // Keep proportions?
     private boolean proportionate = true;
 
+    /**
+     * Creates an image from a file path.
+     *
+     * @param file          File path
+     * @param proportionate Whether or not to keep proportions
+     */
     public MyIcon(String file, boolean proportionate) {
         super(file);
         this.proportionate = proportionate;
     }
 
+    /**
+     * Paints the icon. The top-left corner of the icon is drawn at the point (x, y) in the coordinate space of the
+     * graphics context g. If this icon has no image observer, this method uses the c component as the observer.
+     *
+     * @param c the component to be used as the observer if this icon has no image observer
+     * @param g the graphics context
+     * @param x the X coordinate of the icon's top-left corner
+     * @param y the Y coordinate of the icon's top-left corner
+     */
     @Override
     public synchronized void paintIcon(Component c, Graphics g, int x, int y) {
         Image image = getImage();
@@ -60,11 +77,21 @@ public class MyIcon extends ImageIcon {
         }
     }
 
+    /**
+     * Needs to return 0 or button text doesn't show up.
+     *
+     * @return 0
+     */
     @Override
     public int getIconWidth() {
         return 0;
     }
 
+    /**
+     * Needs to return 0 or button text doesn't show up.
+     *
+     * @return 0
+     */
     @Override
     public int getIconHeight() {
         return 0;

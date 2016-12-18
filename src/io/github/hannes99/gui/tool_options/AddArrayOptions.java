@@ -10,13 +10,18 @@ import javax.swing.event.ChangeEvent;
 import java.util.ArrayList;
 
 /**
- * Created by robert on 11/14/16.
+ * ToolOptions to create a field of nodes.
  */
 public class AddArrayOptions extends ToolOptions {
     private SliderPanel sDistance, sRemoveRandom;
     private double removePercent;
     private Button bGenerate, bRemoveRandom;
 
+    /**
+     * Creates a new AddArrayOptions instance.
+     *
+     * @param worldRenderer the WorldRenderer
+     */
     public AddArrayOptions(WorldRenderer worldRenderer) {
         super(worldRenderer);
         worldRenderer.setSelection(new AddArraySelection());
