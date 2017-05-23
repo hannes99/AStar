@@ -6,7 +6,7 @@ import io.github.hannes99.world.Node3d;
 import java.awt.event.MouseEvent;
 
 /**
- * Created by hanne on 21.11.2016.
+ * Created by hannes on 21.11.2016.
  */
 public class MoveSingle extends SingleSelection {
     private Node3d node = null;
